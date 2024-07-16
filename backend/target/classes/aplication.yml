@@ -1,0 +1,29 @@
+logging:
+  level:
+    root: INFO
+    com.popisna_lista: DEBUG  # Ensure the package name matches your actual Java packages
+
+  file:
+    name: ./log/popisna_lista.log  # Adjusted log file name to match your project name
+
+  pattern:
+    level: r=%X{r} ip=%X{ip} %5p  # Customize this if needed
+
+spring:
+  application:
+    name: popisna_lista
+#  datasource:
+#    url: "jdbc:h2:./wendydb;AUTO_SERVER=TRUE;INIT=RUNSCRIPT FROM 'classpath:sql/createSchema.sql'"
+#    username: "sa"
+#    password: ""
+#    driver-class-name: org.h2.Driver
+#  h2:
+#    console:
+#      enabled: true
+server:
+  port: 8080
+  error:
+    include-message: always
+spring.mvc.format.date: iso
+spring.mvc.format.date-time: iso
+spring.mvc.format.time: iso
