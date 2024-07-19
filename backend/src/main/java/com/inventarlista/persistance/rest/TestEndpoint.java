@@ -13,6 +13,5 @@ public class TestEndpoint {
     public ResponseEntity<String> handleButtonPress() {
         System.out.println("Button was pressed!");
         return ResponseEntity.ok().body("{\"message\":\"Received the button press!\"}");
-
     }
 }
