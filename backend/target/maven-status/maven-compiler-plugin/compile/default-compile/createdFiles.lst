@@ -1,10 +1,10 @@
 com\inventarlista\persistance\rest\loginEndpoint.class
 com\inventarlista\entity\User.class
+com\inventarlista\exceptions\UserNotFoundException.class
 com\inventarlista\service\loginServiceImpl.class
 com\inventarlista\dto\loginRequestDto.class
 com\inventarlista\persistance\impl\loginJdbcDao.class
 com\inventarlista\security\WebConfig.class
-com\inventarlista\persistance\rest\TestEndpoint.class
 com\inventarlista\dto\loginResponseDto.class
 com\inventarlista\Application.class
 com\inventarlista\persistance\test.class
