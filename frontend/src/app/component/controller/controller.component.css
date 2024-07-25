@@ -1,0 +1,67 @@
+/* controller.component.css */
+.controller-wrapper {
+  padding: 20px;
+  background-color: #f3f3f3;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;  /* Make buttons longer */
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#new-button {
+  background-color: #000000; /* Black background */
+}
+
+#active-button {
+  background-color: #4CAF50; /* Green background */
+}
+
+#inactive-button {
+  background-color: #f44336; /* Red background */
+}
+
+/* Dropdown content styling */
+.dropdown-content {
+  display: block;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.dropdown{
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* Ensure dropdown content does not block button clicks */
+.dropdown-content {
+  z-index: 1;
+}
+
+/* Dropdown item styling */
+.app-dropdown-item {
+  display: block;
+  padding: 12rem;
+  text-decoration: none;
+  color: black; /* Text color */
+  background-color: white;
+}
+
+.app-dropdown-item:hover {
+  background-color: #f1f1f1;
+}

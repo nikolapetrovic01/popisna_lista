@@ -1,1 +1,47 @@
-<p>controller works!</p>
+<!--&lt;!&ndash; controller.component.html &ndash;&gt;-->
+<!--<div class="controller-wrapper">-->
+<!--  <h1>Controller Dashboard</h1>-->
+
+<!--  &lt;!&ndash; Button to navigate to the Inventories component &ndash;&gt;-->
+<!--  <button (click)="navigateToInventories()">Napravi novi</button>-->
+
+<!--  &lt;!&ndash; Dropdown for Aktivni (Active) Items &ndash;&gt;-->
+<!--  <div class="dropdown">-->
+<!--    <button class="dropbtn" (click)="toggleDropdown('active')">Aktivni</button>-->
+<!--    <div *ngIf="isActiveOpen" class="dropdown-content">-->
+<!--      <app-dropdown-item *ngFor="let item of activeItems" [item]="item"></app-dropdown-item>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Dropdown for Neaktivni (Inactive) Items &ndash;&gt;-->
+<!--  <div class="dropdown">-->
+<!--    <button class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>-->
+<!--    <div *ngIf="isInactiveOpen" class="dropdown-content">-->
+<!--      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item"></app-dropdown-item>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!-- controller.component.html -->
+<div class="controller-wrapper">
+  <h1>Controller Dashboard</h1>
+
+  <!-- Button to navigate to the Inventories component -->
+  <button id="new-button" (click)="navigateToInventories()">Napravi novi</button>
+
+  <!-- Dropdown for Aktivni (Active) Items -->
+  <div class="dropdown">
+    <button id="active-button" class="dropbtn" (click)="toggleDropdown('active')">Aktivni</button>
+    <div *ngIf="isActiveOpen" class="dropdown-content">
+      <app-dropdown-item *ngFor="let item of activeItems" [item]="item"></app-dropdown-item>
+    </div>
+  </div>
+
+  <!-- Dropdown for Neaktivni (Inactive) Items -->
+  <div class="dropdown">
+    <button id="inactive-button" class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>
+    <div *ngIf="isInactiveOpen" class="dropdown-content">
+      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item"></app-dropdown-item>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<!-- Dropdown for Aktivni (Active) Items -->
+<div class="dropdown">
+  <button class="dropbtn" (click)="isActiveOpen = !isActiveOpen">Aktivni</button>
+  <div *ngIf="isActiveOpen" class="dropdown-content">
+    <app-dropdown-item *ngFor="let item of activeItems" [item]="item"></app-dropdown-item>
+  </div>
+</div>
+
+<!-- Dropdown for Neaktivni (Inactive) Items -->
+<div class="dropdown">
+  <button class="dropbtn" (click)="isInactiveOpen = !isInactiveOpen">Neaktivni</button>
+  <div *ngIf="isInactiveOpen" class="dropdown-content">
+    <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item"></app-dropdown-item>
+  </div>
+</div>
