@@ -18,7 +18,6 @@ public class loginServiceImpl {
     }
 
     public loginResponseDto validateUser(loginRequestDto request) throws AuthenticationException {
-
         try {
             User user = loginJdbcDao.findByUsername(request.name());
             if (user.getPassword().equals(request.password())) {
