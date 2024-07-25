@@ -41,8 +41,14 @@ export class ControllerComponent implements OnInit {
   }
 
   navigateToInventories(): void {
-    //this.router.navigate(['/controller/inventories']);
+    this.router.navigate(['/controller/inventories'])
   }
+
+  navigateToItem(item: any): void {
+    console.log("Navigating to item:", item);
+    this.router.navigate(['/controller/inventories']);
+  }
+
 
   toggleDropdown(dropdownType: string): void {
     console.log("Toggling dropdown: " + dropdownType);

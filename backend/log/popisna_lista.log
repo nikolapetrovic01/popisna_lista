@@ -1,203 +1,92 @@
-2024-07-19 14:15:29.843 r= ip=  INFO 20932 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 20932 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 14:15:29.848 r= ip=  INFO 20932 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 14:15:30.690 r= ip=  INFO 20932 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-07-19 14:15:30.712 r= ip=  INFO 20932 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 JPA repository interfaces.
-2024-07-19 14:15:31.429 r= ip=  INFO 20932 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 14:15:31.445 r= ip=  INFO 20932 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 14:15:31.446 r= ip=  INFO 20932 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 14:15:31.582 r= ip=  INFO 20932 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 14:15:31.583 r= ip=  INFO 20932 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1669 ms
-2024-07-19 14:15:31.654 r= ip=  WARN 20932 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
-2024-07-19 14:15:31.657 r= ip=  INFO 20932 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2024-07-19 14:15:31.676 r= ip=  INFO 20932 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2024-07-19 14:15:31.702 r= ip= ERROR 20932 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
-
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
-
-Reason: Failed to determine a suitable driver class
-
-
-Action:
-
-Consider the following:
-	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
-	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
-
-2024-07-19 14:19:03.152 r= ip=  INFO 28624 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 28624 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 14:19:03.157 r= ip=  INFO 28624 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 14:19:04.460 r= ip=  INFO 28624 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 14:19:04.472 r= ip=  INFO 28624 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 14:19:04.474 r= ip=  INFO 28624 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 14:19:04.616 r= ip=  INFO 28624 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 14:19:04.617 r= ip=  INFO 28624 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1367 ms
-2024-07-19 14:19:04.676 r= ip=  WARN 28624 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'loginJdbcDao' defined in file [C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes\com\inventarlista\persistance\impl\loginJdbcDao.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.jdbc.core.JdbcTemplate' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
-2024-07-19 14:19:04.680 r= ip=  INFO 28624 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2024-07-19 14:19:04.701 r= ip=  INFO 28624 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2024-07-19 14:19:04.727 r= ip= ERROR 28624 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
-
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-Parameter 0 of constructor in com.inventarlista.persistance.impl.loginJdbcDao required a bean of type 'org.springframework.jdbc.core.JdbcTemplate' that could not be found.
-
-
-Action:
-
-Consider defining a bean of type 'org.springframework.jdbc.core.JdbcTemplate' in your configuration.
-
-2024-07-19 15:40:25.981 r= ip=  INFO 25520 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 25520 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 15:40:25.985 r= ip=  INFO 25520 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 15:40:27.124 r= ip=  INFO 25520 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 15:40:27.137 r= ip=  INFO 25520 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 15:40:27.137 r= ip=  INFO 25520 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 15:40:27.262 r= ip=  INFO 25520 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 15:40:27.262 r= ip=  INFO 25520 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1218 ms
-2024-07-19 15:40:27.332 r= ip=  WARN 25520 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'loginJdbcDao' defined in file [C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes\com\inventarlista\persistance\impl\loginJdbcDao.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.jdbc.core.JdbcTemplate' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
-2024-07-19 15:40:27.338 r= ip=  INFO 25520 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2024-07-19 15:40:27.362 r= ip=  INFO 25520 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2024-07-19 15:40:27.391 r= ip= ERROR 25520 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
-
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-Parameter 0 of constructor in com.inventarlista.persistance.impl.loginJdbcDao required a bean of type 'org.springframework.jdbc.core.JdbcTemplate' that could not be found.
-
-
-Action:
-
-Consider defining a bean of type 'org.springframework.jdbc.core.JdbcTemplate' in your configuration.
-
-2024-07-19 15:40:51.042 r= ip=  INFO 30828 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 30828 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 15:40:51.047 r= ip=  INFO 30828 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 15:40:52.496 r= ip=  INFO 30828 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 15:40:52.515 r= ip=  INFO 30828 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 15:40:52.517 r= ip=  INFO 30828 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 15:40:52.683 r= ip=  INFO 30828 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 15:40:52.683 r= ip=  INFO 30828 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1573 ms
-2024-07-19 15:40:52.775 r= ip=  WARN 30828 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'loginJdbcDao' defined in file [C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes\com\inventarlista\persistance\impl\loginJdbcDao.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
-2024-07-19 15:40:52.780 r= ip=  INFO 30828 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2024-07-19 15:40:52.806 r= ip=  INFO 30828 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2024-07-19 15:40:52.841 r= ip= ERROR 30828 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
-
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
-
-Reason: Failed to determine a suitable driver class
-
-
-Action:
-
-Consider the following:
-	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
-	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
-
-2024-07-19 15:43:02.682 r= ip=  INFO 23148 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 23148 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 15:43:02.687 r= ip=  INFO 23148 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 15:43:04.256 r= ip=  INFO 23148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 15:43:04.269 r= ip=  INFO 23148 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 15:43:04.270 r= ip=  INFO 23148 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 15:43:04.375 r= ip=  INFO 23148 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 15:43:04.376 r= ip=  INFO 23148 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1600 ms
-2024-07-19 15:43:04.880 r= ip=  INFO 23148 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 15:43:04.893 r= ip=  INFO 23148 --- [main] com.inventarlista.Application            : Started Application in 3.084 seconds (JVM running for 3.66)
-2024-07-19 15:43:54.960 r= ip=  INFO 23148 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 15:43:54.961 r= ip=  INFO 23148 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 15:43:54.963 r= ip=  INFO 23148 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-07-19 16:16:45.697 r= ip=  INFO 16424 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 16424 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:16:45.703 r= ip=  INFO 16424 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:16:47.410 r= ip=  INFO 16424 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:16:47.429 r= ip=  INFO 16424 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:16:47.431 r= ip=  INFO 16424 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:16:47.584 r= ip=  INFO 16424 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:16:47.585 r= ip=  INFO 16424 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1794 ms
-2024-07-19 16:16:48.164 r= ip=  INFO 16424 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:16:48.177 r= ip=  INFO 16424 --- [main] com.inventarlista.Application            : Started Application in 3.426 seconds (JVM running for 4.022)
-2024-07-19 16:17:05.643 r= ip=  INFO 16424 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:17:05.643 r= ip=  INFO 16424 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:17:05.644 r= ip=  INFO 16424 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2024-07-19 16:17:05.701 r= ip=  WARN 16424 --- [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
-2024-07-19 16:18:09.063 r= ip=  INFO 27680 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 27680 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:18:09.068 r= ip=  INFO 27680 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:18:10.770 r= ip=  INFO 27680 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:18:10.789 r= ip=  INFO 27680 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:18:10.790 r= ip=  INFO 27680 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:18:10.943 r= ip=  INFO 27680 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:18:10.944 r= ip=  INFO 27680 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1797 ms
-2024-07-19 16:18:11.649 r= ip=  INFO 27680 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:18:11.663 r= ip=  INFO 27680 --- [main] com.inventarlista.Application            : Started Application in 3.437 seconds (JVM running for 3.892)
-2024-07-19 16:18:22.923 r= ip=  INFO 27680 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:18:22.924 r= ip=  INFO 27680 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:18:22.926 r= ip=  INFO 27680 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-07-19 16:21:06.866 r= ip=  INFO 344 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 344 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:21:06.870 r= ip=  INFO 344 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:21:08.554 r= ip=  INFO 344 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:21:08.573 r= ip=  INFO 344 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:21:08.574 r= ip=  INFO 344 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:21:08.734 r= ip=  INFO 344 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:21:08.735 r= ip=  INFO 344 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1784 ms
-2024-07-19 16:21:09.430 r= ip=  INFO 344 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:21:09.445 r= ip=  INFO 344 --- [main] com.inventarlista.Application            : Started Application in 3.436 seconds (JVM running for 3.946)
-2024-07-19 16:21:36.372 r= ip=  INFO 344 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:21:36.374 r= ip=  INFO 344 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:21:36.375 r= ip=  INFO 344 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-07-19 16:23:34.258 r= ip=  INFO 14444 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 14444 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:23:34.261 r= ip=  INFO 14444 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:23:35.480 r= ip=  INFO 14444 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:23:35.492 r= ip=  INFO 14444 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:23:35.493 r= ip=  INFO 14444 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:23:35.644 r= ip=  INFO 14444 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:23:35.645 r= ip=  INFO 14444 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1320 ms
-2024-07-19 16:23:36.181 r= ip=  INFO 14444 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:23:36.193 r= ip=  INFO 14444 --- [main] com.inventarlista.Application            : Started Application in 2.651 seconds (JVM running for 3.111)
-2024-07-19 16:23:47.332 r= ip=  INFO 14444 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:23:47.333 r= ip=  INFO 14444 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:23:47.334 r= ip=  INFO 14444 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-07-19 16:24:53.930 r= ip=  INFO 30228 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 30228 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:24:53.935 r= ip=  INFO 30228 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:24:55.633 r= ip=  INFO 30228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:24:55.653 r= ip=  INFO 30228 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:24:55.654 r= ip=  INFO 30228 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:24:55.813 r= ip=  INFO 30228 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:24:55.814 r= ip=  INFO 30228 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1790 ms
-2024-07-19 16:24:56.509 r= ip=  INFO 30228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:24:56.524 r= ip=  INFO 30228 --- [main] com.inventarlista.Application            : Started Application in 3.279 seconds (JVM running for 3.686)
-2024-07-19 16:25:15.437 r= ip=  INFO 30228 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:25:15.438 r= ip=  INFO 30228 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:25:15.439 r= ip=  INFO 30228 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-07-19 16:26:14.239 r= ip=  INFO 15068 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 15068 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
-2024-07-19 16:26:14.242 r= ip=  INFO 15068 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
-2024-07-19 16:26:15.464 r= ip=  INFO 15068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2024-07-19 16:26:15.477 r= ip=  INFO 15068 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-07-19 16:26:15.478 r= ip=  INFO 15068 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
-2024-07-19 16:26:15.591 r= ip=  INFO 15068 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-07-19 16:26:15.592 r= ip=  INFO 15068 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1291 ms
-2024-07-19 16:26:16.097 r= ip=  INFO 15068 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2024-07-19 16:26:16.109 r= ip=  INFO 15068 --- [main] com.inventarlista.Application            : Started Application in 2.519 seconds (JVM running for 2.93)
-2024-07-19 16:26:30.661 r= ip=  INFO 15068 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-07-19 16:26:30.662 r= ip=  INFO 15068 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-07-19 16:26:30.664 r= ip=  INFO 15068 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-07-25 11:50:40.682 r= ip=  INFO 35084 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 35084 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 11:50:40.694 r= ip=  INFO 35084 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 11:50:42.125 r= ip=  INFO 35084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 11:50:42.140 r= ip=  INFO 35084 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 11:50:42.141 r= ip=  INFO 35084 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 11:50:42.254 r= ip=  INFO 35084 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 11:50:42.254 r= ip=  INFO 35084 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1494 ms
+2024-07-25 11:50:42.836 r= ip=  INFO 35084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 11:50:42.848 r= ip=  INFO 35084 --- [main] com.inventarlista.Application            : Started Application in 2.937 seconds (JVM running for 3.45)
+2024-07-25 11:52:40.677 r= ip=  INFO 35084 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 11:52:40.678 r= ip=  INFO 35084 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 11:52:40.680 r= ip=  INFO 35084 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-07-25 11:52:40.856 r= ip=  INFO 35084 --- [http-nio-8080-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-07-25 11:52:41.066 r= ip=  INFO 35084 --- [http-nio-8080-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-07-25 11:59:38.159 r= ip=  INFO 35084 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-07-25 11:59:38.172 r= ip=  INFO 35084 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-07-25 11:59:51.724 r= ip=  INFO 35420 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 35420 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 11:59:51.730 r= ip=  INFO 35420 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 11:59:53.691 r= ip=  INFO 35420 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 11:59:53.715 r= ip=  INFO 35420 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 11:59:53.716 r= ip=  INFO 35420 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 11:59:53.871 r= ip=  INFO 35420 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 11:59:53.872 r= ip=  INFO 35420 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2052 ms
+2024-07-25 11:59:54.675 r= ip=  INFO 35420 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 11:59:54.691 r= ip=  INFO 35420 --- [main] com.inventarlista.Application            : Started Application in 4.186 seconds (JVM running for 4.979)
+2024-07-25 12:02:47.856 r= ip=  INFO 35420 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 12:02:47.856 r= ip=  INFO 35420 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 12:02:47.858 r= ip=  INFO 35420 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-07-25 12:03:54.202 r= ip=  INFO 34008 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 34008 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 12:03:54.207 r= ip=  INFO 34008 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 12:03:55.920 r= ip=  INFO 34008 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 12:03:55.940 r= ip=  INFO 34008 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 12:03:55.941 r= ip=  INFO 34008 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 12:03:56.092 r= ip=  INFO 34008 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 12:03:56.093 r= ip=  INFO 34008 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1804 ms
+2024-07-25 12:03:56.818 r= ip=  INFO 34008 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 12:03:56.832 r= ip=  INFO 34008 --- [main] com.inventarlista.Application            : Started Application in 3.494 seconds (JVM running for 4.076)
+2024-07-25 12:04:31.572 r= ip=  INFO 34008 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 12:04:31.573 r= ip=  INFO 34008 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 12:04:31.575 r= ip=  INFO 34008 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-07-25 12:04:31.672 r= ip=  INFO 34008 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-07-25 12:04:31.928 r= ip=  INFO 34008 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-07-25 12:39:49.372 r= ip=  WARN 34008 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m16s918ms401µs100ns).
+2024-07-25 12:55:27.136 r= ip=  INFO 34008 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-07-25 12:55:27.142 r= ip=  INFO 34008 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-07-25 12:55:40.415 r= ip=  INFO 21892 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 21892 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 12:55:40.422 r= ip=  INFO 21892 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 12:55:42.277 r= ip=  INFO 21892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 12:55:42.299 r= ip=  INFO 21892 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 12:55:42.301 r= ip=  INFO 21892 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 12:55:42.454 r= ip=  INFO 21892 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 12:55:42.455 r= ip=  INFO 21892 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1908 ms
+2024-07-25 12:55:43.196 r= ip=  INFO 21892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 12:55:43.212 r= ip=  INFO 21892 --- [main] com.inventarlista.Application            : Started Application in 4.086 seconds (JVM running for 4.804)
+2024-07-25 12:55:51.010 r= ip=  INFO 21892 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 12:55:51.011 r= ip=  INFO 21892 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 12:55:51.014 r= ip=  INFO 21892 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-07-25 12:55:51.110 r= ip=  INFO 21892 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-07-25 12:55:51.377 r= ip=  INFO 21892 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-07-25 14:18:16.770 r= ip=  WARN 21892 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=23m24s332ms182µs300ns).
+2024-07-25 15:06:27.012 r= ip=  INFO 21892 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-07-25 15:06:27.022 r= ip=  INFO 21892 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-07-25 15:06:38.085 r= ip=  INFO 28980 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 28980 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 15:06:38.092 r= ip=  INFO 28980 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 15:06:40.053 r= ip=  INFO 28980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 15:06:40.074 r= ip=  INFO 28980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 15:06:40.075 r= ip=  INFO 28980 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 15:06:40.242 r= ip=  INFO 28980 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 15:06:40.243 r= ip=  INFO 28980 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2038 ms
+2024-07-25 15:06:41.082 r= ip=  INFO 28980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 15:06:41.097 r= ip=  INFO 28980 --- [main] com.inventarlista.Application            : Started Application in 4.085 seconds (JVM running for 4.744)
+2024-07-25 15:06:45.971 r= ip=  INFO 28980 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 15:06:45.972 r= ip=  INFO 28980 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 15:06:45.973 r= ip=  INFO 28980 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-07-25 15:06:46.094 r= ip=  INFO 28980 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-07-25 15:06:46.404 r= ip=  INFO 28980 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-07-25 15:08:06.438 r= ip=  INFO 28980 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-07-25 15:08:06.448 r= ip=  INFO 28980 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-07-25 15:08:15.364 r= ip=  INFO 31760 --- [main] com.inventarlista.Application            : Starting Application using Java 22.0.1 on DESKTOP-NIKOLA with PID 31760 (C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\target\classes started by Korisnik in C:\Users\Korisnik\IdeaProjects\popisna_lista\backend)
+2024-07-25 15:08:15.370 r= ip=  INFO 31760 --- [main] com.inventarlista.Application            : No active profile set, falling back to 1 default profile: "default"
+2024-07-25 15:08:17.473 r= ip=  INFO 31760 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-07-25 15:08:17.494 r= ip=  INFO 31760 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-07-25 15:08:17.496 r= ip=  INFO 31760 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2024-07-25 15:08:17.676 r= ip=  INFO 31760 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-07-25 15:08:17.676 r= ip=  INFO 31760 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2213 ms
+2024-07-25 15:08:18.505 r= ip=  INFO 31760 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-07-25 15:08:18.520 r= ip=  INFO 31760 --- [main] com.inventarlista.Application            : Started Application in 3.983 seconds (JVM running for 4.472)
+2024-07-25 15:08:29.554 r= ip=  INFO 31760 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-07-25 15:08:29.555 r= ip=  INFO 31760 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-07-25 15:08:29.556 r= ip=  INFO 31760 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-07-25 15:08:29.640 r= ip=  INFO 31760 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-07-25 15:08:29.894 r= ip=  INFO 31760 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.

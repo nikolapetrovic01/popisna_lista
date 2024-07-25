@@ -41,6 +41,7 @@ button:hover {
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   border: 1px solid #ddd;
   z-index: 1000;
+  cursor: pointer;
 }
 
 .dropdown{
