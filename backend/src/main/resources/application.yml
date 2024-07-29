@@ -21,7 +21,7 @@ spring:
         naming:
           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   datasource:
-    url: jdbc:mysql://localhost:3306/my_project_inventar_lista_test?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/my_project_inventar_lista_test?allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: myuser
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver

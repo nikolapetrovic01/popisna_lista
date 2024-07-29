@@ -16,4 +16,6 @@ export class InventoryService{
   getInventory(): Observable<inventories> {
     return this.http.get<inventories>(this.baseUrl);
   }
+
+  
 }

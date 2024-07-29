@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
-import {DropdownItemComponent} from "./inventories/dropdown-item/dropdown-item.component";
+import {DropdownItemComponent} from "./dropdown-item/dropdown-item.component";
 import {inventories, inventoriesPiece} from "../../dto/inventories";
 import {InventoryService} from "../../service/inventory.service";
 import {CommonModule} from "@angular/common";

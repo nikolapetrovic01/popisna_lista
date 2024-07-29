@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DropdownItemComponent} from "./dropdown-item/dropdown-item.component";
+import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
 import {inventories, inventoriesPiece} from "../../../dto/inventories";
 import {InventoryService} from "../../../service/inventory.service";
 
