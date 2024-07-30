@@ -9,7 +9,9 @@
       *ngIf ="isEditable"
       type="number"
       [(ngModel)]="item.itemInputtedAmount"
-      (keydown.enter)="onInputtedAmountChange(item)" />
+      (keydown.enter)="onInputtedAmountChange(item)"
+      (keypress)="validateNumber($event)"
+    />
     <span *ngIf="!isEditable">{{ item.itemInputtedAmount }}</span>
   </p>
 </div>

@@ -31,4 +31,11 @@ export class ListInventoryItemComponent {
     //   }
     // );
   }
+
+  validateNumber(event: KeyboardEvent): void {
+    const charCode = event.charCode;
+    if (charCode !== 46 && charCode !== 45 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
+  }
 }
