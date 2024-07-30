@@ -18,10 +18,4 @@ export class DropdownItemComponent {
 
   constructor(private router: Router) {
   }
-
-  onItemClick() {
-    // Handle the item click event
-    console.log('Item clicked:', this.item);
-    this.router.navigate(['/controller/inventories']);
-  }
 }
