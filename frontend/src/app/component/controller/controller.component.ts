@@ -40,13 +40,19 @@ export class ControllerComponent implements OnInit {
       });
   }
 
-  navigateToInventories(): void {
-    this.router.navigate(['/controller/inventories'])
+  navigateToCreateNewInventory(): void {
+    this.router.navigate(['/controller/create'])
   }
 
-  navigateToItem(item: any): void {
-    console.log("Navigating to item:", item);
-    this.router.navigate(['/controller/inventories']);
+  navigateToInventoryClicked(inventoryClicked: any): void {
+    console.log("Navigating to item:", inventoryClicked);
+    // this.router.navigate(['/controller/items:' + `${item.id}`]);
+    let flag = true
+    if (inventoryClicked.status === 0){
+      flag = false;
+    }
+    this.router.navigate(['/controller/inventory', inventoryClicked.id],
+      { queryParams: { fromActive: flag }});
   }
 
 

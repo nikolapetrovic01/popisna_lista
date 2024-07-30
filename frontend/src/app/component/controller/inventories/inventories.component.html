@@ -1,0 +1,14 @@
+<div class="inventories">
+  <h2>Inventory List</h2>
+  <input
+    type="text"
+    placeholder="Search by name"
+    [(ngModel)]="searchTerm"
+    class="search-bar"
+  />
+  <app-inventory-item
+    *ngFor="let item of filteredItems()"
+    [item]="item"
+    [isEditable] = "isEditable"
+  ></app-inventory-item>
+</div>

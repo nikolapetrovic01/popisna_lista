@@ -1,7 +1,15 @@
 <div class="inventory-item">
-  <p><strong>Ime:</strong> {{ item.itemName }}</p>
-  <p><strong>Mjera:</strong> {{ item.itemMeasurement }}</p>
-  <p><strong>Na stanju:</strong> {{ item.itemPresentAmount }}</p>
-  <p><strong>Barkod:</strong> {{ item.itemBarcode }}</p>
-  <p><strong>Unesena kolicinia:</strong> {{ item.itemInputtedAmount }}</p>
+  <p><strong>Ime: </strong> {{ item.itemName }}</p>
+  <p><strong>Mjera: </strong> {{ item.itemMeasurement }}</p>
+  <p><strong>Na stanju: </strong> {{ item.itemPresentAmount }}</p>
+  <p><strong>Barkod: </strong> {{ item.itemBarcode }}</p>
+  <p>
+    <strong>Unesena kolicinia: </strong>
+    <input
+      *ngIf ="isEditable"
+      type="number"
+      [(ngModel)]="item.itemInputtedAmount"
+      (keydown.enter)="onInputtedAmountChange(item)" />
+    <span *ngIf="!isEditable">{{ item.itemInputtedAmount }}</span>
+  </p>
 </div>

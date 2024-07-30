@@ -9,7 +9,7 @@ export const routes: Routes = [
   {
     path: 'controller', children: [
       {path: '', component: ControllerComponent},
-      {path: 'inventories', component: InventoriesComponent}
+      {path: 'inventory/:id', component: InventoriesComponent},
     ]
   }
 ];

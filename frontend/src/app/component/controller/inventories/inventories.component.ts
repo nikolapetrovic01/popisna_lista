@@ -2,36 +2,57 @@ import {Component, OnInit} from '@angular/core';
 import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
 import {inventories, inventoriesPiece} from "../../../dto/inventories";
 import {InventoryService} from "../../../service/inventory.service";
+import {item, items} from "../../../dto/item";
+import {ListInventoryItemComponent} from "./list-inventory-item/list-inventory-item.component";
+import {ActivatedRoute} from "@angular/router";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-inventories',
   standalone: true,
   imports: [
-    DropdownItemComponent
+    DropdownItemComponent,
+    ListInventoryItemComponent,
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './inventories.component.html',
   styleUrl: './inventories.component.css'
 })
-export class InventoriesComponent {
-  isActiveOpen: boolean = false;
-  isInactiveOpen: boolean = false;
-  activeItems: inventoriesPiece[] = [];
-  inactiveItems: inventoriesPiece[] = [];
+export class InventoriesComponent implements OnInit{
+  items: item[] = [];
+  itemId: number | null = null;
+  isEditable: boolean = false;
+  searchTerm: string = '';
 
   constructor(
+    private route: ActivatedRoute,
     private inventoryService: InventoryService
   ) {
   }
 
-  // ngOnInit() {
-  //   this.inventoryService.getInventory().subscribe(
-  //     {
-  //       next: (data: inventories) => {
-  //         this.activeItems = data.tables.filter(item => item.status === 1);
-  //         this.inactiveItems = data.tables.filter(item => item.status === 0);
-  //         //Status 2 needs to be handled
-  //       },
-  //       error: (error) => console.error(error)
-  //     });
-  // }
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    const fromActive = this.route.snapshot.queryParamMap.get('fromActive');
+
+    if (id !== null) {
+      this.itemId = +id;
+      this.isEditable = fromActive === 'true';
+      this.inventoryService.getItems(this.itemId).subscribe(
+        (data: items) => {
+          this.items = data.items;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+  }
+
+  filteredItems(): item[] {
+    return this.items.filter((item) =>
+      item.itemName.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
 }

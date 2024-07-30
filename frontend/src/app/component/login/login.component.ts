@@ -60,12 +60,11 @@
           },
           error: (error) => {
             console.error('Login failed', error);
-            //let message = error.error.message || error.error;
-            this.snackBar.open('Login Failed', 'Close', {
+            this.snackBar.open(`Login Failed: ${error}`, 'Close', {
               duration: 3000,
               verticalPosition: "top",
               horizontalPosition: "right"
-            })
+            });
           }
         });
       }

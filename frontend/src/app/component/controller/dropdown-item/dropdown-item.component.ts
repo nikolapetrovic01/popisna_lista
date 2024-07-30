@@ -15,7 +15,4 @@ import {Router, RouterOutlet} from "@angular/router";
 })
 export class DropdownItemComponent {
   @Input() item!: inventoriesPiece;
-
-  constructor(private router: Router) {
-  }
 }

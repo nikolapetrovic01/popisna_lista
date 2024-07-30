@@ -3,13 +3,13 @@
   <h1>Dio Vladimir</h1>
 
   <!-- Button to navigate to the Inventories component -->
-  <button id="new-button" (click)="navigateToInventories()">Napravi novi</button>
+  <button id="new-button" (click)="navigateToCreateNewInventory()">Napravi novi</button>
 
   <!-- Dropdown for Aktivni (Active) Items -->
   <div class="dropdown">
     <button id="active-button" class="dropbtn" (click)="toggleDropdown('active')">Aktivni</button>
     <div *ngIf="isActiveOpen" class="dropdown-content">
-      <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToItem(item)"></app-dropdown-item>
+      <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
   <div class="dropdown">
     <button id="inactive-button" class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>
     <div *ngIf="isInactiveOpen" class="dropdown-content">
-      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToItem(item)"></app-dropdown-item>
+      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
     </div>
   </div>
 </div>
