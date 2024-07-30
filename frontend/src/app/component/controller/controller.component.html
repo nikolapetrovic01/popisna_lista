@@ -3,12 +3,12 @@
   <h1>Dio Vladimir</h1>
 
   <!-- Button to navigate to the Inventories component -->
-  <button id="new-button" (click)="navigateToCreateNewInventory()">Napravi novi</button>
+  <button id="new-button" class="small-button" (click)="navigateToCreateNewInventory()">Napravi novi</button>
 
-  <!-- Dropdown for Aktivni (Active) Items -->
-  <div class="dropdown">
-    <button id="active-button" class="dropbtn" (click)="toggleDropdown('active')">Aktivni</button>
-    <div *ngIf="isActiveOpen" class="dropdown-content">
+  <!-- Always visible list for Aktivni Items -->
+  <div class="active-list">
+    <h3>Aktivni</h3>
+    <div class="active-items">
       <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
     </div>
   </div>

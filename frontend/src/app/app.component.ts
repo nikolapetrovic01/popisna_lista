@@ -10,5 +10,5 @@ import {LoginComponent} from "./component/login/login.component";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'Inventar';
 }

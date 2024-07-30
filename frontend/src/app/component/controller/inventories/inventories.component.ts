@@ -55,4 +55,9 @@ export class InventoriesComponent implements OnInit{
       item.itemName.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
+
+  onButtonClick(): void {
+    console.log('Button clicked');
+    //TODO:Closes the inventory
+  }
 }

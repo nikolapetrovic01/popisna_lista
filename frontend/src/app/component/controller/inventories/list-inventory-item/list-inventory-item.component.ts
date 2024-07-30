@@ -22,6 +22,8 @@ export class ListInventoryItemComponent {
 
   onInputtedAmountChange(item: item): void {
     console.log('New inputted amount:', item.itemInputtedAmount);
+    //TODO:SENDS REQUEST TO BACKEND TO CHANGE THE FIELD
+
     // this.inventoryService.updateItemAmount(item.itemId, item.itemInputtedAmount).subscribe(
     //   response => {
     //     console.log('Update successful', response);
