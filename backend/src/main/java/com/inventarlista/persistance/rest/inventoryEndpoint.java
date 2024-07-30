@@ -1,10 +1,10 @@
 package com.inventarlista.persistance.rest;
 
 import com.inventarlista.dto.inventoriesDto;
-import com.inventarlista.dto.inventoriesPiece;
+import com.inventarlista.dto.inventoryItemsDto;
 import com.inventarlista.service.inventoryServiceImpl;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,10 +18,19 @@ public class inventoryEndpoint {
     @GetMapping("/controller")
     public inventoriesDto getInventories() throws Exception {
         try {
-            System.out.println("Reached Endpoint!");
             return inventoryService.getAllInventories();
         }catch (Exception e){
             throw new Exception(e);
         }
+    }
+
+    @GetMapping("/controller/inventory/{id}")
+    public inventoryItemsDto getItems(@PathVariable int id) throws Exception{
+        try {
+            return inventoryService.getItems(id);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+
     }
 }

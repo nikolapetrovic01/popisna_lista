@@ -14,23 +14,28 @@ import javax.naming.AuthenticationException;
 public class loginEndpoint {
     private final loginServiceImpl loginService;
 
-    public loginEndpoint(loginServiceImpl loginService){
+    public loginEndpoint(loginServiceImpl loginService) {
         this.loginService = loginService;
     }
 
+    //    @PostMapping("/login")
+//    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest){
+//        try {
+//            loginResponseDto response = loginService.validateUser(loginRequest);
+//            return ResponseEntity.ok(response);
+//        } catch (AuthenticationException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//    }
+//
+//    @ExceptionHandler(UserNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public String handleUserNotFoundException(UserNotFoundException e) {
+//        return e.getMessage();
+//    }
     @PostMapping("/login")
-    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest){
-        try {
-            loginResponseDto response = loginService.validateUser(loginRequest);
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFoundException(UserNotFoundException e) {
-        return e.getMessage();
+    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest) throws AuthenticationException {
+        loginResponseDto response = loginService.validateUser(loginRequest);
+        return ResponseEntity.ok(response);
     }
 }

@@ -4,8 +4,11 @@ C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarl
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\entity\Inventory.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\persistance\impl\loginJdbcDao.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\service\inventoryServiceImpl.java
-C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoriesPiece.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoryItemsDto.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoryItemDto.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\Application.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\entity\Item.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoriesPieceDto.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\loginRequestDto.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\persistance\impl\inventoryJdbcDao.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\security\WebConfig.java

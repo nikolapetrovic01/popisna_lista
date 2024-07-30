@@ -1,8 +1,11 @@
 package com.inventarlista.service;
 
 import com.inventarlista.dto.inventoriesDto;
-import com.inventarlista.dto.inventoriesPiece;
+import com.inventarlista.dto.inventoriesPieceDto;
+import com.inventarlista.dto.inventoryItemDto;
+import com.inventarlista.dto.inventoryItemsDto;
 import com.inventarlista.entity.Inventory;
+import com.inventarlista.entity.Item;
 import com.inventarlista.persistance.impl.inventoryJdbcDao;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +21,40 @@ public class inventoryServiceImpl {
     }
 
     public inventoriesDto getAllInventories(){
-        System.out.println("Reached ServiceImpl!");
         List<Inventory> inventories = (List<Inventory>) inventoryJdbcDao.getInventory();
-        System.out.println("SQL Response in ServiceImpl" + inventories.stream().map(Object::toString)
-                .collect(Collectors.joining(", ")));
-        List<inventoriesPiece> inventoriesPieces = inventories.stream()
+        List<inventoriesPieceDto> inventoriesPieceDtos = inventories.stream()
                 .map(this:: mapToInventoryPiece)
                 .toList();
-        return new inventoriesDto(inventoriesPieces);
+        return new inventoriesDto(inventoriesPieceDtos);
     }
 
-    private inventoriesPiece mapToInventoryPiece(Inventory inventory){
-        return new inventoriesPiece(
+    private inventoriesPieceDto mapToInventoryPiece(Inventory inventory){
+        return new inventoriesPieceDto(
                 inventory.getId(),
                 inventory.getStartDate(),
                 inventory.getEndDate(),
                 inventory.getStatus()
+        );
+    }
+
+    public inventoryItemsDto getItems(int id){
+        List<Item> itemsList = (List<Item>) inventoryJdbcDao.getItems(id);
+        List<inventoryItemDto> inventoryItemsDtos = itemsList.stream()
+                .map(this:: mapToInventoryItem).toList();
+        return new inventoryItemsDto(inventoryItemsDtos);
+    }
+
+    private inventoryItemDto mapToInventoryItem(Item item){
+        return new inventoryItemDto(
+                item.getId(),
+                item.getName(),
+                item.getMeasurement(),
+                item.getPresentAmount(),
+                item.getBarcode(),
+                item.getInputtedAmount(),
+                item.getUserThatPutTheAmountIn(),
+                item.getInventoryId()
+
         );
     }
 }

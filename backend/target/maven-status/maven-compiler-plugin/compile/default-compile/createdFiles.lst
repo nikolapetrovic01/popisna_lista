@@ -1,11 +1,16 @@
 com\inventarlista\persistance\rest\loginEndpoint.class
-com\inventarlista\dto\inventoriesPiece.class
+com\inventarlista\exceptions\GlobalExceptionHandler.class
+com\inventarlista\dto\inventoriesPieceDto.class
 com\inventarlista\service\loginServiceImpl.class
+com\inventarlista\exceptions\ErrorResponse.class
 com\inventarlista\dto\inventoriesDto.class
+com\inventarlista\dto\inventoryItemsDto.class
 com\inventarlista\entity\User.class
 com\inventarlista\service\inventoryServiceImpl.class
 com\inventarlista\exceptions\UserNotFoundException.class
+com\inventarlista\dto\inventoryItemDto.class
 com\inventarlista\persistance\rest\inventoryEndpoint.class
+com\inventarlista\entity\Item.class
 com\inventarlista\dto\loginRequestDto.class
 com\inventarlista\persistance\impl\loginJdbcDao.class
 com\inventarlista\security\WebConfig.class
