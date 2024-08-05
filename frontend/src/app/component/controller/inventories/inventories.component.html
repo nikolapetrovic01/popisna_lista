@@ -1,6 +1,6 @@
 <div class="header">
   <h2>Inventory List</h2>
-  <button *ngIf="isEditable" class="my-button" (click)="onButtonClick()">ZATVORI</button>
+  <button *ngIf="isEditable" class="my-button" (click)="closeOpenedInventory()">ZATVORI</button>
   <input
     type="text"
     placeholder="Search by name"
@@ -13,5 +13,5 @@
     *ngFor="let item of filteredItems()"
     [item]="item"
     [isEditable]="isEditable"
-  ></app-inventory-item>
+    [parentItemId]="itemId !== null ? itemId : 0"  ></app-inventory-item>
 </div>

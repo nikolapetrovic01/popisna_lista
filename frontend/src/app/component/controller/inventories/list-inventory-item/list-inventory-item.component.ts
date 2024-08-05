@@ -3,6 +3,7 @@ import {item} from "../../../../dto/item";
 import {FormsModule} from "@angular/forms";
 import {InventoryService} from "../../../../service/inventory.service";
 import {NgIf} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-inventory-item',
@@ -16,12 +17,19 @@ import {NgIf} from "@angular/common";
 })
 export class ListInventoryItemComponent {
   @Input() item!: item;
+  // @Input() parentItemId!: number;
+  @Input() parentItemId: number | null = null;
   @Input() isEditable: boolean = false;
 
-  constructor(private inventoryService: InventoryService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private inventoryService: InventoryService
+  ) {}
 
-  onInputtedAmountChange(item: item): void {
-    console.log('New inputted amount:', item.itemInputtedAmount);
+  onInputtedAmountChange(itemSelected: item): void {
+    console.log('New inputted amount:', itemSelected.itemInputtedAmount);
+    console.log(itemSelected.itemId);
+    console.log("The real id: ",this.parentItemId);
     //TODO:SENDS REQUEST TO BACKEND TO CHANGE THE FIELD
 
     // this.inventoryService.updateItemAmount(item.itemId, item.itemInputtedAmount).subscribe(

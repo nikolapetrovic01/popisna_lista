@@ -56,8 +56,8 @@ export class InventoriesComponent implements OnInit{
     );
   }
 
-  onButtonClick(): void {
-    console.log('Button clicked');
+  closeOpenedInventory(): void {
+    console.log('Close Inventory');
     //TODO:Closes the inventory
   }
 }

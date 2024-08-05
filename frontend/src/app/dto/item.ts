@@ -11,3 +11,9 @@ export interface item{
 export interface items{
   items: item[];
 }
+
+export interface updateItemAmount{
+  itemId: number;
+  inventoryId: number;
+  amount: number;
+}
