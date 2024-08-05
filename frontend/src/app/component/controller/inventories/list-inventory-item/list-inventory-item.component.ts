@@ -27,19 +27,15 @@ export class ListInventoryItemComponent {
   ) {}
 
   onInputtedAmountChange(itemSelected: item): void {
-    console.log('New inputted amount:', itemSelected.itemInputtedAmount);
-    console.log(itemSelected.itemId);
-    console.log("The real id: ",this.parentItemId);
-    //TODO:SENDS REQUEST TO BACKEND TO CHANGE THE FIELD
-
-    // this.inventoryService.updateItemAmount(item.itemId, item.itemInputtedAmount).subscribe(
-    //   response => {
-    //     console.log('Update successful', response);
-    //   },
-    //   error => {
-    //     console.error('Error updating amount', error);
-    //   }
-    // );
+    const inventoryId = this.parentItemId ?? 0;
+    this.inventoryService.updateItemAmount(itemSelected.itemId, itemSelected.itemInputtedAmount, inventoryId).subscribe(
+      response => {
+        console.log('Update successful', response);
+      },
+      error => {
+        console.error('Error updating amount', error);
+      }
+    );
   }
 
   validateNumber(event: KeyboardEvent): void {
