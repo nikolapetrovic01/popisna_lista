@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {item} from "../../../../dto/item";
+import {item, updateItemAmount} from "../../../../dto/item";
 import {FormsModule} from "@angular/forms";
 import {InventoryService} from "../../../../service/inventory.service";
 import {NgIf} from "@angular/common";
@@ -17,8 +17,6 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ListInventoryItemComponent {
   @Input() item!: item;
-  // @Input() parentItemId!: number;
-  @Input() parentItemId: number | null = null;
   @Input() isEditable: boolean = false;
 
   constructor(
@@ -27,8 +25,18 @@ export class ListInventoryItemComponent {
   ) {}
 
   onInputtedAmountChange(itemSelected: item): void {
-    const inventoryId = this.parentItemId ?? 0;
-    this.inventoryService.updateItemAmount(itemSelected.itemId, itemSelected.itemInputtedAmount, inventoryId).subscribe(
+    const body : updateItemAmount = {
+      itemId: itemSelected.itemId,
+      itemName: itemSelected.itemName,
+      itemMeasurement: itemSelected.itemMeasurement,
+      itemPresentAmount: itemSelected.itemPresentAmount,
+      itemBarcode: itemSelected.itemBarcode,
+      itemInputtedAmount: itemSelected.itemInputtedAmount,
+      itemUserThatPutTheAmountIn: itemSelected.itemInputtedAmount,
+      itemInventoryId: itemSelected.itemInventoryId
+    }
+
+    this.inventoryService.updateItemAmount(body).subscribe(
       response => {
         console.log('Update successful', response);
       },

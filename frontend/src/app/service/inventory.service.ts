@@ -22,14 +22,8 @@ export class InventoryService{
     return this.http.get<items>(`${this.baseUrl}/inventory/${id}`);
   }
 
-  updateItemAmount(id: number, amount: number, inventoryId: number): Observable<item>{
-    const body : updateItemAmount = {
-      itemId: id,
-      inventoryId: inventoryId,
-      amount: amount
-    };
-
-    return this.http.put<item>(`${this.baseUrl}/inventory/${id}`, body);
+  updateItemAmount(itemToUpdate: updateItemAmount): Observable<item>{
+    return this.http.put<item>(`${this.baseUrl}/inventory/${itemToUpdate.itemId}`, itemToUpdate);
   }
 
   // closeInventory(id: number): Observable<item>{

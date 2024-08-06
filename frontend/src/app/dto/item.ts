@@ -14,6 +14,11 @@ export interface items{
 
 export interface updateItemAmount{
   itemId: number;
-  inventoryId: number;
-  amount: number;
+  itemName: string;
+  itemMeasurement: string;
+  itemPresentAmount: number;
+  itemBarcode: string;
+  itemInputtedAmount: number;
+  itemUserThatPutTheAmountIn: number;
+  itemInventoryId: number;
 }
