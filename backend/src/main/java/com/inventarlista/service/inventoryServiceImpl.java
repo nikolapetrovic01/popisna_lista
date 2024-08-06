@@ -1,9 +1,6 @@
 package com.inventarlista.service;
 
-import com.inventarlista.dto.inventoriesDto;
-import com.inventarlista.dto.inventoriesPieceDto;
-import com.inventarlista.dto.inventoryItemDto;
-import com.inventarlista.dto.inventoryItemsDto;
+import com.inventarlista.dto.*;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
 import com.inventarlista.persistance.impl.inventoryJdbcDao;
@@ -56,5 +53,9 @@ public class inventoryServiceImpl {
                 item.getInventoryId()
 
         );
+    }
+
+    public void updateItemAmount(updateItemAmount update){
+        inventoryJdbcDao.updateItemAmount(update);
     }
 }

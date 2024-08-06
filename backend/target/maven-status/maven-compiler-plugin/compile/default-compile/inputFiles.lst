@@ -1,8 +1,10 @@
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoriesDto.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\persistance\rest\loginEndpoint.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\exceptions\ErrorResponse.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\exceptions\UserNotFoundException.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\entity\Inventory.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\persistance\impl\loginJdbcDao.java
+C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\exceptions\GlobalExceptionHandler.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\service\inventoryServiceImpl.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoryItemsDto.java
 C:\Users\Korisnik\IdeaProjects\popisna_lista\backend\src\main\java\com\inventarlista\dto\inventoryItemDto.java
