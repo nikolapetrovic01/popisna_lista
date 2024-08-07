@@ -1,0 +1,43 @@
+<div class="container">
+  <h2>CSV Content</h2>
+  <form (ngSubmit)="onSubmit()">
+    <button type="submit" class="btn btn-primary">Save Selected Items</button>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Measurement</th>
+        <th>Present Amount</th>
+        <th>Barcode</th>
+        <th>Inputted Amount</th>
+        <th>User</th>
+        <th>Select</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <input
+          type = "text"
+          placeholder="Search by Name"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          class="search-bar"
+          >
+      </tr>
+      <!-- TODO: DODAJ TRAZENJE ZA BARKOD ITD-->
+      <tr *ngFor="let item of filteredItems()">
+        <td>{{ item.itemName }}</td>
+        <td>{{ item.itemMeasurement }}</td>
+        <td>{{ item.itemPresentAmount }}</td>
+        <td>{{ item.itemBarcode }}</td>
+        <td>{{ item.itemInputtedAmount }}</td>
+        <td>{{ item.itemUserThatPutTheAmountIn }}</td>
+        <td>
+          <input type="checkbox" [(ngModel)]="item.selected" name="selected-{{ item.itemId }}">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save Selected Items</button>
+  </form>
+</div>

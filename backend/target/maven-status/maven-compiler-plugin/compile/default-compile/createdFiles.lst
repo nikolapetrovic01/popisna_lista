@@ -2,6 +2,7 @@ com\inventarlista\persistance\rest\loginEndpoint.class
 com\inventarlista\exceptions\GlobalExceptionHandler.class
 com\inventarlista\dto\inventoriesPieceDto.class
 com\inventarlista\service\loginServiceImpl.class
+com\inventarlista\dto\updateItemAmount.class
 com\inventarlista\exceptions\ErrorResponse.class
 com\inventarlista\dto\inventoriesDto.class
 com\inventarlista\dto\inventoryItemsDto.class

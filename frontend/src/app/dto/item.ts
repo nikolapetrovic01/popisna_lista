@@ -22,3 +22,15 @@ export interface updateItemAmount{
   itemUserThatPutTheAmountIn: number;
   itemInventoryId: number;
 }
+
+export interface selectItem{
+  itemId: number;
+  itemName: string;
+  itemMeasurement: string;
+  itemPresentAmount: number;
+  itemBarcode: string;
+  itemInputtedAmount: number;
+  itemUserThatPutTheAmountIn: number;
+  itemInventoryId: number;
+  selected?: boolean;
+}

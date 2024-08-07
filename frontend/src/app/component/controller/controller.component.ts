@@ -46,7 +46,6 @@ export class ControllerComponent implements OnInit {
 
   navigateToInventoryClicked(inventoryClicked: any): void {
     console.log("Navigating to item:", inventoryClicked);
-    // this.router.navigate(['/controller/items:' + `${item.id}`]);
     let flag = true
     if (inventoryClicked.status === 0){
       flag = false;
