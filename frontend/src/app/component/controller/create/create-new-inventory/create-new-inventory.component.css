@@ -52,6 +52,35 @@
 }
 
 .choose-file {
-  font-size: 1.2rem;
-  color: #999;
+  font-size: 1.5rem;
+  color: #000000;
+}
+
+.file-drop-area.disabled {
+  background-color: #e0e0e0;
+  border: 0.1rem solid #ff0a27;
+}
+
+.btn-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 2; /* Ensure the button is on top */
+}
+.btn-primary{
+  margin-block-start: 1rem;
+  background-color: #ff4704;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }

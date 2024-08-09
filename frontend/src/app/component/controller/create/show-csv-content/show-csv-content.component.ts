@@ -25,9 +25,15 @@ export class ShowCsvContentComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.csvContent = history.state.csvContent || 'No content to display';
-    if (this.csvContent && this.csvContent !== 'No content to display') {
-      this.parseCSV(this.csvContent);
+    if (history.state.csvContent){
+      this.csvContent = history.state.csvContent;
+      if (this.csvContent && this.csvContent !== 'No content to display') {
+        this.parseCSV(this.csvContent);
+      }
+    }else if (history.state.data){
+      this.items = history.state.data;
+    }else {
+      console.error("No content to display");
     }
   }
 
@@ -75,14 +81,6 @@ export class ShowCsvContentComponent implements OnInit{
 
   onSubmit() {
     const selectedItems = this.items.filter(item => item.selected);
-    //this.saveItems(selectedItems);
+    this.router.navigate(['/controller/create'], { state: { data: this.items, file: history.state.file } });
   }
-
-  // saveItems(items: selectItem[]) {
-  //   this.http.post('/api/save-items', items).subscribe(response => {
-  //     console.log('Items saved successfully', response);
-  //   }, error => {
-  //     console.error('Error saving items', error);
-  //   });
-  // }
 }
