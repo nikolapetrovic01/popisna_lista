@@ -1,25 +1,36 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {selectItem} from "../../../../dto/item";
+import {selectedItems, selectItem} from "../../../../dto/item";
 import {NgIf} from "@angular/common";
+import {InventoryService} from "../../../../service/inventory.service";
 
 @Component({
   selector: 'app-create-new-inventory',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
   ],
   templateUrl: './create-new-inventory.component.html',
   styleUrl: './create-new-inventory.component.css'
 })
 export class CreateNewInventoryComponent implements OnInit{
+  successMessage: string = "Uspješno učitano";
+  defaultMessage: string = "Izaberi fajl ili ga prevuci";
+  fileName: string = this.defaultMessage;
   file: File | null = null;
-  fileName: string = 'Izaberi fajl ili ga prevuci'
   filteredItems: selectItem[] = [];
+  isNavigatingBack = false;
+  startDate: Date;
+  endDate: Date;
+  errorMessage: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private inventoryService: InventoryService) {
+    this.startDate = new Date();
+    this.endDate = new Date();
+  }
 
   ngOnInit() {
     if (history.state.data) {
@@ -31,25 +42,19 @@ export class CreateNewInventoryComponent implements OnInit{
       if (history.state.file) {
         this.file = history.state.file;
         if (this.file) {
-          this.fileName = this.file.name;
+          this.fileName = this.successMessage;
         }
       }
-      console.log(this.filteredItems);
     } else {
       this.filteredItems = [];
     }
   }
 
   onFileChange(event: any) {
-    // if (this.filteredItems.length > 0) {
-    //   // Redirect to the next page if filteredItems already has data
-    //   this.router.navigateByUrl('controller/create/show-csv', { state: { data: this.filteredItems, file: this.file } });
-    //   return;
-    // }
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
       this.file = input.files[0];
-      this.fileName = event.target.files[0].name;
+      this.fileName = this.defaultMessage;
 
       const fileDropArea = document.querySelector('.file-drop-area');
       if (fileDropArea) {
@@ -70,10 +75,11 @@ export class CreateNewInventoryComponent implements OnInit{
   }
 
   onDrop(event: DragEvent) {
+    //TODO: FINISH LIKE onFileChange
     event.preventDefault();
     if (event.dataTransfer?.files.length) {
       this.file = event.dataTransfer.files[0];
-      this.fileName = event.dataTransfer.files[0].name;
+      this.fileName = this.successMessage;
       this.change();
     } else {
       console.error("Drag event is invalid or no files were dropped.");
@@ -81,6 +87,7 @@ export class CreateNewInventoryComponent implements OnInit{
   }
 
   onDragOver(event: DragEvent) {
+    //TODO: FINISH LIKE onFileChange
     event.preventDefault();
   }
 
@@ -89,6 +96,7 @@ export class CreateNewInventoryComponent implements OnInit{
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const csvContent = e.target.result;
+        this.isNavigatingBack = false;
         this.router.navigateByUrl('controller/create/show-csv', { state: { csvContent, data: this.filteredItems, file: this.file } });
       };
       reader.onerror = (error) => {
@@ -103,7 +111,7 @@ export class CreateNewInventoryComponent implements OnInit{
   removeFile() {
     this.file = null;
     this.filteredItems = [];
-    this.fileName = 'Izaberi fajl ili ga prevuci';
+    this.fileName = this.defaultMessage;
     const fileDropArea = document.querySelector('.file-drop-area');
     if (fileDropArea) {
       fileDropArea.classList.remove('file-selected');
@@ -113,8 +121,37 @@ export class CreateNewInventoryComponent implements OnInit{
     fileInput.disabled = false;
   }
 
+  validateDate(){
+    if (this.startDate && this.endDate){
+      if(this.startDate > this.endDate){
+        this.errorMessage = "Datum početka mora biti prije datuma kraja";
+        return false;
+      }
+    }
+    this.errorMessage = null;
+    return true;
+  }
+
   onSubmit() {
     console.log("Submit pressed");
-    // Implement your logic to send data to the backend
+    if(!this.validateDate()){
+      return;
+    }
+
+    const selectedItems: selectedItems = {
+      selectedItems: this.filteredItems.filter(item => item.selected === true),
+      startDate: this.startDate,
+      endDate: this.endDate
+    };
+
+    this.inventoryService.createNewInventory(selectedItems).subscribe(
+      response => {
+        console.log("Inventory created successfully", response);
+      },
+      error => {
+        console.error("Error creating inventory", error);
+      }
+    );
+
   }
 }

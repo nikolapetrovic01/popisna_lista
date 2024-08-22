@@ -34,3 +34,9 @@ export interface selectItem{
   itemInventoryId: number;
   selected?: boolean;
 }
+
+export interface selectedItems{
+  selectedItems: selectItem[];
+  startDate: Date;
+  endDate: Date;
+}

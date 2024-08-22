@@ -45,7 +45,6 @@ export class ControllerComponent implements OnInit {
   }
 
   navigateToInventoryClicked(inventoryClicked: any): void {
-    console.log("Navigating to item:", inventoryClicked);
     let flag = true
     if (inventoryClicked.status === 0){
       flag = false;
@@ -56,7 +55,6 @@ export class ControllerComponent implements OnInit {
 
 
   toggleDropdown(dropdownType: string): void {
-    console.log("Toggling dropdown: " + dropdownType);
     if (dropdownType === 'active') {
       this.isActiveOpen = !this.isActiveOpen;
       this.isInactiveOpen = false;  // Ensures only one dropdown is open at a time

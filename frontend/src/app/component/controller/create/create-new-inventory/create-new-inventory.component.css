@@ -58,7 +58,7 @@
 
 .file-drop-area.disabled {
   background-color: #e0e0e0;
-  border: 0.1rem solid #ff0a27;
+  border: 0.1rem solid #000000;
 }
 
 .btn-close {

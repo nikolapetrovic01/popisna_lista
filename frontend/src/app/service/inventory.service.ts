@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {loginRequest, loginResponse} from "../dto/login";
 import {Observable} from "rxjs";
 import {inventories} from "../dto/inventories";
-import {item, items, updateItemAmount} from "../dto/item";
+import {item, items, selectedItems, selectItem, updateItemAmount} from "../dto/item";
 
 @Injectable({
   providedIn: 'root',
@@ -29,4 +29,9 @@ export class InventoryService{
   // closeInventory(id: number): Observable<item>{
   //   return this.http.post<item>()
   // }
+
+  createNewInventory(selectedItems: selectedItems): Observable<selectedItems>{
+    console.log("InventoryService reached")
+    return this.http.post<selectedItems>(`${this.baseUrl}/inventory/create`, selectedItems);
+  }
 }
