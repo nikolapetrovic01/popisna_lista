@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {selectItem} from "../../../../dto/item";
 import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgForOf, Location} from "@angular/common";
 
 @Component({
   selector: 'app-show-csv-content',
@@ -15,24 +15,23 @@ import {NgForOf} from "@angular/common";
   templateUrl: './show-csv-content.component.html',
   styleUrl: './show-csv-content.component.css'
 })
-export class ShowCsvContentComponent implements OnInit{
+export class ShowCsvContentComponent implements OnInit {
   csvContent: string | null = null;
   items: selectItem[] = [];
   searchTerm = '';
 
-  constructor(private router: Router,
-              private http: HttpClient) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
-    if (history.state.csvContent){
+    if (history.state.csvContent) {
       this.csvContent = history.state.csvContent;
       if (this.csvContent && this.csvContent !== 'No content to display') {
         this.parseCSV(this.csvContent);
       }
-    }else if (history.state.data){
+    } else if (history.state.data) {
       this.items = history.state.data;
-    }else {
+    } else {
       console.error("No content to display");
     }
   }
@@ -74,13 +73,13 @@ export class ShowCsvContentComponent implements OnInit{
     return matches;
   }
 
-  filteredItems(): selectItem[]{
+  filteredItems(): selectItem[] {
     return this.items.filter((selectedItem) =>
-    selectedItem.itemName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+      selectedItem.itemName.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 
   onSubmit() {
-    const selectedItems = this.items.filter(item => item.selected);
-    this.router.navigate(['/controller/create'], { state: { data: this.items, file: history.state.file } });
+    console.log(this.items);
+    this.router.navigateByUrl('/controller/create', {state: {data: this.items, file: history.state.file}});
   }
 }

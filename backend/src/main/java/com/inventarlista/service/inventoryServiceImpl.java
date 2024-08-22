@@ -58,4 +58,32 @@ public class inventoryServiceImpl {
     public void updateItemAmount(updateItemAmount update){
         inventoryJdbcDao.updateItemAmount(update);
     }
+
+    public void createNewInventory(selectedItems selectedItems){
+        System.out.println("SERVICE!");
+        Inventory newInventory = new Inventory(
+                0,
+                1,
+                selectedItems.startDate(),
+                selectedItems.endDate()
+        );
+
+        inventoryJdbcDao.createNewInventory(newInventory);
+        int maxId = inventoryJdbcDao.getMaxInventoryId();
+        newInventory.setId(maxId);
+
+        List<Item> itemsToSave = selectedItems.selectedItems().stream().map(
+                selectItem -> new Item(
+                        selectItem.itemId(),
+                        selectItem.itemName(),
+                        selectItem.itemMeasurement(),
+                        selectItem.itemPresentAmount(),
+                        selectItem.itemBarcode(),
+                        selectItem.itemInputtedAmount(),
+                        selectItem.itemUserThatPutTheAmountIn(),
+                        maxId
+                )
+        ).toList();
+        inventoryJdbcDao.saveItems(itemsToSave);
+    }
 }

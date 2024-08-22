@@ -1,4 +1,6 @@
+com\inventarlista\dto\selectItem.class
 com\inventarlista\persistance\rest\loginEndpoint.class
+com\inventarlista\dto\selectedItems.class
 com\inventarlista\exceptions\GlobalExceptionHandler.class
 com\inventarlista\dto\inventoriesPieceDto.class
 com\inventarlista\service\loginServiceImpl.class

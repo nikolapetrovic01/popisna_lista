@@ -3,12 +3,13 @@ package com.inventarlista.entity;
 public class User {
     private String username;
     private String password;
-    private int level;
+    private int level, id;
 
-    public User(String username, String password, int level) {
+    public User(String username, String password, int level, int id) {
         this.username = username;
         this.password = password;
         this.level = level;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -35,4 +36,11 @@ public class User {
         this.level = level;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

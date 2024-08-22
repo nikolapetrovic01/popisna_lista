@@ -9,7 +9,7 @@ public class Inventory {
 
     public Inventory(int id, int status, LocalDate startDate, LocalDate endDate) {
         this.id = id;
-        this.status = status;
+        this.status = status; // 1 being active and 0 being inactive
         this.startDate = startDate;
         this.endDate = endDate;
     }

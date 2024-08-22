@@ -1,8 +1,6 @@
 package com.inventarlista.persistance.rest;
 
-import com.inventarlista.dto.inventoriesDto;
-import com.inventarlista.dto.inventoryItemsDto;
-import com.inventarlista.dto.updateItemAmount;
+import com.inventarlista.dto.*;
 import com.inventarlista.service.inventoryServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +36,17 @@ public class inventoryEndpoint {
     public ResponseEntity<Void> updateItemAmount(@PathVariable int id, @RequestBody updateItemAmount update){
         try {
             inventoryService.updateItemAmount(update);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/controller/inventory/create")
+    public ResponseEntity<Void> createNewInventory(@RequestBody selectedItems selectedItems){
+        try {
+            System.out.println("ENDPOINT!");
+            inventoryService.createNewInventory(selectedItems);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
