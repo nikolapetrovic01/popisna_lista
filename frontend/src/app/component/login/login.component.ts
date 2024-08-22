@@ -4,6 +4,7 @@
   import {loginService} from "../../service/login.service";
   import {loginRequest} from "../../dto/login";
   import {MatSnackBar} from "@angular/material/snack-bar";
+  import {UserService} from "../../service/user.service";
 
   @Component({
     selector: 'app-login',
@@ -21,7 +22,8 @@
     constructor(
       private authService: loginService,
       private router: Router,
-      private snackBar: MatSnackBar) {}
+      private snackBar: MatSnackBar,
+      private userLevelService: UserService) {}
 
 
     onSubmit() {
@@ -42,6 +44,12 @@
               case 1:
                 //This is the controller case
                 console.log("Controller");
+
+                this.userLevelService.clearUserLevel();
+                this.userLevelService.clearUserId();
+                this.userLevelService.setUserLevel(1);
+                this.userLevelService.setUserId(response.id);
+
                 this.router.navigate(['/controller']).catch(err => console.log("The error: ",err));
                 break;
               case 2:

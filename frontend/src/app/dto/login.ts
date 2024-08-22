@@ -6,4 +6,5 @@ export interface loginRequest {
 export interface loginResponse{
   name: string;
   level: number;
+  id: number;
 }

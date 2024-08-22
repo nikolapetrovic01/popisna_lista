@@ -21,7 +21,7 @@ public class loginServiceImpl {
         try {
             User user = loginJdbcDao.findByUsername(request.name());
             if (user.getPassword().equals(request.password())) {
-                return new loginResponseDto(user.getUsername(), user.getLevel());
+                return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId());
             }else {
                 throw new AuthenticationException("Invalid password");
             }
