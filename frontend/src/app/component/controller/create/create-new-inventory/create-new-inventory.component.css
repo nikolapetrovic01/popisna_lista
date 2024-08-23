@@ -23,7 +23,6 @@
 .custom-date-input:focus {
   outline: none;
   border-color: #aaa;
-  width: calc(50% - 5px);
 }
 
 .file-drop-area {

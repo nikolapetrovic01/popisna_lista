@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {selectedItems, selectItem} from "../../../../dto/item";
-import {NgIf} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 import {InventoryService} from "../../../../service/inventory.service";
+import {DateService} from "../../../../service/date.service";
 
 @Component({
   selector: 'app-create-new-inventory',
@@ -11,25 +12,27 @@ import {InventoryService} from "../../../../service/inventory.service";
   imports: [
     FormsModule,
     NgIf,
+    DatePipe,
   ],
   templateUrl: './create-new-inventory.component.html',
   styleUrl: './create-new-inventory.component.css'
 })
-export class CreateNewInventoryComponent implements OnInit{
+export class CreateNewInventoryComponent implements OnInit {
   successMessage: string = "Uspješno učitano";
   defaultMessage: string = "Izaberi fajl ili ga prevuci";
   fileName: string = this.defaultMessage;
   file: File | null = null;
   filteredItems: selectItem[] = [];
   isNavigatingBack = false;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   errorMessage: string | null = null;
 
   constructor(private router: Router,
-              private inventoryService: InventoryService) {
-    this.startDate = new Date();
-    this.endDate = new Date();
+              private inventoryService: InventoryService,
+              private dateService: DateService) {
+    this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
+    this.endDate = this.dateService.getEndDate() || new Date().toISOString().substring(0, 10);
   }
 
   ngOnInit() {
@@ -48,7 +51,11 @@ export class CreateNewInventoryComponent implements OnInit{
     } else {
       this.filteredItems = [];
     }
+
+    this.startDate = this.dateService.getStartDate() || this.startDate;
+    this.endDate = this.dateService.getEndDate() || this.endDate;
   }
+
 
   onFileChange(event: any) {
     const input = event.target as HTMLInputElement;
@@ -70,7 +77,8 @@ export class CreateNewInventoryComponent implements OnInit{
   preventFileSelection(event: MouseEvent) {
     if (this.filteredItems.length > 0) {
       event.preventDefault(); // Prevent the file explorer from opening
-      this.router.navigateByUrl('controller/create/show-csv', { state: { data: this.filteredItems, file: this.file } });
+      this.rememberDate();
+      this.router.navigateByUrl('controller/create/show-csv', {state: {data: this.filteredItems, file: this.file}});
     }
   }
 
@@ -97,7 +105,14 @@ export class CreateNewInventoryComponent implements OnInit{
       reader.onload = (e: any) => {
         const csvContent = e.target.result;
         this.isNavigatingBack = false;
-        this.router.navigateByUrl('controller/create/show-csv', { state: { csvContent, data: this.filteredItems, file: this.file } });
+        this.rememberDate();
+        this.router.navigateByUrl('controller/create/show-csv', {
+          state: {
+            csvContent,
+            data: this.filteredItems,
+            file: this.file
+          }
+        });
       };
       reader.onerror = (error) => {
         console.error('FileReader error:', error);
@@ -121,9 +136,9 @@ export class CreateNewInventoryComponent implements OnInit{
     fileInput.disabled = false;
   }
 
-  validateDate(){
-    if (this.startDate && this.endDate){
-      if(this.startDate > this.endDate){
+  validateDate() {
+    if (this.startDate && this.endDate) {
+      if (this.startDate > this.endDate) {
         this.errorMessage = "Datum početka mora biti prije datuma kraja";
         return false;
       }
@@ -132,16 +147,34 @@ export class CreateNewInventoryComponent implements OnInit{
     return true;
   }
 
+  rememberDate() {
+    console.log('Setting Start Date:', this.startDate);
+    console.log('Setting End Date:', this.endDate);
+    // this.startDate = new Date(this.startDate);
+    // this.endDate = new Date(this.endDate);
+    // this.dateService.setStartDate(this.startDate);
+    // this.dateService.setEndDate(this.endDate);
+
+    this.dateService.setStartDate(new Date(this.startDate));
+    this.dateService.setEndDate(new Date(this.endDate));
+  }
+
   onSubmit() {
     console.log("Submit pressed");
-    if(!this.validateDate()){
+    if (!this.validateDate()) {
       return;
     }
 
+    // const selectedItems: selectedItems = {
+    //   selectedItems: this.filteredItems.filter(item => item.selected === true),
+    //   startDate: this.startDate,
+    //   endDate: this.endDate
+    // };
+    //TODO: TEST IF IT WORKS WITH BACKEND
     const selectedItems: selectedItems = {
       selectedItems: this.filteredItems.filter(item => item.selected === true),
-      startDate: this.startDate,
-      endDate: this.endDate
+      startDate: new Date(this.startDate),
+      endDate: new Date(this.endDate)
     };
 
     this.inventoryService.createNewInventory(selectedItems).subscribe(

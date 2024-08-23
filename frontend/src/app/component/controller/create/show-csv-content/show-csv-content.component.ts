@@ -79,7 +79,6 @@ export class ShowCsvContentComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.items);
     this.router.navigateByUrl('/controller/create', {state: {data: this.items, file: history.state.file}});
   }
 }
