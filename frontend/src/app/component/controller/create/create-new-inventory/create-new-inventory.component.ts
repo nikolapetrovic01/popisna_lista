@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {selectedItems, selectItem} from "../../../../dto/item";
-import {DatePipe, NgIf} from "@angular/common";
+import {Location, DatePipe, NgIf} from "@angular/common";
 import {InventoryService} from "../../../../service/inventory.service";
 import {DateService} from "../../../../service/date.service";
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-create-new-inventory',
@@ -30,7 +32,9 @@ export class CreateNewInventoryComponent implements OnInit {
 
   constructor(private router: Router,
               private inventoryService: InventoryService,
-              private dateService: DateService) {
+              private dateService: DateService,
+              private location: Location,
+              private toastr: ToastrService) {
     this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
     this.endDate = this.dateService.getEndDate() || new Date().toISOString().substring(0, 10);
   }
@@ -76,7 +80,7 @@ export class CreateNewInventoryComponent implements OnInit {
 
   preventFileSelection(event: MouseEvent) {
     if (this.filteredItems.length > 0) {
-      event.preventDefault(); // Prevent the file explorer from opening
+      event.preventDefault();
       this.rememberDate();
       this.router.navigateByUrl('controller/create/show-csv', {state: {data: this.filteredItems, file: this.file}});
     }
@@ -148,29 +152,18 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   rememberDate() {
-    console.log('Setting Start Date:', this.startDate);
-    console.log('Setting End Date:', this.endDate);
-    // this.startDate = new Date(this.startDate);
-    // this.endDate = new Date(this.endDate);
-    // this.dateService.setStartDate(this.startDate);
-    // this.dateService.setEndDate(this.endDate);
-
     this.dateService.setStartDate(new Date(this.startDate));
     this.dateService.setEndDate(new Date(this.endDate));
   }
 
+  /**
+   * Sends request to backend to save the items given in CSV
+   */
   onSubmit() {
-    console.log("Submit pressed");
     if (!this.validateDate()) {
       return;
     }
 
-    // const selectedItems: selectedItems = {
-    //   selectedItems: this.filteredItems.filter(item => item.selected === true),
-    //   startDate: this.startDate,
-    //   endDate: this.endDate
-    // };
-    //TODO: TEST IF IT WORKS WITH BACKEND
     const selectedItems: selectedItems = {
       selectedItems: this.filteredItems.filter(item => item.selected === true),
       startDate: new Date(this.startDate),
@@ -179,12 +172,14 @@ export class CreateNewInventoryComponent implements OnInit {
 
     this.inventoryService.createNewInventory(selectedItems).subscribe(
       response => {
+        this.toastr.success('Inventory created successfully');
         console.log("Inventory created successfully", response);
       },
       error => {
+        this.toastr.success("Error creating inventory", error);
         console.error("Error creating inventory", error);
       }
     );
-
+    this.location.back();
   }
 }

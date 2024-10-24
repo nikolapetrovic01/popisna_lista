@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {selectItem} from "../../../../dto/item";
-import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
-import {NgForOf, Location} from "@angular/common";
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-show-csv-content',
@@ -39,17 +38,20 @@ export class ShowCsvContentComponent implements OnInit {
   parseCSV(csvContent: string) {
     const lines = csvContent.split('\n').filter(line => line.trim() !== '');
     if (lines.length > 1) {
-      this.items = lines.slice(1).map((line, index) => {  // Skip header line
+
+      // Parse each line after the header (assuming the first line is the header)
+      this.items = lines.slice(1).map((line, index) => {
         const data = this.splitCSVLine(line);
+
         return {
-          itemId: +data[0],
+          itemId: +data[0].replace(/\s/g, ''),  // Remove spaces and parse as number
           itemName: data[1],
           itemMeasurement: data[2],
           itemPresentAmount: this.parseNumber(data[3]),  // Parse number correctly
           itemBarcode: data[4],
           itemInputtedAmount: this.parseNumber(data[5]),  // Parse number correctly
           itemUserThatPutTheAmountIn: isNaN(+data[6]) ? 0 : +data[6],  // Default to 0 if NaN
-          itemInventoryId: +data[7],
+          itemInventoryId: +data[7] || 0,  // Parse and default to 0 if missing
           selected: true
         };
       });
@@ -59,18 +61,17 @@ export class ShowCsvContentComponent implements OnInit {
   }
 
   parseNumber(value: string): number {
-    const cleanedValue = value.replace(/\s/g, '').replace(/\./g, '').replace(',', '.');
-    return parseFloat(cleanedValue);
+    if (!value || value.trim() === '') {
+      return 0;  // Return a default value if the input is invalid
+    }
+    const cleanedValue = value.replace(/\s/g, '').replace(',', '.');
+    const parsedNumber = parseFloat(cleanedValue);
+    return isNaN(parsedNumber) ? 0 : parsedNumber;
   }
 
   splitCSVLine(line: string): string[] {
-    const regex = /(?:^|;)(\"(?:[^\"]+|\"\")*\"|[^;]*)/g;
-    const matches = [];
-    let match;
-    while ((match = regex.exec(line)) !== null) {
-      matches.push(match[1] ? match[1].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : match[2].trim());
-    }
-    return matches;
+    // Update this to handle semicolons instead of whitespace
+    return line.split(';');
   }
 
   filteredItems(): selectItem[] {

@@ -54,7 +54,8 @@
                 break;
               case 2:
                 // this.router.navigate(['/admin']);
-                console.log("2");
+                console.log("Worker/Worker Admin");
+                this.router.navigate(['/worker']).catch(err => console.log("The error: ",err));
                 break;
               case 3:
                 // this.router.navigate(['/superadmin']);

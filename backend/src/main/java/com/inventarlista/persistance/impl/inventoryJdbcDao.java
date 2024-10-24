@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class inventoryJdbcDao {
@@ -60,7 +59,6 @@ public class inventoryJdbcDao {
     }
 
     public void createNewInventory(Inventory inventory){
-        System.out.println("DATABASE; NEW INVENTORY");
         String sql = "INSERT INTO popisi (status, start_date, end_date) VALUES (?, ?, ?)";
 
         jdbcTemplate.update(sql,
@@ -76,7 +74,6 @@ public class inventoryJdbcDao {
     }
 
     public void saveItems (List<Item> items){
-        System.out.println("DATABSE; SAVE ITEMS");
         String sql = "INSERT INTO artikli (" +
                 "sifra_proizvoda, " +
                 "naziv_proizvoda, " +
@@ -99,12 +96,9 @@ public class inventoryJdbcDao {
                 ps.setInt(7, item.getUserThatPutTheAmountIn());
                 ps.setInt(8, item.getInventoryId());
             });
-            //TODO: RJEŠI KAKO DA OZNAČIŠ DA JE TEK UNESEN PREDMET, POŠTO 0 NE MOŽE
-
         } catch (Exception e) {
             // Log the error and print stack trace
             System.err.println("Error occurred while saving items: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }

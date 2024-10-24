@@ -81,4 +81,18 @@ public class Item {
     public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", measurement='" + measurement + '\'' +
+                ", presentAmount=" + presentAmount +
+                ", barcode='" + barcode + '\'' +
+                ", inputtedAmount=" + inputtedAmount +
+                ", userThatPutTheAmountIn=" + userThatPutTheAmountIn +
+                ", inventoryId=" + inventoryId +
+                '}';
+    }
 }
