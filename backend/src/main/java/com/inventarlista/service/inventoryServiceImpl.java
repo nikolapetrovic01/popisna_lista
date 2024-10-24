@@ -60,7 +60,6 @@ public class inventoryServiceImpl {
     }
 
     public void createNewInventory(selectedItems selectedItems){
-        System.out.println("SERVICE!");
         Inventory newInventory = new Inventory(
                 0,
                 1,

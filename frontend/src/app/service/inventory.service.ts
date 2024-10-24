@@ -31,7 +31,6 @@ export class InventoryService{
   // }
 
   createNewInventory(selectedItems: selectedItems): Observable<selectedItems>{
-    console.log("InventoryService reached")
     return this.http.post<selectedItems>(`${this.baseUrl}/inventory/create`, selectedItems);
   }
 }

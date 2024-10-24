@@ -6,6 +6,7 @@ import {Location, DatePipe, NgIf} from "@angular/common";
 import {InventoryService} from "../../../../service/inventory.service";
 import {DateService} from "../../../../service/date.service";
 import { ToastrService } from 'ngx-toastr';
+import {MESSAGES} from "../../../../shared/constants/messages";
 
 
 @Component({
@@ -20,9 +21,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './create-new-inventory.component.css'
 })
 export class CreateNewInventoryComponent implements OnInit {
-  successMessage: string = "Uspješno učitano";
-  defaultMessage: string = "Izaberi fajl ili ga prevuci";
-  fileName: string = this.defaultMessage;
+  fileName: string = MESSAGES.FILE_UPLOAD_PROMPT;
   file: File | null = null;
   filteredItems: selectItem[] = [];
   isNavigatingBack = false;
@@ -42,14 +41,17 @@ export class CreateNewInventoryComponent implements OnInit {
   ngOnInit() {
     if (history.state.data) {
       const fileDropArea = document.querySelector('.file-drop-area');
+
       if (fileDropArea) {
         fileDropArea.classList.add('disabled');
       }
+
       this.filteredItems = history.state.data;
+
       if (history.state.file) {
         this.file = history.state.file;
         if (this.file) {
-          this.fileName = this.successMessage;
+          this.fileName = MESSAGES.INVENTORY_SUCCESS_MESSAGE;
         }
       }
     } else {
@@ -60,12 +62,15 @@ export class CreateNewInventoryComponent implements OnInit {
     this.endDate = this.dateService.getEndDate() || this.endDate;
   }
 
-
+  /**
+   *
+   * @param event
+   */
   onFileChange(event: any) {
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
       this.file = input.files[0];
-      this.fileName = this.defaultMessage;
+      this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
 
       const fileDropArea = document.querySelector('.file-drop-area');
       if (fileDropArea) {
@@ -74,15 +79,21 @@ export class CreateNewInventoryComponent implements OnInit {
       input.disabled = true;
       this.change();
     } else {
-      console.error("File input is invalid or no files were selected.");
+      this.toastr.error(MESSAGES.FILE_INPUT_INVALID);
+      // console.error("File input is invalid or no files were selected.");
     }
   }
 
+  /**
+   * Class that doesn't allow the user to select a new CSV if one is selected already
+   * @param event the click of the mouse
+   */
   preventFileSelection(event: MouseEvent) {
     if (this.filteredItems.length > 0) {
       event.preventDefault();
       this.rememberDate();
-      this.router.navigateByUrl('controller/create/show-csv', {state: {data: this.filteredItems, file: this.file}});
+      this.router.navigateByUrl('controller/create/show-csv',
+        {state: {data: this.filteredItems, file: this.file}});
     }
   }
 
@@ -91,10 +102,11 @@ export class CreateNewInventoryComponent implements OnInit {
     event.preventDefault();
     if (event.dataTransfer?.files.length) {
       this.file = event.dataTransfer.files[0];
-      this.fileName = this.successMessage;
+      this.fileName = MESSAGES.INVENTORY_SUCCESS_MESSAGE;
       this.change();
     } else {
-      console.error("Drag event is invalid or no files were dropped.");
+      this.toastr.error(MESSAGES.DRAG_EVENT_INVALID);
+      // console.error("Drag event is invalid or no files were dropped.");
     }
   }
 
@@ -123,14 +135,16 @@ export class CreateNewInventoryComponent implements OnInit {
       };
       reader.readAsText(this.file);
     } else {
-      console.error("No file has been selected or dropped.");
+      this.toastr.error(MESSAGES.DRAG_EVENT_INVALID);
     }
   }
 
+  /**
+   * Class that removes the CSV file, when x is pressed
+   */
   removeFile() {
     this.file = null;
-    this.filteredItems = [];
-    this.fileName = this.defaultMessage;
+
     const fileDropArea = document.querySelector('.file-drop-area');
     if (fileDropArea) {
       fileDropArea.classList.remove('file-selected');
@@ -138,19 +152,28 @@ export class CreateNewInventoryComponent implements OnInit {
     }
     const fileInput = document.getElementById('file') as HTMLInputElement;
     fileInput.disabled = false;
+
+    // Clear the file from history.state by navigating to the same URL with an empty state
+    this.router.navigateByUrl(this.router.url, {state: {data: null, file: null}});
   }
 
+  /**
+   * Class that checks the date, and that the beginning is before the end
+   */
   validateDate() {
     if (this.startDate && this.endDate) {
       if (this.startDate > this.endDate) {
-        this.errorMessage = "Datum početka mora biti prije datuma kraja";
+        this.toastr.error(this.errorMessage = MESSAGES.DATE_ERROR);
         return false;
       }
+      return true;
     }
-    this.errorMessage = null;
-    return true;
+    return false;
   }
 
+  /**
+   * Sets date in the localStorage
+   */
   rememberDate() {
     this.dateService.setStartDate(new Date(this.startDate));
     this.dateService.setEndDate(new Date(this.endDate));
@@ -172,14 +195,14 @@ export class CreateNewInventoryComponent implements OnInit {
 
     this.inventoryService.createNewInventory(selectedItems).subscribe(
       response => {
-        this.toastr.success('Inventory created successfully');
-        console.log("Inventory created successfully", response);
+        this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
+        // console.log(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
+        this.location.back();
       },
       error => {
-        this.toastr.success("Error creating inventory", error);
-        console.error("Error creating inventory", error);
+        this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);
+        // console.error("Error creating inventory", error);
       }
     );
-    this.location.back();
   }
 }

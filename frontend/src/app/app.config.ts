@@ -5,13 +5,6 @@ import {provideHttpClient} from "@angular/common/http";
 import {provideToastr} from "ngx-toastr";
 import {provideAnimations} from "@angular/platform-browser/animations";
 
-// export const appConfig: ApplicationConfig = {
-//   providers: [
-//     provideZoneChangeDetection({ eventCoalescing: true }),
-//     provideRouter(routes),
-//     provideHttpClient(),
-//     provideAnimationsAsync('noop')],
-// }
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -20,8 +13,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),  // Use provideAnimations here for proper animations
     provideToastr({
       timeOut: 5000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
+      closeButton: true,
+      progressBar: true,
     })
   ]
 };

@@ -2,3 +2,19 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.toast {
+  background-color: #ff4704 !important;  /* Ensure background color */
+  color: white !important;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toast-close-button {
+  color: white !important;
+}
+
+.toast-progress {
+  background-color: white !important;
+}

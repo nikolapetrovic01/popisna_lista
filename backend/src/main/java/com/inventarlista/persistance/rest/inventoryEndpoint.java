@@ -45,7 +45,6 @@ public class inventoryEndpoint {
     @PostMapping("/controller/inventory/create")
     public ResponseEntity<Void> createNewInventory(@RequestBody selectedItems selectedItems){
         try {
-            System.out.println("ENDPOINT!");
             inventoryService.createNewInventory(selectedItems);
             return ResponseEntity.ok().build();
         }catch (Exception e){
