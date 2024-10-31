@@ -32,9 +32,12 @@
         <td>{{ item.itemBarcode }}</td>
         <td>{{ item.itemInputtedAmount }}</td>
         <td>{{ item.itemUserThatPutTheAmountIn }}</td>
-        <td>
-          <input type="checkbox" [(ngModel)]="item.selected" name="selected-{{ item.itemId }}">
-        </td>
+        <input
+          type="checkbox"
+          [(ngModel)]="item.selected"
+          (ngModelChange)="updateLocalStorage()"
+          name="selected-{{ item.itemId }}"
+        >
       </tr>
       </tbody>
     </table>

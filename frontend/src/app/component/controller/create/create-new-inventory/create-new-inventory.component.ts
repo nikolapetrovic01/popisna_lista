@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {selectedItems, selectItem} from "../../../../dto/item";
 import {Location, DatePipe, NgIf} from "@angular/common";
 import {InventoryService} from "../../../../service/inventory.service";
 import {DateService} from "../../../../service/date.service";
 import { ToastrService } from 'ngx-toastr';
 import {MESSAGES} from "../../../../shared/constants/messages";
+import {StorageService} from "../../../../service/storageService";
 
 
 @Component({
@@ -16,6 +17,7 @@ import {MESSAGES} from "../../../../shared/constants/messages";
     FormsModule,
     NgIf,
     DatePipe,
+    RouterLink,
   ],
   templateUrl: './create-new-inventory.component.html',
   styleUrl: './create-new-inventory.component.css'
@@ -24,36 +26,39 @@ export class CreateNewInventoryComponent implements OnInit {
   fileName: string = MESSAGES.FILE_UPLOAD_PROMPT;
   file: File | null = null;
   filteredItems: selectItem[] = [];
-  isNavigatingBack = false;
   startDate: string;
   endDate: string;
   errorMessage: string | null = null;
+  showX: boolean = false;
 
   constructor(private router: Router,
               private inventoryService: InventoryService,
               private dateService: DateService,
               private location: Location,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private storageService: StorageService) {
     this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
     this.endDate = this.dateService.getEndDate() || new Date().toISOString().substring(0, 10);
   }
 
+  /**
+   * Checks if there was a file already loaded and loads it
+   */
   ngOnInit() {
-    if (history.state.data) {
-      const fileDropArea = document.querySelector('.file-drop-area');
+    const CSVContent = this.storageService.getItem<string>('csvContent');
+    const storedItems = this.storageService.getItem<selectItem[]>('filteredItems');
+    const storedFileName  = this.storageService.getItem<string>('fileName');
 
+    if (storedItems && CSVContent){
+      this.filteredItems = storedItems;
+      this.fileName = storedFileName || MESSAGES.FILE_UPLOAD_PROMPT;
+
+      const fileDropArea = document.querySelector('.file-drop-area');
       if (fileDropArea) {
         fileDropArea.classList.add('disabled');
       }
+      this.showX = true;
 
-      this.filteredItems = history.state.data;
-
-      if (history.state.file) {
-        this.file = history.state.file;
-        if (this.file) {
-          this.fileName = MESSAGES.INVENTORY_SUCCESS_MESSAGE;
-        }
-      }
     } else {
       this.filteredItems = [];
     }
@@ -70,9 +75,10 @@ export class CreateNewInventoryComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
       this.file = input.files[0];
-      this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
+      this.fileName = this.file.name;
 
       const fileDropArea = document.querySelector('.file-drop-area');
+
       if (fileDropArea) {
         fileDropArea.classList.add('disabled');
       }
@@ -80,7 +86,6 @@ export class CreateNewInventoryComponent implements OnInit {
       this.change();
     } else {
       this.toastr.error(MESSAGES.FILE_INPUT_INVALID);
-      // console.error("File input is invalid or no files were selected.");
     }
   }
 
@@ -92,8 +97,7 @@ export class CreateNewInventoryComponent implements OnInit {
     if (this.filteredItems.length > 0) {
       event.preventDefault();
       this.rememberDate();
-      this.router.navigateByUrl('controller/create/show-csv',
-        {state: {data: this.filteredItems, file: this.file}});
+      this.router.navigateByUrl('controller/create/show-csv');
     }
   }
 
@@ -106,7 +110,6 @@ export class CreateNewInventoryComponent implements OnInit {
       this.change();
     } else {
       this.toastr.error(MESSAGES.DRAG_EVENT_INVALID);
-      // console.error("Drag event is invalid or no files were dropped.");
     }
   }
 
@@ -120,15 +123,11 @@ export class CreateNewInventoryComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const csvContent = e.target.result;
-        this.isNavigatingBack = false;
-        this.rememberDate();
-        this.router.navigateByUrl('controller/create/show-csv', {
-          state: {
-            csvContent,
-            data: this.filteredItems,
-            file: this.file
-          }
-        });
+
+        this.storageService.setItem('csvContent', csvContent);
+        this.storageService.setItem('filteredItems', this.filteredItems);
+        this.storageService.setItem('fileName', this.fileName);
+        this.router.navigateByUrl('controller/create/show-csv');
       };
       reader.onerror = (error) => {
         console.error('FileReader error:', error);
@@ -144,6 +143,10 @@ export class CreateNewInventoryComponent implements OnInit {
    */
   removeFile() {
     this.file = null;
+    this.storageService.clear();
+    this.showX = false;
+
+    this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
 
     const fileDropArea = document.querySelector('.file-drop-area');
     if (fileDropArea) {
@@ -152,9 +155,6 @@ export class CreateNewInventoryComponent implements OnInit {
     }
     const fileInput = document.getElementById('file') as HTMLInputElement;
     fileInput.disabled = false;
-
-    // Clear the file from history.state by navigating to the same URL with an empty state
-    this.router.navigateByUrl(this.router.url, {state: {data: null, file: null}});
   }
 
   /**
@@ -196,12 +196,10 @@ export class CreateNewInventoryComponent implements OnInit {
     this.inventoryService.createNewInventory(selectedItems).subscribe(
       response => {
         this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
-        // console.log(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
         this.location.back();
       },
       error => {
         this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);
-        // console.error("Error creating inventory", error);
       }
     );
   }
