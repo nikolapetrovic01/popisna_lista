@@ -28,6 +28,10 @@ export class ControllerComponent implements OnInit {
   ) {
   }
 
+  /**
+   * Fetches inventory data and filters it into active and inactive items.
+   * Called when the component initializes.
+   */
   ngOnInit() {
     this.inventoryService.getInventory().subscribe(
       {
@@ -40,10 +44,17 @@ export class ControllerComponent implements OnInit {
       });
   }
 
+  /**
+   * Navigates to the "Create New Inventory" page.
+   */
   navigateToCreateNewInventory(): void {
     this.router.navigate(['/controller/create'])
   }
 
+  /**
+   * Navigates to the selected inventory's page, passing its status as a query parameter.
+   * @param inventoryClicked - The clicked inventory item
+   */
   navigateToInventoryClicked(inventoryClicked: any): void {
     let flag = true
     if (inventoryClicked.status === 0){
@@ -53,7 +64,11 @@ export class ControllerComponent implements OnInit {
       { queryParams: { fromActive: flag }});
   }
 
-
+  /**
+   * Toggles the visibility of the active or inactive dropdown list.
+   * Ensures that only one dropdown can be open at a time.
+   * @param dropdownType - Specifies which dropdown to toggle ('active' or 'inactive')
+   */
   toggleDropdown(dropdownType: string): void {
     if (dropdownType === 'active') {
       this.isActiveOpen = !this.isActiveOpen;

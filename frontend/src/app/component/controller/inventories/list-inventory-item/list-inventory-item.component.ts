@@ -24,6 +24,11 @@ export class ListInventoryItemComponent {
     private inventoryService: InventoryService
   ) {}
 
+  /**
+   * Called when the item input amount is changed. Constructs an update object
+   * and sends it to the InventoryService for updating the backend.
+   * @param itemSelected - The item whose amount has changed
+   */
   onInputtedAmountChange(itemSelected: item): void {
     const body : updateItemAmount = {
       itemId: itemSelected.itemId,
@@ -46,6 +51,11 @@ export class ListInventoryItemComponent {
     );
   }
 
+  /**
+   * Validates that only numbers, decimal points, and hyphens are allowed
+   * in the input field for the item amount.
+   * @param event - Keyboard event triggered by user input
+   */
   validateNumber(event: KeyboardEvent): void {
     const charCode = event.charCode;
     if (charCode !== 46 && charCode !== 45 && (charCode < 48 || charCode > 57)) {

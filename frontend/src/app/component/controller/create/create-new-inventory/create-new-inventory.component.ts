@@ -42,7 +42,7 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Checks if there was a file already loaded and loads it
+   * Loads previously stored CSV content and file name from localStorage on component initialization
    */
   ngOnInit() {
     const CSVContent = this.storageService.getItem<string>('csvContent');
@@ -68,8 +68,8 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   *
-   * @param event
+   * Triggered when a file is selected, processes the uploaded file
+   * @param event - File selection event
    */
   onFileChange(event: any) {
     const input = event.target as HTMLInputElement;
@@ -90,8 +90,8 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Class that doesn't allow the user to select a new CSV if one is selected already
-   * @param event the click of the mouse
+   * Prevents file selection if a file is already loaded and navigates to show CSV content if conditions are met
+   * @param event - Click event
    */
   preventFileSelection(event: MouseEvent) {
     if (this.filteredItems.length > 0) {
@@ -101,6 +101,10 @@ export class CreateNewInventoryComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles file drop event, processes the dropped file similar to onFileChange
+   * @param event - File drop event
+   */
   onDrop(event: DragEvent) {
     //TODO: FINISH LIKE onFileChange
     event.preventDefault();
@@ -113,11 +117,18 @@ export class CreateNewInventoryComponent implements OnInit {
     }
   }
 
+  /**
+   * Prevents default behavior during drag over the file drop area
+   * @param event - Drag over event
+   */
   onDragOver(event: DragEvent) {
     //TODO: FINISH LIKE onFileChange
     event.preventDefault();
   }
 
+  /**
+   * Processes the file, reads content as text, and stores in localStorage
+   */
   change() {
     if (this.file) {
       const reader = new FileReader();
@@ -139,11 +150,15 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Class that removes the CSV file, when x is pressed
+   * Clears the uploaded file and resets file-related data
    */
   removeFile() {
     this.file = null;
-    this.storageService.clear();
+
+    this.storageService.removeItem('csvContent');
+    this.storageService.removeItem('filteredItems');
+    this.storageService.removeItem('fileName');
+
     this.showX = false;
 
     this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
@@ -158,7 +173,7 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Class that checks the date, and that the beginning is before the end
+   * Validates that start date is before end date
    */
   validateDate() {
     if (this.startDate && this.endDate) {
@@ -172,7 +187,7 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Sets date in the localStorage
+   * Stores start and end dates in localStorage
    */
   rememberDate() {
     this.dateService.setStartDate(new Date(this.startDate));
@@ -180,7 +195,7 @@ export class CreateNewInventoryComponent implements OnInit {
   }
 
   /**
-   * Sends request to backend to save the items given in CSV
+   * Sends the filtered items and dates to the backend service for inventory creation
    */
   onSubmit() {
     if (!this.validateDate()) {

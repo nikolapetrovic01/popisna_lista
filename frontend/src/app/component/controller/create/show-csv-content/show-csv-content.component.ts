@@ -24,6 +24,9 @@ export class ShowCsvContentComponent implements OnInit {
               private storageService: StorageService) {
   }
 
+  /**
+   * Loads data from localStorage when the component initializes.
+   */
   ngOnInit(): void {
     this.csvContent = this.storageService.getItem<string>('csvContent');
     this.items = this.storageService.getItem<selectItem[]>('filteredItems') || [];
@@ -37,6 +40,10 @@ export class ShowCsvContentComponent implements OnInit {
     }
   }
 
+  /**
+   * Parses the CSV content string and maps it to an array of selectItem objects.
+   * @param csvContent - The content of the CSV file as a string
+   */
   parseCSV(csvContent: string) {
     const lines = csvContent.split('\n').filter(line => line.trim() !== '');
     if (lines.length > 1) {
@@ -68,7 +75,11 @@ export class ShowCsvContentComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Parses a string value into a number, handling common cases for empty and invalid input.
+   * @param value - The string to parse as a number
+   * @returns - The parsed number, or 0 if parsing fails
+   */
   parseNumber(value: string): number {
     if (!value || value.trim() === '') {
       return 0;  // Return a default value if the input is invalid
@@ -78,27 +89,38 @@ export class ShowCsvContentComponent implements OnInit {
     return isNaN(parsedNumber) ? 0 : parsedNumber;
   }
 
+  /**
+   * Splits a CSV line into individual data fields based on semicolon separators.
+   * @param line - The CSV line to split
+   * @returns - An array of string values representing each field in the line
+   */
   splitCSVLine(line: string): string[] {
     // Update this to handle semicolons instead of whitespace
     return line.split(';');
   }
 
+  /**
+   * Filters the items array based on the search term.
+   * @returns - An array of items whose names match the search term
+   */
   filteredItems(): selectItem[] {
     return this.items.filter((selectedItem) =>
       selectedItem.itemName.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 
   /**
-   * This method updates the localStorage with the current state of items.
-   * It should be called after any change to the items' selection state.
+   * Updates localStorage with the current state of items.
+   * Should be called after any change to the items' selection state.
    */
   public updateLocalStorage() {
     this.storageService.setItem('filteredItems', this.items);
   }
 
+  /**
+   * Saves the current items to localStorage and navigates back to the inventory creation page.
+   */
   onSubmit() {
     this.storageService.setItem('filteredItems', this.items);
     this.router.navigateByUrl('/controller/create');
-    // this.router.navigateByUrl('/controller/create', {state: {data: this.items, file: history.state.file}});
   }
 }
