@@ -32,7 +32,19 @@ public class loginServiceImpl {
 //        }
 //    }
     public loginResponseDto validateUser(loginRequestDto request) {
-        User user = loginJdbcDao.findByUsername(request.name());
+//        User user = loginJdbcDao.findByUsername(request.name());
+//        if (user.getPassword().equals(request.password())) {
+//            return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId());
+//        } else {
+//            throw new InvalidCredentialsException("Invalid password");
+//        }
+        User user;
+        try {
+            user = loginJdbcDao.findByUsername(request.name());
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException("User not found: " + request.name());
+        }
+
         if (user.getPassword().equals(request.password())) {
             return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId());
         } else {
