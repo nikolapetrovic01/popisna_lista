@@ -18,23 +18,15 @@ public class loginEndpoint {
         this.loginService = loginService;
     }
 
-    //    @PostMapping("/login")
-//    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest){
-//        try {
-//            loginResponseDto response = loginService.validateUser(loginRequest);
-//            return ResponseEntity.ok(response);
-//        } catch (AuthenticationException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//    }
-//
-//    @ExceptionHandler(UserNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public String handleUserNotFoundException(UserNotFoundException e) {
-//        return e.getMessage();
-//    }
+    /**
+     * Handles login requests.
+     * @param loginRequest - A loginRequestDto object containing username and password for authentication.
+     * @return A ResponseEntity containing loginResponseDto with user information if authentication is successful.
+     * @throws AuthenticationException if authentication fails.
+     */
     @PostMapping("/login")
-    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest) throws AuthenticationException {
+    public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest)
+            throws AuthenticationException, UserNotFoundException {
         loginResponseDto response = loginService.validateUser(loginRequest);
         return ResponseEntity.ok(response);
     }

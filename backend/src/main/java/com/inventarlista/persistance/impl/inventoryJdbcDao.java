@@ -15,17 +15,42 @@ import java.util.*;
 
 @Repository
 public class inventoryJdbcDao {
+    public static final String SQL_SELECT_POPISI = "SELECT id, start_date, end_date, status FROM popisi";
+    public static final String SQL_SELECT_ITEMS = "SELECT * FROM artikli WHERE popis_id = ?";
+    public static final String SQL_UPDATE_AMOUNT = "UPDATE artikli SET kolicina_proizvoda_unesena = ? WHERE sifra_proizvoda = ? AND popis_id = ?";
+    public static final String SQL_INSERT_INTO_POPISI = "INSERT INTO popisi (status, start_date, end_date) VALUES (?, ?, ?)";
+    public static final String SQL_MAX_INVENTORY_ID = "SELECT MAX(id) FROM popisi";
+    public static final String SQL_INSERT_INTO_ARTIKLI = "INSERT INTO artikli (" +
+            "sifra_proizvoda, " +
+            "naziv_proizvoda, " +
+            "jm, " +
+            "kolicina_proizvoda, " +
+            "barkod, " +
+            "kolicina_proizvoda_unesena, " +
+            "korisnik_koji_je_unjeo_kol, " +
+            "popis_id) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final JdbcTemplate jdbcTemplate;
 
+    //TODO: ADD EXCEPTIONS
     public inventoryJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Retrieves all inventory records from the database.
+     * @return A collection of Inventory objects.
+     */
     public Collection<Inventory> getInventory() {
-        String sql = "SELECT id, start_date, end_date, status FROM popisi";
-        return jdbcTemplate.query(sql, this::mapRowInventory);
+        return jdbcTemplate.query(SQL_SELECT_POPISI, this::mapRowInventory);
     }
 
+    /**
+     * Maps a single row of the `popisi` table to an Inventory object.
+     * @param rs - The ResultSet containing query results.
+     * @param rowNum - The current row number.
+     * @return An Inventory object representing a row from the `popisi` table.
+     */
     private Inventory mapRowInventory(ResultSet rs, int rowNum) throws SQLException {
         return new Inventory(
                 rs.getInt("id"),
@@ -35,11 +60,21 @@ public class inventoryJdbcDao {
         );
     }
 
+    /**
+     * Retrieves all items associated with a specific inventory by ID.
+     * @param id - The ID of the inventory.
+     * @return A collection of Item objects associated with the inventory.
+     */
     public Collection<Item> getItems(int id) {
-        String sql = "SELECT * FROM artikli WHERE popis_id = " + id;
-        return jdbcTemplate.query(sql, this::mapRowItem);
+        return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
     }
 
+    /**
+     * Maps a single row of the `artikli` table to an Item object.
+     * @param rs - The ResultSet containing query results.
+     * @param rowNum - The current row number.
+     * @return An Item object representing a row from the `artikli` table.
+     */
     private Item mapRowItem(ResultSet rs, int rowNum) throws SQLException {
         return new Item(
                 rs.getInt("sifra_proizvoda"),
@@ -53,40 +88,41 @@ public class inventoryJdbcDao {
         );
     }
 
+    /**
+     * Updates the amount of a specific item within an inventory.
+     * @param update - An updateItemAmount object containing the item ID, inventory ID, and the updated amount.
+     */
     public void updateItemAmount(updateItemAmount update) {
-        String sql = "UPDATE artikli SET kolicina_proizvoda_unesena = ? WHERE sifra_proizvoda = ? AND popis_id = ?";
-        jdbcTemplate.update(sql, update.itemInputtedAmount(), update.itemId(), update.itemInventoryId());
+        jdbcTemplate.update(SQL_UPDATE_AMOUNT, update.itemInputtedAmount(), update.itemId(), update.itemInventoryId());
     }
 
+    /**
+     * Inserts a new inventory record into the database.
+     * @param inventory - An Inventory object containing the details of the inventory to create.
+     */
     public void createNewInventory(Inventory inventory){
-        String sql = "INSERT INTO popisi (status, start_date, end_date) VALUES (?, ?, ?)";
-
-        jdbcTemplate.update(sql,
+        jdbcTemplate.update(SQL_INSERT_INTO_POPISI,
                 inventory.getStatus(),
                 java.sql.Date.valueOf(inventory.getStartDate()),
                 java.sql.Date.valueOf(inventory.getEndDate()));
     }
 
+    /**
+     * Retrieves the maximum inventory ID from the `popisi` table.
+     * @return The highest inventory ID as an integer. Returns 0 if no inventories exist.
+     */
     public int getMaxInventoryId(){
-        String idSql = "SELECT MAX(id) FROM popisi;";
-        Integer highestId = jdbcTemplate.queryForObject(idSql, Integer.class);
+        Integer highestId = jdbcTemplate.queryForObject(SQL_MAX_INVENTORY_ID, Integer.class);
         return highestId != null ? highestId : 0;
     }
 
+    /**
+     * Saves a list of items in batch mode, inserting them into the `artikli` table.
+     * @param items - A list of Item objects to be saved.
+     */
     public void saveItems (List<Item> items){
-        String sql = "INSERT INTO artikli (" +
-                "sifra_proizvoda, " +
-                "naziv_proizvoda, " +
-                "jm, " +
-                "kolicina_proizvoda, " +
-                "barkod, " +
-                "kolicina_proizvoda_unesena, " +
-                "korisnik_koji_je_unjeo_kol, " +
-                "popis_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
         try {
-            jdbcTemplate.batchUpdate(sql, items, items.size(), (ps, item) -> {
+            jdbcTemplate.batchUpdate(SQL_INSERT_INTO_ARTIKLI, items, items.size(), (ps, item) -> {
                 ps.setInt(1, item.getId());
                 ps.setString(2, item.getName());
                 ps.setString(3, item.getMeasurement());
