@@ -1,14 +1,12 @@
 package com.inventarlista.persistance.impl;
 
-import com.inventarlista.dto.selectedItems;
 import com.inventarlista.dto.updateItemAmount;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
-import com.inventarlista.exceptions.UserNotFoundException;
+import com.inventarlista.exceptions.NotFoundException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -32,7 +30,6 @@ public class inventoryJdbcDao {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final JdbcTemplate jdbcTemplate;
 
-    //TODO: ADD EXCEPTIONS
     public inventoryJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -42,7 +39,11 @@ public class inventoryJdbcDao {
      * @return A collection of Inventory objects.
      */
     public Collection<Inventory> getInventory() {
-        return jdbcTemplate.query(SQL_SELECT_POPISI, this::mapRowInventory);
+        try {
+            return jdbcTemplate.query(SQL_SELECT_POPISI, this::mapRowInventory);
+        } catch (DataAccessException e){
+            throw new NotFoundException("No inventories");
+        }
     }
 
     /**
@@ -66,7 +67,11 @@ public class inventoryJdbcDao {
      * @return A collection of Item objects associated with the inventory.
      */
     public Collection<Item> getItems(int id) {
-        return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
+        try {
+            return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
+        } catch (DataAccessException e){
+            throw new NotFoundException("Could not find items associated with inventory ID %d".formatted(id));
+        }
     }
 
     /**
@@ -90,10 +95,25 @@ public class inventoryJdbcDao {
 
     /**
      * Updates the amount of a specific item within an inventory.
-     * @param update - An updateItemAmount object containing the item ID, inventory ID, and the updated amount.
+     * @param toUpdate - An updateItemAmount object containing the item ID, inventory ID, and the updated amount.
      */
-    public void updateItemAmount(updateItemAmount update) {
-        jdbcTemplate.update(SQL_UPDATE_AMOUNT, update.itemInputtedAmount(), update.itemId(), update.itemInventoryId());
+    public void updateItemAmount(updateItemAmount toUpdate) {
+        int updated = jdbcTemplate.update(SQL_UPDATE_AMOUNT,
+                toUpdate.itemInputtedAmount(),
+                toUpdate.itemId(),
+                toUpdate.itemInventoryId());
+
+        if (updated == 0){
+            throw new NotFoundException(("Could not update article with ID %d,"
+                    + "because it does not exist").formatted(toUpdate.itemId()));
+        }
+
+        // TODO: SHOULD IT RETURN Inventory or not?
+
+        //        return new Inventory(
+        //                toUpdate.itemId(),
+        //                toUpdate.itemInventoryId()
+        //        );
     }
 
     /**

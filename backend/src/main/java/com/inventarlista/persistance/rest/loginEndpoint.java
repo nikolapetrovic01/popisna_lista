@@ -2,13 +2,9 @@ package com.inventarlista.persistance.rest;
 
 import com.inventarlista.dto.loginRequestDto;
 import com.inventarlista.dto.loginResponseDto;
-import com.inventarlista.exceptions.UserNotFoundException;
 import com.inventarlista.service.loginServiceImpl;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.AuthenticationException;
 
 @RestController
 public class loginEndpoint {

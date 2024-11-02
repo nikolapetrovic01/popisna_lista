@@ -1,8 +1,7 @@
 package com.inventarlista.persistance.rest;
-
 import com.inventarlista.exceptions.ConflictException;
 import com.inventarlista.exceptions.InvalidCredentialsException;
-import com.inventarlista.exceptions.UserNotFoundException;
+import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class ApplicationExceptionHandler {
   @ExceptionHandler
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
-  public ValidationErrorRestDto handleNotFoundException(UserNotFoundException e) {
+  public ValidationErrorRestDto handleNotFoundException(NotFoundException e) {
     LOG.warn("Terminating request processing with status 404 due to {}: {}", e.getClass().getSimpleName(), e.getMessage());
     return new ValidationErrorRestDto("User not found", List.of(e.getMessage()));
   }

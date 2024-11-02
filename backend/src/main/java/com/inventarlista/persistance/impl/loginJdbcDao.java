@@ -1,7 +1,7 @@
 package com.inventarlista.persistance.impl;
 
 import com.inventarlista.entity.User;
-import com.inventarlista.exceptions.UserNotFoundException;
+import com.inventarlista.exceptions.NotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,9 +19,9 @@ public class loginJdbcDao {
      * Finds a user in the database by their username.
      * @param username - The username to search for.
      * @return A User object if the username exists in the database.
-     * @throws UserNotFoundException if the user with the specified username is not found.
+     * @throws NotFoundException if the user with the specified username is not found.
      */
-    public User findByUsername(String username) throws UserNotFoundException{
+    public User findByUsername(String username) throws NotFoundException {
         try {
         return jdbcTemplate.queryForObject(SQL_SELECT_USER, new Object[]{username}, (rs, rowNum) ->
                 new User(
@@ -31,7 +31,7 @@ public class loginJdbcDao {
                         rs.getInt("id")
                 ));
         }catch (EmptyResultDataAccessException  e){
-            throw new UserNotFoundException("User not found for username: " + username);
+            throw new NotFoundException("User not found for username: " + username);
         }
     }
 }
