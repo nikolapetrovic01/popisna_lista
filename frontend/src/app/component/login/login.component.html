@@ -1,15 +1,28 @@
-<div class="login-container">
-  <h1>INVENTAR</h1>
+<body>
+<div class="container">
+  <div class="welcome-content">
+    <h1>Dobro došli</h1>
+    <p>Popisna Lista je web aplikacija namenjena za digitalizaciju inventarizacije unutar skladišta
+      ili prodajnih objekata. Pruža intuitivan interfejs, omogućava kreiranje inventarskog spiska,
+      unos trenutnog stanja zaliha, i digitalizuje ceo proces. Korisnicima omogućava jednostavan
+      pristup sa bilo kog uređaja, smanjujući greške i povećavajući efikasnost rada.</p>
+  </div>
+
   <div class="login-form">
-    <h2>ULOGUJ SE</h2>
+    <h2>LOGIN</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input type="text" id="ime" formControlName="name" name="ime" placeholder="IME">
+        <input type="text" id="ime" formControlName="name" name="ime" placeholder="Username">
       </div>
       <div class="form-group">
-        <input type="password" id="sifra" formControlName="password" name="sifra" placeholder="SIFRA">
+        <input type="password" id="sifra" formControlName="password" name="sifra" placeholder="Password">
       </div>
-      <button type="submit">Log In</button>
+      <div class="form-options">
+        <label><input type="checkbox" name="remember"> Remember</label>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+      <button type="submit">LOGIN</button>
     </form>
   </div>
 </div>
+</body>
