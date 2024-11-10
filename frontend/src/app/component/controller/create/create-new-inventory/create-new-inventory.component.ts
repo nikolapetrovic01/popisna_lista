@@ -63,8 +63,10 @@ export class CreateNewInventoryComponent implements OnInit {
       this.filteredItems = [];
     }
 
-    this.startDate = this.dateService.getStartDate() || this.startDate;
-    this.endDate = this.dateService.getEndDate() || this.endDate;
+    // this.startDate = this.dateService.getStartDate() || this.startDate;
+    // this.endDate = this.dateService.getEndDate() || this.endDate;
+    this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
+    this.endDate = this.dateService.getEndDate() || new Date().toISOString().substring(0, 10);
   }
 
   /**
@@ -153,23 +155,26 @@ export class CreateNewInventoryComponent implements OnInit {
    * Clears the uploaded file and resets file-related data
    */
   removeFile() {
+    // Clear the file and reset file-related data
     this.file = null;
+    this.filteredItems = [];  // Clear filteredItems to reset the state
+    this.showX = false;
+    this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
 
+    // Remove stored data from localStorage
     this.storageService.removeItem('csvContent');
     this.storageService.removeItem('filteredItems');
     this.storageService.removeItem('fileName');
 
-    this.showX = false;
-
-    this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
-
+    // Enable file selection UI
     const fileDropArea = document.querySelector('.file-drop-area');
     if (fileDropArea) {
       fileDropArea.classList.remove('file-selected');
-      fileDropArea.classList.remove('disabled');  // Remove the disabled class to revert the style
+      fileDropArea.classList.remove('disabled'); // Re-enable drop area
     }
+
     const fileInput = document.getElementById('file') as HTMLInputElement;
-    fileInput.disabled = false;
+    if (fileInput) fileInput.disabled = false; // Re-enable file input
   }
 
   /**
@@ -190,8 +195,16 @@ export class CreateNewInventoryComponent implements OnInit {
    * Stores start and end dates in localStorage
    */
   rememberDate() {
-    this.dateService.setStartDate(new Date(this.startDate));
-    this.dateService.setEndDate(new Date(this.endDate));
+    if (this.startDate) {
+      this.dateService.setStartDate(new Date(this.startDate));
+    }
+    if (this.endDate) {
+      this.dateService.setEndDate(new Date(this.endDate));
+    }
+  }
+
+  onDateChange() {
+    this.rememberDate();
   }
 
   /**
@@ -211,7 +224,16 @@ export class CreateNewInventoryComponent implements OnInit {
     this.inventoryService.createNewInventory(selectedItems).subscribe(
       response => {
         this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
-        this.location.back();
+
+        // Clear dates, CSV content, and file data
+        this.startDate = '';
+        this.endDate = '';
+        this.removeFile(); // Reuse the method to clear file-related data
+        this.storageService.removeItem('dateStartKey');
+        this.storageService.removeItem('dateEndKey');
+
+        // this.location.back();
+        this.router.navigateByUrl('/controller');
       },
       error => {
         this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);

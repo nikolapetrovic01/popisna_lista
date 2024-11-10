@@ -12,7 +12,12 @@ export class DateService {
    * @param date - The start date to be saved, expected as a Date object.
    */
   setStartDate(date: Date) {
-    localStorage.setItem(this.dateStartKey, date.toISOString().substring(0, 10));
+    // localStorage.setItem(this.dateStartKey, date.toISOString().substring(0, 10));
+    if (date) {
+      localStorage.setItem(this.dateStartKey, date.toISOString().substring(0, 10));
+    } else {
+      localStorage.removeItem(this.dateStartKey); // Clear the date if it's null
+    }
   }
 
   /**
@@ -20,8 +25,9 @@ export class DateService {
    * @returns - The start date as a string (YYYY-MM-DD) if it exists, otherwise null.
    */
   getStartDate(): string | null {
-    const startDate = localStorage.getItem(this.dateStartKey);
-    return startDate ? startDate : null;
+    // const startDate = localStorage.getItem(this.dateStartKey);
+    // return startDate ? startDate : null;
+    return localStorage.getItem(this.dateStartKey) || '';
   }
 
   /**
@@ -29,7 +35,12 @@ export class DateService {
    * @param date - The end date to be saved, expected as a Date object.
    */
   setEndDate(date: Date) {
-    localStorage.setItem(this.dateEndKey, date.toISOString().substring(0, 10));
+    // localStorage.setItem(this.dateEndKey, date.toISOString().substring(0, 10));
+    if (date) {
+      localStorage.setItem(this.dateEndKey, date.toISOString().substring(0, 10));
+    } else {
+      localStorage.removeItem(this.dateEndKey); // Clear the date if it's null
+    }
   }
 
   /**
@@ -37,7 +48,8 @@ export class DateService {
    * @returns - The end date as a string (YYYY-MM-DD) if it exists, otherwise null.
    */
   getEndDate(): string | null {
-    const endDate = localStorage.getItem(this.dateEndKey);
-    return endDate ? endDate : null;
+    // const endDate = localStorage.getItem(this.dateEndKey);
+    // return endDate ? endDate : null;
+    return localStorage.getItem(this.dateEndKey) || ''; // Return empty string if date is null
   }
 }

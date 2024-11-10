@@ -4,11 +4,11 @@
     <div class="row mb-3">
       <div class="col-6">
         <label for="startDate" class="form-label custom-label">Start Date</label>
-        <input type="date" id="startDate" [(ngModel)] = startDate name="startDate"  class="form-control custom-date-input" required>
+        <input type="date" id="startDate" [(ngModel)] = startDate (change)="onDateChange()" name="startDate"  class="form-control custom-date-input" required>
       </div>
       <div class="col-6">
         <label for="endDate" class="form-label custom-label">End Date</label>
-        <input type="date" id="endDate" [(ngModel)] = endDate name="endDate" ngModel class="form-control custom-date-input" required>
+        <input type="date" id="endDate" [(ngModel)] = endDate (change)="onDateChange()" name="endDate" ngModel class="form-control custom-date-input" required>
       </div>
     </div>
     <div class="mb-3">
