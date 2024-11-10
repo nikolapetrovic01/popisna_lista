@@ -4,16 +4,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct; // Updated import
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@SpringBootApplication()
+@SpringBootApplication
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
     @PostConstruct
     public void init() {
         // Directory path for logs
