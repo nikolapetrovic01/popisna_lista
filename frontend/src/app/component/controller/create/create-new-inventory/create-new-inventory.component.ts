@@ -8,6 +8,7 @@ import {DateService} from "../../../../service/date.service";
 import { ToastrService } from 'ngx-toastr';
 import {MESSAGES} from "../../../../shared/constants/messages";
 import {StorageService} from "../../../../service/storageService";
+import {HeaderComponent} from "../../../header/header.component";
 
 
 @Component({
@@ -18,6 +19,7 @@ import {StorageService} from "../../../../service/storageService";
     NgIf,
     DatePipe,
     RouterLink,
+    HeaderComponent,
   ],
   templateUrl: './create-new-inventory.component.html',
   styleUrl: './create-new-inventory.component.css'

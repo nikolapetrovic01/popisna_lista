@@ -1,23 +1,95 @@
-<!-- controller.component.html -->
-<div class="controller-wrapper">
-  <h1>Dio Vladimir</h1>
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<app-header></app-header>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;  &lt;!&ndash; Button to navigate to the Inventories component &ndash;&gt;&ndash;&gt;-->
 
-  <!-- Button to navigate to the Inventories component -->
-  <button id="new-button" class="small-button" (click)="navigateToCreateNewInventory()">Napravi novi</button>
+<!--&lt;!&ndash;  &lt;!&ndash; Always visible list for Aktivni Items &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="active-list">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="active-list-header">&ndash;&gt;-->
+<!--&lt;!&ndash;      <h3>Aktivni</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button id="new-button" class="small-button" (click)="navigateToCreateNewInventory()">&ndash;&gt;-->
+<!--&lt;!&ndash;        Napravi novi&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="active-items">&ndash;&gt;-->
+<!--&lt;!&ndash;      <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
 
-  <!-- Always visible list for Aktivni Items -->
-  <div class="active-list">
-    <h3>Aktivni</h3>
-    <div class="active-items">
-      <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+<!--&lt;!&ndash;  &lt;!&ndash; Dropdown for Neaktivni (Inactive) Items &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="inactive-list">&ndash;&gt;-->
+<!--&lt;!&ndash;    <button id="inactive-button" class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div *ngIf="isInactiveOpen" class="dropdown-content">&ndash;&gt;-->
+<!--&lt;!&ndash;      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--<body>-->
+<!--<app-header></app-header>-->
+<!--<div class="main-content">-->
+<!--  <div class="container">-->
+<!--    &lt;!&ndash; Always visible list for Aktivni Items &ndash;&gt;-->
+<!--    <div class="active-list">-->
+<!--      <div class="active-list-header">-->
+<!--        <h3>Aktivni</h3>-->
+<!--        <button id="new-button" class="small-button" (click)="navigateToCreateNewInventory()">-->
+<!--          Napravi novi-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="active-items">-->
+<!--        <app-dropdown-item *ngFor="let item of activeItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Dropdown for Neaktivni (Inactive) Items &ndash;&gt;-->
+<!--    <div class="inactive-list">-->
+<!--      <button id="inactive-button" class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>-->
+<!--      <div *ngIf="isInactiveOpen" class="dropdown-content">-->
+<!--        <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</body>-->
+<body>
+<app-header></app-header>
+<div class="main-content">
+  <div class="container">
+    <!-- Always visible list for Aktivni Items -->
+    <div class="active-list">
+      <div class="active-list-header d-flex align-items-center justify-content-between mb-3">
+        <h3 class="text-center w-100">Aktivni</h3>
+        <button id="new-button" class="small-button float-end" (click)="navigateToCreateNewInventory()">
+          Napravi novi
+        </button>
+      </div>
+
+      <!-- Search filters -->
+      <form class="row align-items-center my-3">
+        <div class="col-md-6">
+          <label class="form-label" for="startDate">Start Date</label>
+          <input type="date" class="form-control" id="startDate" (change)="filterItems()">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="endDate">End Date</label>
+          <input type="date" class="form-control" id="endDate" (change)="filterItems()">
+        </div>
+      </form>
+
+      <div class="active-items">
+        <app-dropdown-item *ngFor="let item of filteredActiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+      </div>
     </div>
-  </div>
 
-  <!-- Dropdown for Neaktivni (Inactive) Items -->
-  <div class="dropdown">
-    <button id="inactive-button" class="dropbtn" (click)="toggleDropdown('inactive')">Neaktivni</button>
-    <div *ngIf="isInactiveOpen" class="dropdown-content">
-      <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+    <!-- Dropdown for Neaktivni (Inactive) Items -->
+    <div class="inactive-list">
+      <button id="inactive-button" class="dropbtn mt-4" (click)="toggleDropdown('inactive')">Neaktivni</button>
+      <div *ngIf="isInactiveOpen" class="dropdown-content">
+        <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+      </div>
     </div>
   </div>
 </div>
+</body>
+

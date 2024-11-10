@@ -4,15 +4,20 @@ import {DropdownItemComponent} from "./dropdown-item/dropdown-item.component";
 import {inventories, inventoriesPiece} from "../../dto/inventories";
 import {InventoryService} from "../../service/inventory.service";
 import {CommonModule} from "@angular/common";
+import {HeaderComponent} from "../header/header.component";
+import {debounceTime, Subject} from "rxjs";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-controller',
   standalone: true,
-    imports: [
-        RouterOutlet,
-        DropdownItemComponent,
-        CommonModule,
-    ],
+  imports: [
+    RouterOutlet,
+    DropdownItemComponent,
+    CommonModule,
+    HeaderComponent,
+    FormsModule,
+  ],
   templateUrl: './controller.component.html',
   styleUrl: './controller.component.css'
 })
@@ -21,6 +26,7 @@ export class ControllerComponent implements OnInit {
   isInactiveOpen: boolean = false;
   activeItems: inventoriesPiece[] = [];
   inactiveItems: inventoriesPiece[] = [];
+  filteredActiveItems: inventoriesPiece[] = [];
 
   constructor(
     private router: Router,
@@ -38,6 +44,7 @@ export class ControllerComponent implements OnInit {
         next: (data: inventories) => {
           this.activeItems = data.tables.filter(item => item.status === 1);
           this.inactiveItems = data.tables.filter(item => item.status === 0);
+          this.filteredActiveItems = [...this.activeItems];
           //Status 2 needs to be handled
         },
         error: (error) => console.error(error)
@@ -77,5 +84,17 @@ export class ControllerComponent implements OnInit {
       this.isInactiveOpen = !this.isInactiveOpen;
       this.isActiveOpen = false;
     }
+  }
+
+  filterItems(): void {
+    const startDateInput = (document.getElementById('startDate') as HTMLInputElement).value;
+    const endDateInput = (document.getElementById('endDate') as HTMLInputElement).value;
+    const startDate = startDateInput ? new Date(startDateInput) : null;
+    const endDate = endDateInput ? new Date(endDateInput) : null;
+
+    this.filteredActiveItems = this.activeItems.filter(item => {
+      const itemStartDate = new Date(item.startDate);
+      return (!startDate || itemStartDate >= startDate) && (!endDate || itemStartDate <= endDate);
+    });
   }
 }
