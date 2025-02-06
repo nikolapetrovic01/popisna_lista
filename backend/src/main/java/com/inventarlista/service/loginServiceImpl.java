@@ -76,7 +76,7 @@ public class loginServiceImpl {
             User applicationUser = findApplicationUserByUsername(username);
 
             List<GrantedAuthority> grantedAuthorities;
-
+            //TODO:
             // Assign roles based on user level
             if (applicationUser.getLevel() == 1) {
                 grantedAuthorities = AuthorityUtils.createAuthorityList("ROLE_MANAGER", "ROLE_WORKER_ADMIN");

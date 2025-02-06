@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Allow anyone to access the login and register endpoints
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/controller/**").hasRole("MANAGER")
+                        .requestMatchers("/controller/**").permitAll()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )
