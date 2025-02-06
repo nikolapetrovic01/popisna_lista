@@ -1,4 +1,4 @@
-package com.inventarlista.persistance.rest;
+package com.inventarlista.endpoint;
 
 import com.inventarlista.dto.loginRequestDto;
 import com.inventarlista.dto.loginResponseDto;
@@ -21,7 +21,7 @@ public class loginEndpoint {
      */
     @PostMapping("/login")
     public ResponseEntity<loginResponseDto> login(@RequestBody loginRequestDto loginRequest) {
-        loginResponseDto response = loginService.validateUser(loginRequest);
+        loginResponseDto response = loginService.authenticateAndIssueToken(loginRequest);
         return ResponseEntity.ok(response);
     }
 }

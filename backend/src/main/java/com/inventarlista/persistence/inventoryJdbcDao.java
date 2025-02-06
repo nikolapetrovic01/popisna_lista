@@ -1,4 +1,4 @@
-package com.inventarlista.persistance.impl;
+package com.inventarlista.persistence;
 
 import com.inventarlista.dto.updateItemAmount;
 import com.inventarlista.entity.Inventory;

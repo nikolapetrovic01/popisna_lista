@@ -1,8 +1,9 @@
-package com.inventarlista.persistance.rest;
+package com.inventarlista.endpoint.exceptionhandler;
 import com.inventarlista.exceptions.ConflictException;
 import com.inventarlista.exceptions.InvalidCredentialsException;
 import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.exceptions.ValidationException;
+import com.inventarlista.exceptions.ValidationErrorRestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

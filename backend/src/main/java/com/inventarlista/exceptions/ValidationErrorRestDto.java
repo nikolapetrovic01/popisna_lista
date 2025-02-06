@@ -1,4 +1,4 @@
-package com.inventarlista.persistance.rest;
+package com.inventarlista.exceptions;
 
 import java.util.List;
 

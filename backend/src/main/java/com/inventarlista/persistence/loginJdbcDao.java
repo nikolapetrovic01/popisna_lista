@@ -1,4 +1,4 @@
-package com.inventarlista.persistance.impl;
+package com.inventarlista.persistence;
 
 import com.inventarlista.entity.User;
 import com.inventarlista.exceptions.NotFoundException;

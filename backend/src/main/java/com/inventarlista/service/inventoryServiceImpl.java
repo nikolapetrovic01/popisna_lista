@@ -4,7 +4,7 @@ import com.inventarlista.dto.*;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
 import com.inventarlista.exceptions.NotFoundException;
-import com.inventarlista.persistance.impl.inventoryJdbcDao;
+import com.inventarlista.persistence.inventoryJdbcDao;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

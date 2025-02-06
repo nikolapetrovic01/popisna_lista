@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, Observable, tap, throwError} from "rxjs";
 import { loginRequest, loginResponse } from "../dto/login";
 import {environment} from "../../enviroments/enviroment";
 
@@ -18,11 +18,17 @@ export class loginService {
    * @returns - An observable of `loginResponse`, which contains the server response for the login.
    */
   login(data: loginRequest): Observable<loginResponse> {
-    return this.http.post<loginResponse>(this.baseUrl, data).pipe(
-      catchError(this.handleError)
+    return this.http.post<loginResponse>(this.baseUrl, data)
+      .pipe(
+      tap((authResponse: loginResponse) => this.setToken(authResponse)),
+      catchError(((error) => this.handleError(error)))
     );
   }
 
+  private setToken(authResponse: loginResponse) {
+    localStorage.setItem("authToken", authResponse.jwtToken);
+    localStorage.setItem("userLevel", authResponse.level.toString()); // Store user level
+  }
   /**
    * Handles HTTP errors by determining the error type and returning an appropriate error message.
    * @param error - The error response from the HTTP request.
@@ -30,17 +36,23 @@ export class loginService {
    */
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
+
     if (error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Server-side error
-      if (error.error && error.error.message) {
-        errorMessage = `Error: ${error.error.message}\nDetails: ${error.error.details}`;
+      // Server-side error handling
+      if (error.status === 0) {
+        errorMessage = 'System down: Unable to connect to the server.';
+      } else if (error.status === 401 || error.status === 403 || error.status === 404) {
+        errorMessage = 'Invalid credentials: Please check your username and password.';
+      } else if (error.status === 500) {
+        errorMessage = 'Server error: Please try again later.';
       } else {
         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
       }
     }
-    return throwError(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
+
 }

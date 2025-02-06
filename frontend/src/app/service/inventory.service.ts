@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../enviroments/enviroment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {loginRequest, loginResponse} from "../dto/login";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {inventories} from "../dto/inventories";
 import {item, items, selectedItems, selectItem, updateItemAmount} from "../dto/item";
 
@@ -19,7 +19,20 @@ export class InventoryService{
    * @returns - An observable of `inventories`, which is the inventory list data.
    */
   getInventory(): Observable<inventories> {
-    return this.http.get<inventories>(this.baseUrl);
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      console.error("No token found!");
+      window.location.href = "/login";
+      return throwError("No authentication token found.");
+    } else {
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // return this.http.get<inventories>(this.baseUrl);
+    console.log(this.baseUrl + headers);
+    return this.http.get<inventories>(`${this.baseUrl}`, { headers });
+    }
   }
 
   /**

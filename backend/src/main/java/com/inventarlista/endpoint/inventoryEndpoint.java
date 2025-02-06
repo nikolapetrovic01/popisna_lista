@@ -1,8 +1,9 @@
-package com.inventarlista.persistance.rest;
+package com.inventarlista.endpoint;
 
 import com.inventarlista.dto.*;
 import com.inventarlista.service.inventoryServiceImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class inventoryEndpoint {
      * @return An inventoriesDto object containing all inventory data.
      * @throws Exception if an error occurs during the retrieval process.
      */
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping("/controller")
     public inventoriesDto getInventories() throws Exception {
         return inventoryService.getAllInventories();
