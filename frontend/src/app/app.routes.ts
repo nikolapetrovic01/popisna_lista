@@ -16,5 +16,10 @@ export const routes: Routes = [
       {path: 'create', component: CreateNewInventoryComponent, data: {requiredLevel: 1}},
       {path: 'create/show-csv', component: ShowCsvContentComponent, data: {requiredLevel: 1}},
     ]
+  },
+  {
+    path: 'worker', canActivate: [authGuard] ,children: [
+      {path: '', component: ControllerComponent, data: {requiredLevel: 2}},
+    ]
   }
 ];
