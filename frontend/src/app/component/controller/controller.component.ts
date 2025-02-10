@@ -5,7 +5,6 @@ import {inventories, inventoriesPiece} from "../../dto/inventories";
 import {InventoryService} from "../../service/inventory.service";
 import {CommonModule} from "@angular/common";
 import {HeaderComponent} from "../header/header.component";
-import {debounceTime, Subject} from "rxjs";
 import {FormsModule} from "@angular/forms";
 
 @Component({

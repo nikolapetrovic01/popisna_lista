@@ -1,0 +1,8 @@
+<h2>Inventar</h2>
+<div class="inventories">
+<app-inventory-item
+  *ngFor="let item of items"
+  [item]="item"
+  [isEditable] = true
+  ></app-inventory-item>
+</div>

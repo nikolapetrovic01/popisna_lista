@@ -19,7 +19,7 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './inventories.component.html',
   styleUrl: './inventories.component.css'
 })
-export class InventoriesComponent implements OnInit{
+export class InventoriesComponent implements OnInit {
   items: item[] = [];
   itemId: number | null = null;
   isEditable: boolean = false;
@@ -41,14 +41,16 @@ export class InventoriesComponent implements OnInit{
     if (id !== null) {
       this.itemId = +id;
       this.isEditable = fromActive === 'true';
-      this.inventoryService.getItems(this.itemId).subscribe(
-        (data: items) => {
-          this.items = data.items;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+      this.inventoryService.getItems(this.itemId).subscribe({
+      next: (data: items) =>
+      {
+        this.items = data.items;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+      ;
     }
   }
 

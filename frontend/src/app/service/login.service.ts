@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import { loginRequest, loginResponse } from "../dto/login";
+// import { jwtDecode } from "jwt-decode";
 import {environment} from "../../enviroments/enviroment";
 
 @Injectable({
@@ -29,6 +30,32 @@ export class loginService {
     localStorage.setItem("authToken", authResponse.jwtToken);
     localStorage.setItem("userLevel", authResponse.level.toString()); // Store user level
   }
+
+  //TODO: FIX
+  /**
+   * Check if a valid JWT token is saved in the localStorage
+   */
+  // isLoggedIn() {
+  //   return !!this.getToken() &&
+  //     (this.getTokenExpirationDate(this.getToken()).valueOf() >
+  //       new Date().valueOf());
+  // }
+
+  getToken() {
+    return localStorage.getItem("authToken");
+  }
+
+  // private getTokenExpirationDate(token: string): Date {
+  //   const decoded: any = jwtDecode(token);
+  //   if (decoded.exp === undefined) {
+  //     return null;
+  //   }
+  //
+  //   const date = new Date(0);
+  //   date.setUTCSeconds(decoded.exp);
+  //   return date;
+  // }
+
   /**
    * Handles HTTP errors by determining the error type and returning an appropriate error message.
    * @param error - The error response from the HTTP request.

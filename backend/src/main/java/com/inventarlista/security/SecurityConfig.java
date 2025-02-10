@@ -28,6 +28,7 @@ public class SecurityConfig {
                         // Allow anyone to access the login and register endpoints
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/controller/**").permitAll()
+                        .requestMatchers("/worker/**").permitAll()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )

@@ -33,12 +33,11 @@ public class inventoryEndpoint {
      *
      * @param id - The ID of the inventory.
      * @return An inventoryItemsDto containing items in the specified inventory.
-     * @throws Exception if an error occurs during the retrieval process.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @Secured("ROLE_MANAGER")
     @GetMapping("/controller/inventory/{id}")
-    public inventoryItemsDto getItems(@PathVariable int id) throws Exception {
+    public inventoryItemsDto getItems(@PathVariable int id) {
         return inventoryService.getItems(id);
     }
 
@@ -69,5 +68,19 @@ public class inventoryEndpoint {
     public ResponseEntity<Void> createNewInventory(@RequestBody selectedItems selectedItems) {
         inventoryService.createNewInventory(selectedItems);
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_WORKER_ADMIN')")
+    @Secured("ROLE_WORKER_ADMIN")
+    @GetMapping("/worker")
+    public inventoriesDto getInventoriesWorker() {
+        return inventoryService.getAllInventoriesForWorkers();
+    }
+
+    @PreAuthorize("hasRole('ROLE_WORKER_ADMIN')")
+    @Secured("ROLE_WORKER_ADMIN")
+    @GetMapping("/worker/inventory/{id}")
+    public inventoryItemsDto getWorkerItems(@PathVariable int id) {
+        return inventoryService.getItems(id);
     }
 }

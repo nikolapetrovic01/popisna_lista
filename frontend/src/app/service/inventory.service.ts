@@ -9,8 +9,8 @@ import {item, items, selectedItems, updateItemAmount} from "../dto/item";
   providedIn: 'root',
 })
 export class InventoryService{
-  private baseUrl = `${environment.backendUrl}/controller`;
-
+  private managerBaseUrl = `${environment.backendUrl}/controller`;
+  private workerBaseUrl = `${environment.backendUrl}/worker`;
   constructor(private http: HttpClient) {}
 
   getHeaders(): HttpHeaders {
@@ -22,7 +22,7 @@ export class InventoryService{
    * @returns - An observable of `inventories`, which is the inventory list data.
    */
   getInventory(): Observable<inventories> {
-    return this.http.get<inventories>(`${this.baseUrl}`, {headers: this.getHeaders()});
+    return this.http.get<inventories>(`${this.managerBaseUrl}`, {headers: this.getHeaders()});
   }
 
   /**
@@ -31,7 +31,7 @@ export class InventoryService{
    * @returns - An observable of `items` representing the list of items in the specified inventory.
    */
   getItems(id: number): Observable<items>{
-    return this.http.get<items>(`${this.baseUrl}/inventory/${id}`, {headers: this.getHeaders()});
+    return this.http.get<items>(`${this.managerBaseUrl}/inventory/${id}`, {headers: this.getHeaders()});
   }
 
   /**
@@ -40,7 +40,7 @@ export class InventoryService{
    * @returns - An observable of `item` with the updated data.
    */
   updateItemAmount(itemToUpdate: updateItemAmount): Observable<item>{
-    return this.http.put<item>(`${this.baseUrl}/inventory/${itemToUpdate.itemId}`, itemToUpdate, {headers: this.getHeaders()});
+    return this.http.put<item>(`${this.managerBaseUrl}/inventory/${itemToUpdate.itemId}`, itemToUpdate, {headers: this.getHeaders()});
   }
 
   // closeInventory(id: number): Observable<item>{
@@ -53,6 +53,16 @@ export class InventoryService{
    * @returns - An observable of `selectedItems` as confirmation of the created inventory.
    */
   createNewInventory(selectedItems: selectedItems): Observable<selectedItems>{
-    return this.http.post<selectedItems>(`${this.baseUrl}/inventory/create`, selectedItems, {headers: this.getHeaders()});
+    return this.http.post<selectedItems>(`${this.managerBaseUrl}/inventory/create`, selectedItems, {headers: this.getHeaders()});
+  }
+
+  //WORKER SERVICE
+
+  getWorkerInventory(): Observable<inventories> {
+    return this.http.get<inventories>(`${this.workerBaseUrl}`, {headers: this.getHeaders()});
+  }
+
+  getWorkerItems(id: number): Observable<items>{
+    return this.http.get<items>(`${this.workerBaseUrl}/inventory/${id}`, {headers: this.getHeaders()});
   }
 }

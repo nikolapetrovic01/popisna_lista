@@ -49,18 +49,17 @@ export class LoginComponent {
             case 1:
               //This is the controller case
               console.log("Controller");
-
-              this.userLevelService.clearUserLevel();
-              this.userLevelService.clearUserId();
-              this.userLevelService.setUserLevel(1);
-              this.userLevelService.setUserId(response.id);
+              this.setUp(1, response.id);
+              // this.userLevelService.clearUserLevel();
+              // this.userLevelService.clearUserId();
+              // this.userLevelService.setUserLevel(1);
+              // this.userLevelService.setUserId(response.id);
 
               this.router.navigate(['/controller']).catch(err => console.log("The error: ", err));
               break;
             case 2:
-              // this.router.navigate(['/admin']);
-              console.log("Worker/Worker Admin");
-              this.router.navigate(['/worker']).catch(err => console.log("The error: ", err));
+              console.log("Worker Admin");
+              this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
               break;
             case 3:
               // this.router.navigate(['/superadmin']);
@@ -82,5 +81,12 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  private setUp(userLevel: number, userId: number) {
+    this.userLevelService.clearUserLevel();
+    this.userLevelService.clearUserId();
+    this.userLevelService.setUserLevel(userLevel);
+    this.userLevelService.setUserId(userId);
   }
 }

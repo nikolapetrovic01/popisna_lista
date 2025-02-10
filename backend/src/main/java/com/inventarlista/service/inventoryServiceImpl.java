@@ -123,4 +123,18 @@ public class inventoryServiceImpl {
         ).toList();
         inventoryJdbcDao.saveItems(itemsToSave);
     }
+
+    public inventoriesDto getAllInventoriesForWorkers() {
+        List<Inventory> inventories;
+        try{
+            inventories = (List<Inventory>) inventoryJdbcDao.getInventory();
+            List<inventoriesPieceDto> inventoriesPieceDtos = inventories.stream()
+                    .filter(inventory -> inventory.getStatus() == 1)
+                    .map(this::mapToInventoryPiece)
+                    .toList();
+            return new inventoriesDto(inventoriesPieceDtos);
+        } catch (NotFoundException e){
+            throw new NotFoundException("No inventories");
+        }
+    }
 }
