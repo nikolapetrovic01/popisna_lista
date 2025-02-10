@@ -1,1 +1,13 @@
-<p>worker-lower-level works!</p>
+<app-header></app-header>
+<div class="dashboard-container">
+  <h1 class="mt-3 mb-2">Inventari</h1>
+  <div class="section">
+    <div *ngIf="isLoadingTasks">Loading tasks...</div>
+    <ul *ngIf="!isLoadingTasks && activeItems.length > 0">
+      <div class="active-items">
+        <app-dropdown-item *ngFor="let item of filteredActiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+      </div>
+    </ul>
+    <div *ngIf="!isLoadingTasks && activeItems.length === 0">Trenutno nema aktivnon popisa.</div>
+  </div>
+</div>

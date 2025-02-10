@@ -1,23 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {item, items} from "../../../../../dto/item";
-import {InventoryService} from "../../../../../service/inventory.service";
-import {
-  ListInventoryItemComponent
-} from "../../../../controller/inventories/list-inventory-item/list-inventory-item.component";
+import {ListInventoryItemComponent} from "../../../../controller/inventories/list-inventory-item/list-inventory-item.component";
 import {NgForOf} from "@angular/common";
+import {item, items} from "../../../../../dto/item";
+import {ActivatedRoute} from "@angular/router";
+import {InventoryService} from "../../../../../service/inventory.service";
 
 @Component({
-  selector: 'app-worker-inventory-view',
+  selector: 'app-worker-higher-level-inventory',
   standalone: true,
-  imports: [
-    ListInventoryItemComponent,
-    NgForOf
-  ],
-  templateUrl: './worker-inventory-view.component.html',
-  styleUrl: './worker-inventory-view.component.css'
+    imports: [
+        ListInventoryItemComponent,
+        NgForOf
+    ],
+  templateUrl: './worker-higher-level-inventory.component.html',
+  styleUrl: './worker-higher-level-inventory.component.css'
 })
-export class WorkerInventoryViewComponent implements OnInit {
+export class WorkerHigherLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
   searchTerm: string = '';

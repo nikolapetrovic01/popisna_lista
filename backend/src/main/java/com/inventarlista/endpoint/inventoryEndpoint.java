@@ -22,7 +22,6 @@ public class inventoryEndpoint {
      * @throws Exception if an error occurs during the retrieval process.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @Secured("ROLE_MANAGER")
     @GetMapping("/controller")
     public inventoriesDto getInventories() throws Exception {
         return inventoryService.getAllInventories();
@@ -35,7 +34,6 @@ public class inventoryEndpoint {
      * @return An inventoryItemsDto containing items in the specified inventory.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @Secured("ROLE_MANAGER")
     @GetMapping("/controller/inventory/{id}")
     public inventoryItemsDto getItems(@PathVariable int id) {
         return inventoryService.getItems(id);
@@ -49,7 +47,6 @@ public class inventoryEndpoint {
      * @return A ResponseEntity indicating the status of the update operation.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @Secured("ROLE_MANAGER")
     @PutMapping("/controller/inventory/{id}")
     public ResponseEntity<Void> updateItemAmount(@PathVariable int id, @RequestBody updateItemAmount update) {
         inventoryService.updateItemAmount(update);
@@ -63,22 +60,19 @@ public class inventoryEndpoint {
      * @return A ResponseEntity indicating the status of the creation operation.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @Secured("ROLE_MANAGER")
     @PostMapping("/controller/inventory/create")
     public ResponseEntity<Void> createNewInventory(@RequestBody selectedItems selectedItems) {
         inventoryService.createNewInventory(selectedItems);
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_WORKER_ADMIN')")
-    @Secured("ROLE_WORKER_ADMIN")
+    @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
     @GetMapping("/worker")
     public inventoriesDto getInventoriesWorker() {
         return inventoryService.getAllInventoriesForWorkers();
     }
 
-    @PreAuthorize("hasRole('ROLE_WORKER_ADMIN')")
-    @Secured("ROLE_WORKER_ADMIN")
+    @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
     @GetMapping("/worker/inventory/{id}")
     public inventoryItemsDto getWorkerItems(@PathVariable int id) {
         return inventoryService.getItems(id);

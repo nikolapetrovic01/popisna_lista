@@ -5,10 +5,8 @@ import {InventoriesComponent} from "./component/controller/inventories/inventori
 import {CreateNewInventoryComponent} from "./component/controller/create/create-new-inventory/create-new-inventory.component";
 import {ShowCsvContentComponent} from "./component/controller/create/show-csv-content/show-csv-content.component";
 import {authGuard} from "./guards/auth.guard";
-import {WorkerHigherLevelComponent} from "./component/worker/worker-higher-level/worker-higher-level.component";
-import {
-  WorkerInventoryViewComponent
-} from "./component/worker/worker-higher-level/inventory/worker-inventory-view/worker-inventory-view.component";
+import {WorkerDashboardComponent} from "./component/worker/dashboard/worker-dashboard.component";
+import {WorkerInventoryViewComponent} from "./component/worker/worker-inventory-view/worker-inventory-view.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,8 +22,8 @@ export const routes: Routes = [
   {
     path: 'worker', canActivate: [authGuard] ,children: [
       {path: '', component: ControllerComponent, data: {requiredLevel: 2}},
-      {path: 'dashboard', component: WorkerHigherLevelComponent, data: {requiredLevel: 2}},
-      {path: 'inventory/:id', component: WorkerInventoryViewComponent, data: {requiredLevel: 2}},
+      {path: 'dashboard', component: WorkerDashboardComponent, data: {requiredLevel: [2,3]}},
+      {path: 'inventory/:id', component: WorkerInventoryViewComponent, data: {requiredLevel: [2,3]}},
     ]
   }
 ];

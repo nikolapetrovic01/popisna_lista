@@ -50,20 +50,20 @@ export class LoginComponent {
               //This is the controller case
               console.log("Controller");
               this.setUp(1, response.id);
-              // this.userLevelService.clearUserLevel();
-              // this.userLevelService.clearUserId();
-              // this.userLevelService.setUserLevel(1);
-              // this.userLevelService.setUserId(response.id);
 
               this.router.navigate(['/controller']).catch(err => console.log("The error: ", err));
               break;
             case 2:
               console.log("Worker Admin");
+              this.setUp(2, response.id);
+
               this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
               break;
             case 3:
-              // this.router.navigate(['/superadmin']);
-              console.log("3");
+              console.log("Worker");
+              this.setUp(3, response.id);
+
+              this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
               break;
             default:
               // this.router.navigate(['/home']);
