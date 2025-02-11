@@ -20,6 +20,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
   searchTerm: string = '';
+  changedItems: updateItemAmount[] = [];
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService,
@@ -43,16 +44,29 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
     }
   }
 
-  save(){
-    // this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
-    this.saveChangedItems()
+  handleItemChange(updatedItem: updateItemAmount) {
+    const index = this.changedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    if (index !== -1) {
+      this.changedItems[index] = updatedItem; // Update existing entry
+    } else {
+      this.changedItems.push(updatedItem); // Add new entry
+    }
   }
 
-  saveChangedItems() {
-    this.inventoryService.saveWorkerChangedItems(this.items).subscribe({
-      next: () => console.log("Changes saved successfully."),
-      error: err => console.error("Error saving changes:", err)
-    });
+  save() {
+    if (this.changedItems.length > 0) {
+      this.inventoryService.saveWorkerChangedItems(this.changedItems).subscribe({
+        next: () => {
+          console.log('All changes saved successfully');
+          console.log(this.changedItems);
+          this.changedItems = [];
+        },
+        error: err => {
+          console.error('Error saving changes', err);
+        }
+      });
+    } else {
+      console.log("No changes to save");
+    }
   }
-
 }

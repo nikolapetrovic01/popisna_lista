@@ -157,4 +157,22 @@ public class inventoryJdbcDao {
             System.err.println("Error occurred while saving items: " + e.getMessage());
         }
     }
+
+    /**
+     * Batch update item amounts in the inventory.
+     * @param updateItems - An array of updateItemAmount objects.
+     */
+    public void batchUpdateItemAmounts(updateItemAmount[] updateItems) {
+        jdbcTemplate.batchUpdate(
+                SQL_UPDATE_AMOUNT,
+                Arrays.asList(updateItems),  // Convert array to list
+                updateItems.length,
+                (ps, toUpdate) -> {
+                    ps.setBigDecimal(1, toUpdate.itemInputtedAmount());
+                    ps.setLong(2, toUpdate.itemId());
+                    ps.setLong(3, toUpdate.itemInventoryId());
+                }
+        );
+    }
+
 }

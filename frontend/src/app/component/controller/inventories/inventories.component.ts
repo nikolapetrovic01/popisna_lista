@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
 import {InventoryService} from "../../../service/inventory.service";
-import {item, items} from "../../../dto/item";
+import {item, items, updateItemAmount} from "../../../dto/item";
 import {ListInventoryItemComponent} from "./list-inventory-item/list-inventory-item.component";
 import {ActivatedRoute} from "@angular/router";
 import {CommonModule} from "@angular/common";
@@ -24,6 +24,8 @@ export class InventoriesComponent implements OnInit {
   itemId: number | null = null;
   isEditable: boolean = false;
   searchTerm: string = '';
+  changedItems: updateItemAmount[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -70,5 +72,31 @@ export class InventoriesComponent implements OnInit {
    */
   closeOpenedInventory(): void {
     console.log('Close Inventory');
+  }
+
+  handleItemChange(updatedItem: updateItemAmount) {
+    const index = this.changedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    if (index !== -1) {
+      this.changedItems[index] = updatedItem; // Update existing entry
+    } else {
+      this.changedItems.push(updatedItem); // Add new entry
+    }
+  }
+
+  save() {
+    if (this.changedItems.length > 0) {
+      this.inventoryService.saveChangedItems(this.changedItems).subscribe({
+        next: () => {
+          console.log('All changes saved successfully');
+          console.log(this.changedItems);
+          this.changedItems = [];
+        },
+        error: err => {
+          console.error('Error saving changes', err);
+        }
+      });
+    } else {
+      console.log("No changes to save");
+    }
   }
 }

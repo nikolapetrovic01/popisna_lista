@@ -39,17 +39,10 @@ public class inventoryEndpoint {
         return inventoryService.getItems(id);
     }
 
-    /**
-     * Updates the amount for a specific item within an inventory.
-     *
-     * @param id     - The ID of the inventory containing the item.
-     * @param update - An updateItemAmount object containing the item ID and the new amount.
-     * @return A ResponseEntity indicating the status of the update operation.
-     */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @PutMapping("/controller/inventory/{id}")
-    public ResponseEntity<Void> updateItemAmount(@PathVariable int id, @RequestBody updateItemAmount update) {
-        inventoryService.updateItemAmount(update);
+    @PutMapping("/controller/inventory/saveChanges")
+    public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmount[] selectItems) {
+        inventoryService.managerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();
     }
 
@@ -76,5 +69,13 @@ public class inventoryEndpoint {
     @GetMapping("/worker/inventory/{id}")
     public inventoryItemsDto getWorkerItems(@PathVariable int id) {
         return inventoryService.getItems(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
+    @PutMapping("/worker/inventory/saveChanges")
+    public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmount[] selectItems) {
+        System.out.println("Array of length" + selectItems.length);
+        inventoryService.workerUpdateItemAmount(selectItems);
+        return ResponseEntity.ok().build();
     }
 }

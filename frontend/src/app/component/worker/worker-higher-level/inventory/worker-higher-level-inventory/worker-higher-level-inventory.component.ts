@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ListInventoryItemComponent} from "../../../../controller/inventories/list-inventory-item/list-inventory-item.component";
 import {NgForOf} from "@angular/common";
-import {item, items} from "../../../../../dto/item";
+import {item, items, updateItemAmount} from "../../../../../dto/item";
 import {ActivatedRoute} from "@angular/router";
 import {InventoryService} from "../../../../../service/inventory.service";
 
+// noinspection DuplicatedCode
 @Component({
   selector: 'app-worker-higher-level-inventory',
   standalone: true,
@@ -19,6 +20,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
   searchTerm: string = '';
+  changedItems: updateItemAmount[] = [];
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService) {
@@ -38,6 +40,32 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
           console.error(err);
         }
       });
+    }
+  }
+
+  handleItemChange(updatedItem: updateItemAmount) {
+    const index = this.changedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    if (index !== -1) {
+      this.changedItems[index] = updatedItem; // Update existing entry
+    } else {
+      this.changedItems.push(updatedItem); // Add new entry
+    }
+  }
+
+  save() {
+    if (this.changedItems.length > 0) {
+      this.inventoryService.saveWorkerChangedItems(this.changedItems).subscribe({
+        next: () => {
+          console.log('All changes saved successfully');
+          console.log(this.changedItems);
+          this.changedItems = [];
+        },
+        error: err => {
+          console.error('Error saving changes', err);
+        }
+      });
+    } else {
+      console.log("No changes to save");
     }
   }
 }

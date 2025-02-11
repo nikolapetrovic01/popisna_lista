@@ -85,12 +85,12 @@ public class inventoryServiceImpl {
         );
     }
 
-    /**
-     * Updates the amount of a specific item in an inventory.
-     * @param update - The updateItemAmount DTO containing the item ID, inventory ID, and new amount.
-     */
-    public void updateItemAmount(updateItemAmount update) {
-        inventoryJdbcDao.updateItemAmount(update);
+    public void managerUpdateItemAmount(updateItemAmount[] updateItems) {
+        if (updateItems == null || updateItems.length == 0) {
+            throw new IllegalArgumentException("No items to update.");
+        }
+
+        inventoryJdbcDao.batchUpdateItemAmounts(updateItems);
     }
 
     /**
@@ -136,5 +136,13 @@ public class inventoryServiceImpl {
         } catch (NotFoundException e){
             throw new NotFoundException("No inventories");
         }
+    }
+
+    public void workerUpdateItemAmount(updateItemAmount[] updateItems) {
+        if (updateItems == null || updateItems.length == 0) {
+            throw new IllegalArgumentException("No items to update.");
+        }
+
+        inventoryJdbcDao.batchUpdateItemAmounts(updateItems);
     }
 }

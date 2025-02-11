@@ -34,13 +34,8 @@ export class InventoryService{
     return this.http.get<items>(`${this.managerBaseUrl}/inventory/${id}`, {headers: this.getHeaders()});
   }
 
-  /**
-   * Updates the amount of a specific item within an inventory.
-   * @param itemToUpdate - An object containing the item data to update.
-   * @returns - An observable of `item` with the updated data.
-   */
-  updateItemAmount(itemToUpdate: updateItemAmount): Observable<item>{
-    return this.http.put<item>(`${this.managerBaseUrl}/inventory/${itemToUpdate.itemId}`, itemToUpdate, {headers: this.getHeaders()});
+  saveChangedItems(items: updateItemAmount[]): Observable<void> {
+    return this.http.put<void>(`${this.managerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
   }
 
   // closeInventory(id: number): Observable<item>{
@@ -66,7 +61,7 @@ export class InventoryService{
     return this.http.get<items>(`${this.workerBaseUrl}/inventory/${id}`, {headers: this.getHeaders()});
   }
 
-  saveWorkerChangedItems(items: item[]): Observable<item> {
-    return this.http.put<item>(`${this.managerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
+  saveWorkerChangedItems(items: updateItemAmount[]): Observable<void> {
+    return this.http.put<void>(`${this.workerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
   }
 }

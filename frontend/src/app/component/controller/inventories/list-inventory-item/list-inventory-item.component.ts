@@ -1,9 +1,8 @@
-import {Component, input, Input} from '@angular/core';
+import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 import {item, updateItemAmount} from "../../../../dto/item";
 import {FormsModule} from "@angular/forms";
 import {InventoryService} from "../../../../service/inventory.service";
 import {NgIf} from "@angular/common";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-inventory-item',
@@ -18,6 +17,8 @@ import {ActivatedRoute} from "@angular/router";
 export class ListInventoryItemComponent {
   @Input() item!: item;
   @Input() isEditable: boolean = false;
+  updatedItem!: updateItemAmount | null;
+  @Output() itemChanged = new EventEmitter<updateItemAmount>();
 
   constructor(
     private inventoryService: InventoryService
@@ -29,26 +30,18 @@ export class ListInventoryItemComponent {
    * @param itemSelected - The item whose amount has changed
    */
   onInputtedAmountChange(itemSelected: item): void {
-    if (itemSelected.itemInputtedAmount != null){
-    const body : updateItemAmount = {
-      itemId: itemSelected.itemId,
-      itemName: itemSelected.itemName,
-      itemMeasurement: itemSelected.itemMeasurement,
-      itemPresentAmount: itemSelected.itemPresentAmount,
-      itemBarcode: itemSelected.itemBarcode,
-      itemInputtedAmount: itemSelected.itemInputtedAmount,
-      itemUserThatPutTheAmountIn: itemSelected.itemInputtedAmount,
-      itemInventoryId: itemSelected.itemInventoryId
-    }
-
-    this.inventoryService.updateItemAmount(body).subscribe({
-      next: response => {
-        console.log('Update successful', response);
-      },
-      error: error => {
-        console.error('Error updating amount', error);
-      }
-    });
+    if (itemSelected.itemInputtedAmount != null) {
+      this.updatedItem = {
+        itemId: itemSelected.itemId,
+        itemName: itemSelected.itemName,
+        itemMeasurement: itemSelected.itemMeasurement,
+        itemPresentAmount: itemSelected.itemPresentAmount,
+        itemBarcode: itemSelected.itemBarcode,
+        itemInputtedAmount: itemSelected.itemInputtedAmount,
+        itemUserThatPutTheAmountIn: itemSelected.itemInputtedAmount,
+        itemInventoryId: itemSelected.itemInventoryId
+      };
+      this.itemChanged.emit(this.updatedItem);
     }
   }
 

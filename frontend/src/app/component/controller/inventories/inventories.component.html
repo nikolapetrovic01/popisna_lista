@@ -9,9 +9,12 @@
   />
 </div>
 <div class="inventories">
+  <button (click)="save()">SAČUVAJ</button>
   <app-inventory-item
     *ngFor="let item of filteredItems()"
     [item]="item"
     [isEditable]="isEditable"
+    (itemChanged)="handleItemChange($event)"
     ></app-inventory-item>
+  <button (click)="save()">SAČUVAJ</button>
 </div>

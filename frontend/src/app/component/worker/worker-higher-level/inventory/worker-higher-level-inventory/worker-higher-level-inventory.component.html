@@ -1,8 +1,11 @@
 <h2>Inventar</h2>
 <div class="inventories">
+  <button (click)="save()">SAČUVAJ</button>
   <app-inventory-item
     *ngFor="let item of items"
     [item]="item"
     [isEditable] = true
+    (itemChanged)="handleItemChange($event)"
   ></app-inventory-item>
+  <button (click)="save()">SAČUVAJ</button>
 </div>
