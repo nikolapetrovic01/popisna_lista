@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  ListInventoryItemComponent
-} from "../../../controller/inventories/list-inventory-item/list-inventory-item.component";
+import {ListInventoryItemComponent} from "../../../controller/inventories/list-inventory-item/list-inventory-item.component";
 import {NgForOf} from "@angular/common";
-import {item,items} from "../../../../dto/item";
-import {ActivatedRoute} from "@angular/router";
+import {item, items, updateItemAmount} from "../../../../dto/item";
+import {ActivatedRoute, Router} from "@angular/router";
 import {InventoryService} from "../../../../service/inventory.service";
 
+// noinspection DuplicatedCode
 @Component({
   selector: 'app-worker-lower-level-inventory',
   standalone: true,
@@ -23,10 +22,11 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
   searchTerm: string = '';
 
   constructor(private route: ActivatedRoute,
-              private inventoryService: InventoryService) {
+              private inventoryService: InventoryService,
+              private router: Router) {
   }
 
-  ngOnInit() {
+  ngOnInit(){
     const id = this.route.snapshot.paramMap.get('id');
     console.log(id);
 
@@ -42,4 +42,17 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
       });
     }
   }
+
+  save(){
+    // this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
+    this.saveChangedItems()
+  }
+
+  saveChangedItems() {
+    this.inventoryService.saveWorkerChangedItems(this.items).subscribe({
+      next: () => console.log("Changes saved successfully."),
+      error: err => console.error("Error saving changes:", err)
+    });
+  }
+
 }

@@ -65,4 +65,8 @@ export class InventoryService{
   getWorkerItems(id: number): Observable<items>{
     return this.http.get<items>(`${this.workerBaseUrl}/inventory/${id}`, {headers: this.getHeaders()});
   }
+
+  saveWorkerChangedItems(items: item[]): Observable<item> {
+    return this.http.put<item>(`${this.managerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
+  }
 }

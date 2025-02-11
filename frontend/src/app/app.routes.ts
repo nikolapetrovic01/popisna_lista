@@ -6,7 +6,7 @@ import {CreateNewInventoryComponent} from "./component/controller/create/create-
 import {ShowCsvContentComponent} from "./component/controller/create/show-csv-content/show-csv-content.component";
 import {authGuard} from "./guards/auth.guard";
 import {WorkerDashboardComponent} from "./component/worker/dashboard/worker-dashboard.component";
-import {WorkerInventoryViewComponent} from "./component/worker/worker-inventory-view/worker-inventory-view.component";
+import {WorkerInventoryViewComponent} from "./component/worker/inventory/worker-inventory-view/worker-inventory-view.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

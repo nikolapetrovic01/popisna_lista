@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../../../service/user.service";
+import {UserService} from "../../../../service/user.service";
 import {NgIf} from "@angular/common";
-import {WorkerHigherLevelComponent} from "../worker-higher-level/worker-higher-level.component";
-import {WorkerLowerLevelComponent} from "../worker-lower-level/worker-lower-level.component";
+import {WorkerHigherLevelComponent} from "../../worker-higher-level/worker-higher-level.component";
+import {WorkerLowerLevelComponent} from "../../worker-lower-level/worker-lower-level.component";
 import {
   WorkerHigherLevelInventoryComponent
-} from "../worker-higher-level/inventory/worker-higher-level-inventory/worker-higher-level-inventory.component";
+} from "../../worker-higher-level/inventory/worker-higher-level-inventory/worker-higher-level-inventory.component";
 import {
   WorkerLowerLevelInventoryComponent
-} from "../worker-lower-level/worker-lower-level-inventory/worker-lower-level-inventory.component";
+} from "../../worker-lower-level/worker-lower-level-inventory/worker-lower-level-inventory.component";
 
 @Component({
   selector: 'app-worker-inventory-view',

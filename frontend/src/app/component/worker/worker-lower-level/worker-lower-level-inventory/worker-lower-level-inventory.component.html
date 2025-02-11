@@ -1,8 +1,12 @@
-<h2>Inventar</h2>
+<h2>Inventar za donji nivo</h2>
+<br>
+<p> Ukupno zavrseno 0 /{{items.length}}</p>
 <div class="inventories">
+  <button (click)="save()">SAČUVAJ</button>
   <app-inventory-item
     *ngFor="let item of items"
     [item]="item"
     [isEditable] = true
   ></app-inventory-item>
+  <button (click)="save()">SAČUVAJ</button>
 </div>

@@ -20,7 +20,6 @@ export class ListInventoryItemComponent {
   @Input() isEditable: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
     private inventoryService: InventoryService
   ) {}
 
@@ -42,14 +41,14 @@ export class ListInventoryItemComponent {
       itemInventoryId: itemSelected.itemInventoryId
     }
 
-    this.inventoryService.updateItemAmount(body).subscribe(
-      response => {
+    this.inventoryService.updateItemAmount(body).subscribe({
+      next: response => {
         console.log('Update successful', response);
       },
-      error => {
+      error: error => {
         console.error('Error updating amount', error);
       }
-    );
+    });
     }
   }
 
