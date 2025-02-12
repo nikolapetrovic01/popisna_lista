@@ -18,6 +18,7 @@ export class WorkerInventoryListItemComponent {
   @Input() isEditable: boolean = true;
   updatedItem!: updateItemAmount | null;
   @Output() itemChanged = new EventEmitter<updateItemAmount>();
+  @Output() lockedItemClick = new EventEmitter<item>();
 
   /**
    * Called when the item input amount is changed. Constructs an update object
@@ -37,6 +38,15 @@ export class WorkerInventoryListItemComponent {
         itemInventoryId: itemSelected.itemInventoryId
       };
       this.itemChanged.emit(this.updatedItem);
+    }
+  }
+
+  /**
+   * If the input is locked, trigger a modal event.
+   */
+  handleLockedItemClick(item: item) {
+    if (!this.isEditable) {
+      this.lockedItemClick.emit(item);
     }
   }
 }

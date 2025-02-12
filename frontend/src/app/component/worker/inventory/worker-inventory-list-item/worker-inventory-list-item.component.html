@@ -1,4 +1,4 @@
-<div class="inventory-item">
+<div class="inventory-item" (click)="handleLockedItemClick(item)">
   <p><strong>Ime: </strong> {{ item.itemName }}</p>
   <p><strong>Mjera: </strong> {{ item.itemMeasurement }}</p>
   <p><strong>Na stanju: </strong> {{ item.itemPresentAmount }}</p>

@@ -11,6 +11,8 @@
     [item]="item"
     [isEditable] = "editStateMap[item.itemId]"
     (itemChanged)="handleItemChange($event)"
+    (lockedItemClick)="handleLockedItemClick()"
   ></app-worker-inventory-list-item>
   <button (click)="save()">SAČUVAJ</button>
 </div>
+<app-confirm-modal *ngIf="showModal" (confirm)="handleModalConfirm()" [message]="modalMessage"></app-confirm-modal>
