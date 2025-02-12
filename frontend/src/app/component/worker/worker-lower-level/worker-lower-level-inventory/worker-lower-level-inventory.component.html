@@ -1,14 +1,16 @@
 <h2>Inventar za donji nivo</h2>
+
 <br>
 <p> Ukupno zavrseno {{ changedItems }} / {{items.length}}</p>
 <p> Ne sacuvane promjene {{ updatedItems.length }} / {{items.length - changedItems}}</p>
+
 <div class="inventories">
   <button (click)="save()">SAČUVAJ</button>
-  <app-inventory-item
+  <app-worker-inventory-list-item
     *ngFor="let item of items"
     [item]="item"
-    [isEditable] = true
+    [isEditable] = "editStateMap[item.itemId]"
     (itemChanged)="handleItemChange($event)"
-  ></app-inventory-item>
+  ></app-worker-inventory-list-item>
   <button (click)="save()">SAČUVAJ</button>
 </div>

@@ -4,15 +4,19 @@ import {NgForOf} from "@angular/common";
 import {item, items, updateItemAmount} from "../../../../../dto/item";
 import {ActivatedRoute} from "@angular/router";
 import {InventoryService} from "../../../../../service/inventory.service";
+import {
+  WorkerInventoryListItemComponent
+} from "../../../inventory/worker-inventory-list-item/worker-inventory-list-item.component";
 
 // noinspection DuplicatedCode
 @Component({
   selector: 'app-worker-higher-level-inventory',
   standalone: true,
-    imports: [
-        ListInventoryItemComponent,
-        NgForOf
-    ],
+  imports: [
+    ListInventoryItemComponent,
+    NgForOf,
+    WorkerInventoryListItemComponent
+  ],
   templateUrl: './worker-higher-level-inventory.component.html',
   styleUrl: './worker-higher-level-inventory.component.css'
 })

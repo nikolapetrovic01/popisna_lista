@@ -16,13 +16,9 @@ import {NgIf} from "@angular/common";
 })
 export class ListInventoryItemComponent {
   @Input() item!: item;
-  @Input() isEditable: boolean = false;
+  @Input() isEditable: boolean = true;
   updatedItem!: updateItemAmount | null;
   @Output() itemChanged = new EventEmitter<updateItemAmount>();
-
-  constructor(
-    private inventoryService: InventoryService
-  ) {}
 
   /**
    * Called when the item input amount is changed. Constructs an update object

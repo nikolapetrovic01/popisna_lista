@@ -1,0 +1,16 @@
+.inventory-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+}
+
+.inventory-item p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.inventory-item p strong {
+  font-weight: bold;
+}
