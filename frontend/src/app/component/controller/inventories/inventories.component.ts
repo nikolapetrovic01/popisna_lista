@@ -24,13 +24,15 @@ export class InventoriesComponent implements OnInit {
   itemId: number | null = null;
   isEditable: boolean = false;
   searchTerm: string = '';
-  changedItems: updateItemAmount[] = [];
+  updatedItems: updateItemAmount[] = [];
+  changedItems: number;
 
 
   constructor(
     private route: ActivatedRoute,
     private inventoryService: InventoryService
   ) {
+    this.changedItems = 0;
   }
 
   /**
@@ -47,6 +49,7 @@ export class InventoriesComponent implements OnInit {
       next: (data: items) =>
       {
         this.items = data.items;
+        this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
       },
       error: (error) => {
         console.error(error);
@@ -75,21 +78,20 @@ export class InventoriesComponent implements OnInit {
   }
 
   handleItemChange(updatedItem: updateItemAmount) {
-    const index = this.changedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
     if (index !== -1) {
-      this.changedItems[index] = updatedItem; // Update existing entry
+      this.updatedItems[index] = updatedItem; // Update existing entry
     } else {
-      this.changedItems.push(updatedItem); // Add new entry
+      this.updatedItems.push(updatedItem); // Add new entry
     }
   }
 
   save() {
-    if (this.changedItems.length > 0) {
-      this.inventoryService.saveChangedItems(this.changedItems).subscribe({
+    if (this.updatedItems.length > 0) {
+      this.inventoryService.saveChangedItems(this.updatedItems).subscribe({
         next: () => {
-          console.log('All changes saved successfully');
-          console.log(this.changedItems);
-          this.changedItems = [];
+          this.updatedItems = [];
+          this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },
         error: err => {
           console.error('Error saving changes', err);

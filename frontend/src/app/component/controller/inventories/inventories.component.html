@@ -8,6 +8,8 @@
     class="search-bar"
   />
 </div>
+<p> Ukupno zavrseno {{ changedItems }} / {{items.length}}</p>
+<p> Ne sacuvane promjene {{ updatedItems.length }} / {{items.length - changedItems}}</p>
 <div class="inventories">
   <button (click)="save()">SAČUVAJ</button>
   <app-inventory-item

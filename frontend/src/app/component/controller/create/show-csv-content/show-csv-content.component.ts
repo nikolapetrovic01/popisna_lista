@@ -56,13 +56,25 @@ export class ShowCsvContentComponent implements OnInit {
         // Check if the item already exists in localStorage (existingItems)
         const existingItem = existingItems.find(item => item.itemId === itemId);
 
+      //   return {
+      //     itemId: itemId,
+      //     itemName: data[1],
+      //     itemMeasurement: data[2],
+      //     itemPresentAmount: this.parseNumber(data[3]),
+      //     itemBarcode: data[4],
+      //     itemInputtedAmount: this.parseNumber(data[5]),
+      //     itemUserThatPutTheAmountIn: isNaN(+data[6]) ? 0 : +data[6],
+      //     itemInventoryId: +data[7] || 0,
+      //     selected: existingItem ? existingItem.selected : true // Use existing selected status if available
+      //   };
+      // });
         return {
           itemId: itemId,
           itemName: data[1],
           itemMeasurement: data[2],
           itemPresentAmount: this.parseNumber(data[3]),
           itemBarcode: data[4],
-          itemInputtedAmount: this.parseNumber(data[5]),
+          itemInputtedAmount: -1,
           itemUserThatPutTheAmountIn: isNaN(+data[6]) ? 0 : +data[6],
           itemInventoryId: +data[7] || 0,
           selected: existingItem ? existingItem.selected : true // Use existing selected status if available

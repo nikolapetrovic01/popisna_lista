@@ -15,8 +15,7 @@
     <div class="mb-3">
       <label for="file" class="form-label">Upload CSV</label>
       <div class="file-drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-        <button *ngIf="showX" type="button" class="btn-close" (click)="removeFile()" aria-label="Close">X</button>
-<!--        <button *ngIf="file" type="button" class="btn-close" (click)="removeFile()" aria-label="Close">X</button>-->
+        <button *ngIf="showX" type="button" class="btn-close" (click)="removeFile()" aria-label="Close"></button>
         <span class="choose-file">{{ fileName }}</span>
         <input type="file" id="file" (change)="onFileChange($event)" (click)="preventFileSelection($event)" class="file-input" accept=".csv" [required]="!file">
       </div>

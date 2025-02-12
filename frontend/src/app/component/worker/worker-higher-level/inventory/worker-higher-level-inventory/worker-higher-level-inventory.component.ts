@@ -20,21 +20,23 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
   searchTerm: string = '';
-  changedItems: updateItemAmount[] = [];
+  updatedItems: updateItemAmount[] = [];
+  changedItems: number;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService) {
+    this.changedItems = 0;
   }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
 
     if (id != null) {
       this.itemId = +id;
       this.inventoryService.getWorkerItems(this.itemId).subscribe({
         next: (data: items) => {
           this.items = data.items;
+          this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },
         error: err => {
           console.error(err);
@@ -44,21 +46,20 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   }
 
   handleItemChange(updatedItem: updateItemAmount) {
-    const index = this.changedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
     if (index !== -1) {
-      this.changedItems[index] = updatedItem; // Update existing entry
+      this.updatedItems[index] = updatedItem; // Update existing entry
     } else {
-      this.changedItems.push(updatedItem); // Add new entry
+      this.updatedItems.push(updatedItem); // Add new entry
     }
   }
 
   save() {
-    if (this.changedItems.length > 0) {
-      this.inventoryService.saveWorkerChangedItems(this.changedItems).subscribe({
+    if (this.updatedItems.length > 0) {
+      this.inventoryService.saveWorkerChangedItems(this.updatedItems).subscribe({
         next: () => {
-          console.log('All changes saved successfully');
-          console.log(this.changedItems);
-          this.changedItems = [];
+          this.updatedItems = [];
+          this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },
         error: err => {
           console.error('Error saving changes', err);
