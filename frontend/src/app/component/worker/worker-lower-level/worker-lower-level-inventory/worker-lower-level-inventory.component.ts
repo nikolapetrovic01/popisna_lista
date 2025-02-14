@@ -7,7 +7,7 @@ import {InventoryService} from "../../../../service/inventory.service";
 import {
   WorkerInventoryListItemComponent
 } from "../../inventory/worker-inventory-list-item/worker-inventory-list-item.component";
-import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/confirm-modal/confirm-modal-worker-locked-item-clicked.component";
+import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 
 // noinspection DuplicatedCode
 @Component({
@@ -91,7 +91,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
       this.inventoryService.saveWorkerChangedItems(this.updatedItems).subscribe({
         next: () => {
           this.items.forEach(item => {
-            this.editStateMap[item.itemId] = (item.itemInputtedAmount === -1); // 🔹 Only editable if -1
+            this.editStateMap[item.itemId] = (item.itemInputtedAmount === -1);
           });
           this.updatedItems = [];
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;

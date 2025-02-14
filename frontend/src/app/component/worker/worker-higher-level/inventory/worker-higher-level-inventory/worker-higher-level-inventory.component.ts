@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {ListInventoryItemComponent} from "../../../../controller/inventories/list-inventory-item/list-inventory-item.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {item, items, updateItemAmount} from "../../../../../dto/item";
 import {ActivatedRoute} from "@angular/router";
 import {InventoryService} from "../../../../../service/inventory.service";
 import {
   WorkerInventoryListItemComponent
 } from "../../../inventory/worker-inventory-list-item/worker-inventory-list-item.component";
+import {
+  ConfirmModalWorkerLockedItemClickedComponent
+} from "../../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 
 // noinspection DuplicatedCode
 @Component({
@@ -15,7 +18,9 @@ import {
   imports: [
     ListInventoryItemComponent,
     NgForOf,
-    WorkerInventoryListItemComponent
+    WorkerInventoryListItemComponent,
+    ConfirmModalWorkerLockedItemClickedComponent,
+    NgIf
   ],
   templateUrl: './worker-higher-level-inventory.component.html',
   styleUrl: './worker-higher-level-inventory.component.css'
@@ -26,6 +31,9 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   searchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
   changedItems: number;
+  showModal: boolean = false;
+  modalMessage: string = '';
+  oldItem: item | null = null;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService) {
@@ -49,12 +57,50 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
     }
   }
 
+  handleInputFocus(item: item) {
+    console.log("Old value: " + item.itemInputtedAmount);
+    this.oldItem = { ...item };
+  }
+
+  /**
+   * Handles when a changed item is clicked.
+   */
+  handleActivateModal() {
+    this.showModal = true;
+    this.modalMessage = 'Ovaj artikl je već promjenjen!';
+  }
+
+  /**
+   * Handles the confirmation result from the modal.
+   */
+  handleModalConfirm(answer: boolean) {
+    if (!answer && this.oldItem) {
+      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
+      if (item) {
+        item.itemInputtedAmount = this.oldItem!.itemInputtedAmount; // Restore old value
+      }
+
+      // Remove from updatedItems if present
+      this.updatedItems = this.updatedItems.filter(i => i.itemId !== this.oldItem!.itemId);
+    }
+
+    this.showModal = false;
+  }
+
+  /**
+   * Handles item changes and updates the list of modified items.
+   */
   handleItemChange(updatedItem: updateItemAmount) {
     const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
+    if (this.oldItem?.itemInputtedAmount != -1) {
+      this.handleActivateModal();
+      return;
+    }
+
     if (index !== -1) {
-      this.updatedItems[index] = updatedItem; // Update existing entry
+      this.updatedItems[index] = updatedItem;
     } else {
-      this.updatedItems.push(updatedItem); // Add new entry
+      this.updatedItems.push(updatedItem);
     }
   }
 

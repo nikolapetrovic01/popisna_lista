@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-confirm-modal',
+  selector: 'app-confirm-modal-worker-admin',
   standalone: true,
   imports: [],
-  templateUrl: './confirm-modal-worker-locked-item-clicked.component.html',
-  styleUrl: './confirm-modal-worker-locked-item-clicked.component.css'
+  templateUrl: './confirm-modal-worker-admin.component.html',
+  styleUrl: './confirm-modal-worker-admin.component.css'
 })
-export class ConfirmModalWorkerLockedItemClickedComponent {
+export class ConfirmModalWorkerAdminComponent {
   @Input() message: string = 'Da li si siguran da želiš promjeniti ovu stavku?';
   @Output() confirm = new EventEmitter<boolean>();
 
