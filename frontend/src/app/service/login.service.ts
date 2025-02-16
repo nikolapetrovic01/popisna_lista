@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import { loginRequest, loginResponse } from "../dto/login";
-// import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import {environment} from "../../enviroments/enviroment";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,8 @@ import {environment} from "../../enviroments/enviroment";
 export class loginService {
   private baseUrl = `${environment.backendUrl}/login`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private userService: UserService) {}
 
   /**
    * Sends a login request to the backend with user credentials.
@@ -31,33 +33,39 @@ export class loginService {
     localStorage.setItem("userLevel", authResponse.level.toString()); // Store user level
   }
 
-  //TODO: FIX
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
   isLoggedIn(): boolean {
-    console.log("Is logged in!");
-    return true;
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+
+    const expirationDate = this.getTokenExpirationDate(token);
+    return expirationDate !== null && expirationDate.valueOf() > new Date().valueOf();
   }
 
   logoutUser() {
     localStorage.removeItem("authToken");
+    this.userService.clearUserId();
+    this.userService.clearUserLevel();
   }
 
   getToken() {
     return localStorage.getItem("authToken");
   }
 
-  // private getTokenExpirationDate(token: string): Date {
-  //   const decoded: any = jwtDecode(token);
-  //   if (decoded.exp === undefined) {
-  //     return null;
-  //   }
-  //
-  //   const date = new Date(0);
-  //   date.setUTCSeconds(decoded.exp);
-  //   return date;
-  // }
+  private getTokenExpirationDate(token: string): Date {
+    const decoded: any = jwtDecode(token);
+    if (decoded.exp === undefined) {
+      throw new Error("Token does not have an expiration date.");
+    }
+
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.exp);
+    return date;
+  }
 
   /**
    * Handles HTTP errors by determining the error type and returning an appropriate error message.
