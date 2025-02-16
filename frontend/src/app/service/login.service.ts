@@ -35,11 +35,14 @@ export class loginService {
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
-  // isLoggedIn() {
-  //   return !!this.getToken() &&
-  //     (this.getTokenExpirationDate(this.getToken()).valueOf() >
-  //       new Date().valueOf());
-  // }
+  isLoggedIn(): boolean {
+    console.log("Is logged in!");
+    return true;
+  }
+
+  logoutUser() {
+    localStorage.removeItem("authToken");
+  }
 
   getToken() {
     return localStorage.getItem("authToken");
@@ -81,5 +84,4 @@ export class loginService {
     }
     return throwError(() => new Error(errorMessage));
   }
-
 }

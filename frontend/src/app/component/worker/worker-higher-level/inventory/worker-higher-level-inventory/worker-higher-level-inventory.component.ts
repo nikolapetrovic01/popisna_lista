@@ -92,7 +92,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
    */
   handleItemChange(updatedItem: updateItemAmount) {
     const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
-    if (this.oldItem?.itemInputtedAmount != -1) {
+    if (this.oldItem?.itemInputtedAmount !== -1) {
       this.handleActivateModal();
       return;
     }
@@ -105,6 +105,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   }
 
   save() {
+    console.log("Save pressed");
     if (this.updatedItems.length > 0) {
       this.inventoryService.saveWorkerChangedItems(this.updatedItems).subscribe({
         next: () => {

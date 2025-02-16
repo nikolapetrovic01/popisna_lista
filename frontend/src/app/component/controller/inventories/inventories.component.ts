@@ -85,7 +85,7 @@ export class InventoriesComponent implements OnInit {
 
   handleItemChange(updatedItem: updateItemAmount) {
     const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
-    if (this.oldItem?.itemInputtedAmount != -1) {
+    if (this.oldItem?.itemInputtedAmount !== -1) {
       this.handleActivateModal();
       return;
     }

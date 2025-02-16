@@ -11,5 +11,5 @@
     (mousedown)="handleInputFocus(item)"
     (itemChanged)="handleItemChange(item)"
   ></app-worker-inventory-list-item>
-  <button (click)="save()">SAČUVAJ</button>
 </div>
+<app-confirm-modal *ngIf="showModal" (confirm)="handleModalConfirm($event)" [message]="modalMessage"></app-confirm-modal>
