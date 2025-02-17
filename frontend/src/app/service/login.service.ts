@@ -33,6 +33,34 @@ export class loginService {
     localStorage.setItem("userLevel", authResponse.level.toString()); // Store user level
   }
 
+  getUserRole() {
+    const token = this.getToken();
+
+    if (!token) {
+      return "UNDEFINED"; // Token is missing, return default role
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const authInfo: string[] = decoded.roles || []; // Use "roles" as per backend
+
+      if (authInfo.includes("ROLE_ADMIN")) {
+        return "ADMIN";
+      } else if (authInfo.includes("ROLE_MANAGER")) {
+        return "MANAGER";
+      } else if (authInfo.includes("ROLE_WORKER_ADMIN")) {
+        return "WORKER_ADMIN";
+      } else if (authInfo.includes("ROLE_WORKER")) {
+        return "WORKER";
+      }
+    } catch (error) {
+      console.error("Error decoding JWT:", error);
+      return "UNDEFINED"; // Return default role if decoding fails
+    }
+
+    return "UNDEFINED";
+  }
+
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
