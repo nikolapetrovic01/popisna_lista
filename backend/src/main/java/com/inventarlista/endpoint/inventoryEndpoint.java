@@ -40,6 +40,13 @@ public class inventoryEndpoint {
     }
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PutMapping("/controller/inventory/closeInventory")
+    public ResponseEntity<Void> closeInventoryManager(@RequestBody int closeInventory) {
+        inventoryService.closeInventory(closeInventory);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/inventory/saveChanges")
     public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmount[] selectItems) {
         inventoryService.managerUpdateItemAmount(selectItems);

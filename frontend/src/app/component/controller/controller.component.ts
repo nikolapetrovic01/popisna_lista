@@ -62,10 +62,12 @@ export class ControllerComponent implements OnInit {
    * @param inventoryClicked - The clicked inventory item
    */
   navigateToInventoryClicked(inventoryClicked: any): void {
-    let flag = true
-    if (inventoryClicked.status === 0){
-      flag = false;
-    }
+    let flag = inventoryClicked.status !== 0;
+    // let flag = true
+    // if (inventoryClicked.status === 0) {
+    //   flag = false;
+    // }
+
     this.router.navigate(['/controller/inventory', inventoryClicked.id],
       { queryParams: { fromActive: flag }});
   }

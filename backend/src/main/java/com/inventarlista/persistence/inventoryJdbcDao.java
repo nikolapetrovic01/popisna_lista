@@ -1,5 +1,6 @@
 package com.inventarlista.persistence;
 
+import com.inventarlista.dto.inventoriesPieceDto;
 import com.inventarlista.dto.updateItemAmount;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
@@ -28,6 +29,7 @@ public class inventoryJdbcDao {
             "korisnik_koji_je_unjeo_kol, " +
             "popis_id) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_CLOSE_INVENTORY = "UPDATE popisi SET status = 0 WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     public inventoryJdbcDao(JdbcTemplate jdbcTemplate) {
@@ -94,29 +96,6 @@ public class inventoryJdbcDao {
     }
 
     /**
-     * Updates the amount of a specific item within an inventory.
-     * @param toUpdate - An updateItemAmount object containing the item ID, inventory ID, and the updated amount.
-     */
-    public void updateItemAmount(updateItemAmount toUpdate) {
-        int updated = jdbcTemplate.update(SQL_UPDATE_AMOUNT,
-                toUpdate.itemInputtedAmount(),
-                toUpdate.itemId(),
-                toUpdate.itemInventoryId());
-
-        if (updated == 0){
-            throw new NotFoundException(("Could not update article with ID %d,"
-                    + "because it does not exist").formatted(toUpdate.itemId()));
-        }
-
-        // TODO: SHOULD IT RETURN Inventory or not?
-
-        //        return new Inventory(
-        //                toUpdate.itemId(),
-        //                toUpdate.itemInventoryId()
-        //        );
-    }
-
-    /**
      * Inserts a new inventory record into the database.
      * @param inventory - An Inventory object containing the details of the inventory to create.
      */
@@ -175,4 +154,7 @@ public class inventoryJdbcDao {
         );
     }
 
+    public void closeInventory(int closeInventory) {
+        jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
+    }
 }

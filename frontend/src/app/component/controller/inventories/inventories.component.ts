@@ -3,7 +3,7 @@ import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
 import {InventoryService} from "../../../service/inventory.service";
 import {item, items, updateItemAmount} from "../../../dto/item";
 import {ListInventoryItemComponent} from "./list-inventory-item/list-inventory-item.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {
@@ -36,7 +36,8 @@ export class InventoriesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private router: Router
   ) {
     this.changedItems = 0;
   }
@@ -77,10 +78,16 @@ export class InventoriesComponent implements OnInit {
 
   /**
    * Closes the opened inventory.
-   * TODO: Implement functionality to close the inventory.
    */
   closeOpenedInventory(): void {
-    console.log('Close Inventory');
+    const id: number | null = this.route.snapshot.paramMap.get('id') ? +this.route.snapshot.paramMap.get('id')! : null;
+    if (id !== null) {
+    this.inventoryService.closeInventory(id).subscribe({
+      next: () => {
+        this.router.navigate(['/controller']);
+      }
+    });
+    }
   }
 
   handleItemChange(updatedItem: updateItemAmount) {

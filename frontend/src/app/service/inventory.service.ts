@@ -38,9 +38,9 @@ export class InventoryService{
     return this.http.put<void>(`${this.managerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
   }
 
-  // closeInventory(id: number): Observable<item>{
-  //   return this.http.post<item>()
-  // }
+  closeInventory(id: number): Observable<void>{
+    return this.http.put<void>(`${this.managerBaseUrl}/inventory/closeInventory`, id, {headers: this.getHeaders()});
+  }
 
   /**
    * Creates a new inventory with the selected items.

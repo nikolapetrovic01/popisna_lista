@@ -1,4 +1,4 @@
-export interface inventoriesPiece{
+export interface inventoriesPiece {
   id: number;
   startDate: Date;
   endDate: Date;

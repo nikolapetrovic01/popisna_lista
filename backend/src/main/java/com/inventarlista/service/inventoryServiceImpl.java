@@ -124,6 +124,10 @@ public class inventoryServiceImpl {
         inventoryJdbcDao.saveItems(itemsToSave);
     }
 
+    public void closeInventory(int closeInventory) {
+        inventoryJdbcDao.closeInventory(closeInventory);
+    }
+
     public inventoriesDto getAllInventoriesForWorkers() {
         List<Inventory> inventories;
         try{

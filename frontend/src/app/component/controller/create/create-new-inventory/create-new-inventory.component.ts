@@ -65,8 +65,6 @@ export class CreateNewInventoryComponent implements OnInit {
       this.filteredItems = [];
     }
 
-    // this.startDate = this.dateService.getStartDate() || this.startDate;
-    // this.endDate = this.dateService.getEndDate() || this.endDate;
     this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
     this.endDate = this.dateService.getEndDate() || new Date().toISOString().substring(0, 10);
   }
@@ -101,7 +99,8 @@ export class CreateNewInventoryComponent implements OnInit {
     if (this.filteredItems.length > 0) {
       event.preventDefault();
       this.rememberDate();
-      this.router.navigateByUrl('controller/create/show-csv');
+      // this.router.navigateByUrl('controller/create/show-csv');
+      this.router.navigate(['controller/create/show-csv']);
     }
   }
 
@@ -142,7 +141,8 @@ export class CreateNewInventoryComponent implements OnInit {
         this.storageService.setItem('csvContent', csvContent);
         this.storageService.setItem('filteredItems', this.filteredItems);
         this.storageService.setItem('fileName', this.fileName);
-        this.router.navigateByUrl('controller/create/show-csv');
+        // this.router.navigateByUrl('controller/create/show-csv');
+        this.router.navigate(['controller/create/show-csv']);
       };
       reader.onerror = (error) => {
         console.error('FileReader error:', error);
@@ -224,22 +224,40 @@ export class CreateNewInventoryComponent implements OnInit {
     };
 
     this.inventoryService.createNewInventory(selectedItems).subscribe(
-      response => {
-        this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
+    //   response => {
+    //     this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
+    //
+    //     // Clear dates, CSV content, and file data
+    //     this.startDate = '';
+    //     this.endDate = '';
+    //     this.removeFile(); // Reuse the method to clear file-related data
+    //     this.storageService.removeItem('dateStartKey');
+    //     this.storageService.removeItem('dateEndKey');
+    //
+    //     // this.location.back();
+    //     this.router.navigateByUrl('/controller');
+    //   },
+    //   error => {
+    //     this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);
+    //   }
+    // );
+      {
+        next: response => {
+          this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
 
-        // Clear dates, CSV content, and file data
-        this.startDate = '';
-        this.endDate = '';
-        this.removeFile(); // Reuse the method to clear file-related data
-        this.storageService.removeItem('dateStartKey');
-        this.storageService.removeItem('dateEndKey');
+          // Clear dates, CSV content, and file data
+          this.startDate = '';
+          this.endDate = '';
+          this.removeFile(); // Reuse the method to clear file-related data
+          this.storageService.removeItem('dateStartKey');
+          this.storageService.removeItem('dateEndKey');
 
-        // this.location.back();
-        this.router.navigateByUrl('/controller');
-      },
-      error => {
-        this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);
-      }
-    );
+          // this.location.back();
+          this.router.navigate(['/controller']);
+        },
+        error: error => {
+          this.toastr.error(MESSAGES.INVENTORY_ERROR_MESSAGE);
+        }
+      });
   }
 }
