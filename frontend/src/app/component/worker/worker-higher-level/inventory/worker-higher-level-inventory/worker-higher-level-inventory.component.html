@@ -1,8 +1,10 @@
+<div class="title p-2">
 <h2>Inventar</h2>
 <br>
 <p> Ukupno zavrseno {{ changedItems }} / {{items.length}}</p>
 <p> Ne sacuvane promjene {{ updatedItems.length }} / {{items.length - changedItems}}</p>
-<div class="inventories">
+</div>
+<div class="inventories p-2">
   <button (click)="save()">SAČUVAJ</button>
   <div class="search-fields d-flex justify-content-between mt-2">
     <div class="search-field-1 d-flex flex-column">

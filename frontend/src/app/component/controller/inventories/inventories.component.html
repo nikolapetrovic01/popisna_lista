@@ -1,14 +1,12 @@
-<div class="header">
+<div class="title p-2">
   <h2>Inventory List</h2>
   <button *ngIf="isEditable" class="my-button" (click)="closeOpenedInventory()">ZATVORI</button>
-</div>
 
-<div class="summary pt-2 pb-2">
   <p> Ukupno zavrseno {{ changedItems }} / {{ items.length }}</p>
   <p> Ne sacuvane promjene {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
 </div>
 
-<div class="inventories">
+<div class="inventories p-2">
   <button (click)="save()">SAČUVAJ</button>
 
   <div class="search-fields d-flex justify-content-between mt-2">
