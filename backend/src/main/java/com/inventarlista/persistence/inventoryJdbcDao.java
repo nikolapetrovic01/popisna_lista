@@ -5,9 +5,13 @@ import com.inventarlista.dto.updateItemAmount;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
 import com.inventarlista.exceptions.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.lang.invoke.MethodHandles;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -31,6 +35,7 @@ public class inventoryJdbcDao {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_CLOSE_INVENTORY = "UPDATE popisi SET status = 0 WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public inventoryJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -72,6 +77,7 @@ public class inventoryJdbcDao {
         try {
             return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
         } catch (DataAccessException e){
+            LOGGER.error("Error retrieving items from inventory: {}", e.getMessage(), e);
             throw new NotFoundException("Could not find items associated with inventory ID %d".formatted(id));
         }
     }
@@ -99,11 +105,15 @@ public class inventoryJdbcDao {
      * Inserts a new inventory record into the database.
      * @param inventory - An Inventory object containing the details of the inventory to create.
      */
-    public void createNewInventory(Inventory inventory){
-        jdbcTemplate.update(SQL_INSERT_INTO_POPISI,
-                inventory.getStatus(),
-                java.sql.Date.valueOf(inventory.getStartDate()),
-                java.sql.Date.valueOf(inventory.getEndDate()));
+    public void createNewInventory(Inventory inventory) {
+        try {
+            jdbcTemplate.update(SQL_INSERT_INTO_POPISI,
+                    inventory.getStatus(),
+                    inventory.getStartDate() != null ? java.sql.Date.valueOf(inventory.getStartDate()) : null,
+                    inventory.getEndDate() != null ? java.sql.Date.valueOf(inventory.getEndDate()) : null);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error inserting new inventory: {}", e.getMessage(), e);
+        }
     }
 
     /**
@@ -111,7 +121,12 @@ public class inventoryJdbcDao {
      * @return The highest inventory ID as an integer. Returns 0 if no inventories exist.
      */
     public int getMaxInventoryId(){
-        Integer highestId = jdbcTemplate.queryForObject(SQL_MAX_INVENTORY_ID, Integer.class);
+        Integer highestId = null;
+        try {
+            highestId = jdbcTemplate.queryForObject(SQL_MAX_INVENTORY_ID, Integer.class);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error fetching max inventory ID", e);
+        }
         return highestId != null ? highestId : 0;
     }
 
@@ -131,9 +146,8 @@ public class inventoryJdbcDao {
                 ps.setInt(7, item.getUserThatPutTheAmountIn());
                 ps.setInt(8, item.getInventoryId());
             });
-        } catch (Exception e) {
-            // Log the error and print stack trace
-            System.err.println("Error occurred while saving items: " + e.getMessage());
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while saving items", e);
         }
     }
 
@@ -142,19 +156,27 @@ public class inventoryJdbcDao {
      * @param updateItems - An array of updateItemAmount objects.
      */
     public void batchUpdateItemAmounts(updateItemAmount[] updateItems) {
-        jdbcTemplate.batchUpdate(
-                SQL_UPDATE_AMOUNT,
-                Arrays.asList(updateItems),  // Convert array to list
-                updateItems.length,
-                (ps, toUpdate) -> {
-                    ps.setBigDecimal(1, toUpdate.itemInputtedAmount());
-                    ps.setLong(2, toUpdate.itemId());
-                    ps.setLong(3, toUpdate.itemInventoryId());
-                }
-        );
+        try {
+            jdbcTemplate.batchUpdate(
+                    SQL_UPDATE_AMOUNT,
+                    Arrays.asList(updateItems),  // Convert array to list
+                    updateItems.length,
+                    (ps, toUpdate) -> {
+                        ps.setBigDecimal(1, toUpdate.itemInputtedAmount());
+                        ps.setLong(2, toUpdate.itemId());
+                        ps.setLong(3, toUpdate.itemInventoryId());
+                    }
+            );
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while updating item amounts.", e);
+        }
     }
 
     public void closeInventory(int closeInventory) {
-        jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
+        try {
+            jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while trying to close inventory.", e);
+        }
     }
 }

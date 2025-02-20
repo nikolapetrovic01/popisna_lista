@@ -6,6 +6,8 @@ import com.inventarlista.entity.Item;
 import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.persistence.inventoryJdbcDao;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,6 +32,8 @@ public class inventoryServiceImpl {
                     .toList();
             return new inventoriesDto(inventoriesPieceDtos);
         } catch (NotFoundException e){
+            //TODO: RATZMISLITI DA VRATI PRAZNU LISTU
+            //return Collections.emptyList();
             throw new NotFoundException("No inventories");
         }
     }
