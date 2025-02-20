@@ -27,7 +27,8 @@ export class InventoriesComponent implements OnInit {
   items: item[] = [];
   itemId: number | null = null;
   isEditable: boolean = false;
-  searchTerm: string = '';
+  nameSearchTerm: string = '';
+  barcodeSearchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
   changedItems: number;
   showModal: boolean = false;
@@ -53,15 +54,14 @@ export class InventoriesComponent implements OnInit {
       this.itemId = +id;
       this.isEditable = fromActive === 'true';
       this.inventoryService.getItems(this.itemId).subscribe({
-      next: (data: items) =>
-      {
-        this.items = data.items;
-        this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    })
+        next: (data: items) => {
+          this.items = data.items;
+          this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      })
       ;
     }
   }
@@ -71,9 +71,19 @@ export class InventoriesComponent implements OnInit {
    * @returns - An array of items that match the search term
    */
   filteredItems(): item[] {
-    return this.items.filter((item) =>
-      item.itemName.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+      return this.items; // Reset to all items when both are cleared
+    }
+
+    return this.items.filter((item) => {
+      const nameMatches = this.nameSearchTerm.trim() === '' ||
+        item.itemName.toLowerCase().includes(this.nameSearchTerm.toLowerCase());
+
+      const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
+        (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
+
+      return nameMatches && barcodeMatches;
+    });
   }
 
   /**
@@ -82,11 +92,11 @@ export class InventoriesComponent implements OnInit {
   closeOpenedInventory(): void {
     const id: number | null = this.route.snapshot.paramMap.get('id') ? +this.route.snapshot.paramMap.get('id')! : null;
     if (id !== null) {
-    this.inventoryService.closeInventory(id).subscribe({
-      next: () => {
-        this.router.navigate(['/controller']);
-      }
-    });
+      this.inventoryService.closeInventory(id).subscribe({
+        next: () => {
+          this.router.navigate(['/controller']);
+        }
+      });
     }
   }
 
@@ -122,7 +132,7 @@ export class InventoriesComponent implements OnInit {
 
   handleInputFocus(item: item) {
     console.log("Old value: " + item.itemInputtedAmount);
-    this.oldItem = { ...item };
+    this.oldItem = {...item};
   }
 
   /**

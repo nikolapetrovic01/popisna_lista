@@ -8,6 +8,7 @@ import {
   WorkerInventoryListItemComponent
 } from "../../inventory/worker-inventory-list-item/worker-inventory-list-item.component";
 import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
+import {FormsModule} from "@angular/forms";
 
 // noinspection DuplicatedCode
 @Component({
@@ -18,7 +19,8 @@ import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/conf
     NgForOf,
     WorkerInventoryListItemComponent,
     ConfirmModalWorkerLockedItemClickedComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './worker-lower-level-inventory.component.html',
   styleUrl: './worker-lower-level-inventory.component.css'
@@ -26,7 +28,8 @@ import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/conf
 export class WorkerLowerLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
-  searchTerm: string = '';
+  nameSearchTerm: string = '';
+  barcodeSearchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
   changedItems: number = 0;
   editStateMap: { [key: number]: boolean } = {};
@@ -81,6 +84,26 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
     } else {
       this.updatedItems.push(updatedItem); // Add new entry
     }
+  }
+
+  /**
+   * Filters the list of items based on the search term entered by the user.
+   * @returns - An array of items that match the search term
+   */
+  filteredItems(): item[] {
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+      return this.items; // Reset to all items when both are cleared
+    }
+
+    return this.items.filter((item) => {
+      const nameMatches = this.nameSearchTerm.trim() === '' ||
+        item.itemName.toLowerCase().includes(this.nameSearchTerm.toLowerCase());
+
+      const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
+        (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
+
+      return nameMatches && barcodeMatches;
+    });
   }
 
   /**

@@ -10,6 +10,7 @@ import {
 import {
   ConfirmModalWorkerLockedItemClickedComponent
 } from "../../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
+import {FormsModule} from "@angular/forms";
 
 // noinspection DuplicatedCode
 @Component({
@@ -20,7 +21,8 @@ import {
     NgForOf,
     WorkerInventoryListItemComponent,
     ConfirmModalWorkerLockedItemClickedComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './worker-higher-level-inventory.component.html',
   styleUrl: './worker-higher-level-inventory.component.css'
@@ -28,7 +30,8 @@ import {
 export class WorkerHigherLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
-  searchTerm: string = '';
+  nameSearchTerm: string = '';
+  barcodeSearchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
   changedItems: number;
   showModal: boolean = false;
@@ -104,8 +107,27 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
     }
   }
 
+  /**
+   * Filters the list of items based on the search term entered by the user.
+   * @returns - An array of items that match the search term
+   */
+  filteredItems(): item[] {
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+      return this.items; // Reset to all items when both are cleared
+    }
+
+    return this.items.filter((item) => {
+      const nameMatches = this.nameSearchTerm.trim() === '' ||
+        item.itemName.toLowerCase().includes(this.nameSearchTerm.toLowerCase());
+
+      const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
+        (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
+
+      return nameMatches && barcodeMatches;
+    });
+  }
+
   save() {
-    console.log("Save pressed");
     if (this.updatedItems.length > 0) {
       this.inventoryService.saveWorkerChangedItems(this.updatedItems).subscribe({
         next: () => {
