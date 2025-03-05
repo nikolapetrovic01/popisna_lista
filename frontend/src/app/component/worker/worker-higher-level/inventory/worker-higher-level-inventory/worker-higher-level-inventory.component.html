@@ -2,7 +2,7 @@
 <h2>Inventar</h2>
 <br>
 <p> Ukupno zavrseno {{ changedItems }} / {{items.length}}</p>
-<p> Ne sacuvane promjene {{ updatedItems.length }} / {{items.length - changedItems}}</p>
+<p> Nesacuvane promjene {{ updatedItems.length }} / {{items.length - changedItems}}</p>
 </div>
 <div class="inventories p-2">
   <button (click)="save()">SAČUVAJ</button>
@@ -17,12 +17,15 @@
         class="search-bar"
       />
     </div>
+    <div class="search-field-1 d-flex flex-column">
+      Pronadjeni artikli {{filteredItems().length}}
+    </div>
     <div class="search-field-2 d-flex flex-column">
       <label for="barcode-search">Pretraži po barkodu</label>
       <input
         id="barcode-search"
         type="number"
-        placeholder="Search by barcode"
+        placeholder="Traži po Barkodu"
         [(ngModel)]="barcodeSearchTerm"
         class="search-bar"
       />

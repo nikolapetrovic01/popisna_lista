@@ -18,7 +18,10 @@ import {StorageService} from "../../../../service/storageService";
 export class ShowCsvContentComponent implements OnInit {
   csvContent: string | null = null;
   items: selectItem[] = [];
-  searchTerm = '';
+  nameSearchTerm = '';
+  barcodeSearchTerm: string = '';
+  dropdownItems: string[] = ['Ponisti' ,'Selektovano', 'Neselektovano'];
+  selectedItem: string | null = null;
 
   constructor(private router: Router,
               private storageService: StorageService) {
@@ -56,18 +59,6 @@ export class ShowCsvContentComponent implements OnInit {
         // Check if the item already exists in localStorage (existingItems)
         const existingItem = existingItems.find(item => item.itemId === itemId);
 
-      //   return {
-      //     itemId: itemId,
-      //     itemName: data[1],
-      //     itemMeasurement: data[2],
-      //     itemPresentAmount: this.parseNumber(data[3]),
-      //     itemBarcode: data[4],
-      //     itemInputtedAmount: this.parseNumber(data[5]),
-      //     itemUserThatPutTheAmountIn: isNaN(+data[6]) ? 0 : +data[6],
-      //     itemInventoryId: +data[7] || 0,
-      //     selected: existingItem ? existingItem.selected : true // Use existing selected status if available
-      //   };
-      // });
         return {
           itemId: itemId,
           itemName: data[1],
@@ -116,8 +107,25 @@ export class ShowCsvContentComponent implements OnInit {
    * @returns - An array of items whose names match the search term
    */
   filteredItems(): selectItem[] {
-    return this.items.filter((selectedItem) =>
-      selectedItem.itemName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+   if (!this.nameSearchTerm && !this.barcodeSearchTerm && !this.selectedItem) {
+      return this.items; // Reset to all items when all filters are cleared
+    }
+
+    return this.items.filter((item) => {
+      // Name filtering
+      const nameMatches = this.nameSearchTerm.trim() === '' ||
+        item.itemName.toLowerCase().includes(this.nameSearchTerm.toLowerCase());
+
+      // Barcode filtering - Ensures clearing search resets list
+      const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
+        (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
+
+      // Dropdown filtering (Selected, Not Selected, or All)
+      const selectionMatches = this.selectedItem === "Neselektovano" ? !item.selected :
+        this.selectedItem === "Selektovano" ? item.selected : true;
+
+      return nameMatches && barcodeMatches && selectionMatches;
+    });
   }
 
   /**
@@ -133,6 +141,10 @@ export class ShowCsvContentComponent implements OnInit {
    */
   onSubmit() {
     this.storageService.setItem('filteredItems', this.items);
-    this.router.navigateByUrl('/controller/create');
+    this.router.navigate(['/controller/create']);
+  }
+
+  selectItem(item: string) {
+    this.selectedItem = item;
   }
 }

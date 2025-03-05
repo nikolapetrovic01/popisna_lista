@@ -11,13 +11,42 @@
 .table {
   width: 100%;
   margin-top: 20px;
+  table-layout: fixed;
 }
 
-th, td {
-  padding: 10px;
-  text-align: left;
+input.search-bar {
+  width: 100%;
+  max-width: 200px; /* Prevents it from stretching */
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.dropdown .btn {
+  width: 100%;
 }
 
 button {
   margin-top: 20px;
+}
+td, th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-responsive {
+  overflow: visible;
+}
+
+/* Hide arrows for Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -109,11 +109,18 @@ export class CreateNewInventoryComponent implements OnInit {
    * @param event - File drop event
    */
   onDrop(event: DragEvent) {
-    //TODO: FINISH LIKE onFileChange
     event.preventDefault();
+
     if (event.dataTransfer?.files.length) {
       this.file = event.dataTransfer.files[0];
-      this.fileName = MESSAGES.INVENTORY_SUCCESS_MESSAGE;
+      this.fileName = this.file.name;
+
+      const fileDropArea = document.querySelector('.file-drop-area');
+      if (fileDropArea) {
+        fileDropArea.classList.add('disabled');
+      }
+
+      this.showX = true;
       this.change();
     } else {
       this.toastr.error(MESSAGES.DRAG_EVENT_INVALID);
@@ -125,8 +132,8 @@ export class CreateNewInventoryComponent implements OnInit {
    * @param event - Drag over event
    */
   onDragOver(event: DragEvent) {
-    //TODO: FINISH LIKE onFileChange
     event.preventDefault();
+    event.dataTransfer!.dropEffect = 'copy';
   }
 
   /**
