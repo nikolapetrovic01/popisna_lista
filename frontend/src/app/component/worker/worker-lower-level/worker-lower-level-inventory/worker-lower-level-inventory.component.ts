@@ -9,6 +9,7 @@ import {
 } from "../../inventory/worker-inventory-list-item/worker-inventory-list-item.component";
 import {ConfirmModalWorkerLockedItemClickedComponent} from "../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 import {FormsModule} from "@angular/forms";
+import {LoadingSpinnerComponent} from "../../../shared/loading-spinner/loading-spinner.component";
 
 // noinspection DuplicatedCode
 @Component({
@@ -20,7 +21,8 @@ import {FormsModule} from "@angular/forms";
     WorkerInventoryListItemComponent,
     ConfirmModalWorkerLockedItemClickedComponent,
     NgIf,
-    FormsModule
+    FormsModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './worker-lower-level-inventory.component.html',
   styleUrl: './worker-lower-level-inventory.component.css'
@@ -35,6 +37,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
   editStateMap: { [key: number]: boolean } = {};
   showModal: boolean = false;
   modalMessage: string = '';
+  loading: boolean = true;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService,) {}
@@ -51,6 +54,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
             this.editStateMap[item.itemId] = (item.itemInputtedAmount === -1);
           });
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
+          this.loading = false;
         },
         error: err => {
           console.error(err);

@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {
   ConfirmModalWorkerLockedItemClickedComponent
 } from "../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
+import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-inventories',
@@ -18,7 +19,8 @@ import {
     ListInventoryItemComponent,
     CommonModule,
     FormsModule,
-    ConfirmModalWorkerLockedItemClickedComponent
+    ConfirmModalWorkerLockedItemClickedComponent,
+    LoadingSpinnerComponent
   ],
   templateUrl: './inventories.component.html',
   styleUrl: './inventories.component.css'
@@ -34,6 +36,7 @@ export class InventoriesComponent implements OnInit {
   showModal: boolean = false;
   modalMessage: string = '';
   oldItem: item | null = null;
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +60,7 @@ export class InventoriesComponent implements OnInit {
         next: (data: items) => {
           this.items = data.items;
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
+          this.loading = false;
         },
         error: (error) => {
           console.error(error);

@@ -2,15 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {selectItem} from "../../../../dto/item";
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {StorageService} from "../../../../service/storageService";
+import {LoadingSpinnerComponent} from "../../../shared/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-show-csv-content',
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf
+    NgForOf,
+    LoadingSpinnerComponent,
+    NgIf
   ],
   templateUrl: './show-csv-content.component.html',
   styleUrl: './show-csv-content.component.css'
@@ -22,6 +25,7 @@ export class ShowCsvContentComponent implements OnInit {
   barcodeSearchTerm: string = '';
   dropdownItems: string[] = ['Ponisti' ,'Selektovano', 'Neselektovano'];
   selectedItem: string | null = null;
+  loading: boolean = true;
 
   constructor(private router: Router,
               private storageService: StorageService) {
@@ -41,6 +45,7 @@ export class ShowCsvContentComponent implements OnInit {
     } else {
       console.error("No content to display");
     }
+    this.loading = false;
   }
 
   /**

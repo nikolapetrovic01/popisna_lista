@@ -11,6 +11,7 @@ import {
   ConfirmModalWorkerLockedItemClickedComponent
 } from "../../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 import {FormsModule} from "@angular/forms";
+import {LoadingSpinnerComponent} from "../../../../shared/loading-spinner/loading-spinner.component";
 
 // noinspection DuplicatedCode
 @Component({
@@ -22,7 +23,8 @@ import {FormsModule} from "@angular/forms";
     WorkerInventoryListItemComponent,
     ConfirmModalWorkerLockedItemClickedComponent,
     NgIf,
-    FormsModule
+    FormsModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './worker-higher-level-inventory.component.html',
   styleUrl: './worker-higher-level-inventory.component.css'
@@ -38,6 +40,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   showModal: boolean = false;
   modalMessage: string = '';
   oldItem: item | null = null;
+  loading: boolean = true;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService) {
@@ -46,7 +49,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-
+    this.loading = true;
     if (id != null) {
       this.itemId = +id;
       this.inventoryService.getWorkerItems(this.itemId).subscribe({
@@ -63,6 +66,8 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
           });
 
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
+
+          this.loading = false;
         },
         error: err => {
           console.error(err);
