@@ -7,6 +7,7 @@ export interface item{
   itemInputtedAmount: number;
   itemUserThatPutTheAmountIn: number;
   itemInventoryId: number;
+  modalTriggered?: boolean;
 }
 export interface items{
   items: item[];

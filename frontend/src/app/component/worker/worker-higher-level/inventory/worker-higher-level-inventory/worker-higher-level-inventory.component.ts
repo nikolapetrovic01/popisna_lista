@@ -30,6 +30,7 @@ import {FormsModule} from "@angular/forms";
 export class WorkerHigherLevelInventoryComponent implements OnInit{
   itemId: number | null = null;
   items: item[] = [];
+  savedNegativeItems: Set<number> = new Set();
   nameSearchTerm: string = '';
   barcodeSearchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
@@ -50,7 +51,17 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
       this.itemId = +id;
       this.inventoryService.getWorkerItems(this.itemId).subscribe({
         next: (data: items) => {
-          this.items = data.items;
+          this.items = data.items.map(item => ({
+            ...item,
+            modalTriggered: false // Ensure each item starts with modalTriggered = false
+          }));
+
+          this.items.forEach(item => {
+            if (item.itemInputtedAmount === -1) {
+              this.savedNegativeItems.add(item.itemId);
+            }
+          });
+
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },
         error: err => {
@@ -94,12 +105,24 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
    * Handles item changes and updates the list of modified items.
    */
   handleItemChange(updatedItem: updateItemAmount) {
-    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
-    if (this.oldItem?.itemInputtedAmount !== -1) {
+    const originalItem = this.items.find(i => i.itemId === updatedItem.itemId);
+
+    if (originalItem && this.savedNegativeItems.has(updatedItem.itemId)) {
+      const  index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
+      if (index !== -1) {
+          this.updatedItems[index] = updatedItem;
+        } else {
+          this.updatedItems.push(updatedItem);
+        }
+      return
+    }
+
+    if (this.oldItem?.itemInputtedAmount !== -1 && !originalItem?.modalTriggered) {
+      originalItem!.modalTriggered = true;
       this.handleActivateModal();
       return;
     }
-
+    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
     if (index !== -1) {
       this.updatedItems[index] = updatedItem;
     } else {
@@ -131,6 +154,15 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
     if (this.updatedItems.length > 0) {
       this.inventoryService.saveWorkerChangedItems(this.updatedItems).subscribe({
         next: () => {
+          this.updatedItems.forEach(item => {
+            this.savedNegativeItems.delete(item.itemId); // Remove from tracking
+            // Reset modalTriggered after saving
+            const savedItem = this.items.find(i => i.itemId === item.itemId);
+            if (savedItem) {
+              savedItem.modalTriggered = false;
+            }
+          });
+
           this.updatedItems = [];
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },
