@@ -37,6 +37,7 @@ export class InventoriesComponent implements OnInit {
   modalMessage: string = '';
   oldItem: item | null = null;
   loading: boolean = true;
+  savedNegativeItems: Set<number> = new Set();
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +59,16 @@ export class InventoriesComponent implements OnInit {
       this.isEditable = fromActive === 'true';
       this.inventoryService.getItems(this.itemId).subscribe({
         next: (data: items) => {
-          this.items = data.items;
+          this.items = data.items.map(item => ({
+            ...item,
+            modalTriggered: false
+          }));
+          this.items.forEach(item => {
+            if (item.itemInputtedAmount === -1) {
+              this.savedNegativeItems.add(item.itemId);
+            }
+          })
+
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
           this.loading = false;
         },
@@ -105,16 +115,28 @@ export class InventoriesComponent implements OnInit {
   }
 
   handleItemChange(updatedItem: updateItemAmount) {
-    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
-    if (this.oldItem?.itemInputtedAmount !== -1) {
-      this.handleActivateModal();
+    const original = this.items.find(i => i.itemId === updatedItem.itemId);
+
+    if (original && this.savedNegativeItems.has(updatedItem.itemId)) {
+      const  index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
+      if (index !== -1) {
+        this.updatedItems[index] = updatedItem;
+      } else {
+        this.updatedItems.push(updatedItem);
+      }
       return;
     }
 
+    if (this.oldItem?.itemInputtedAmount !== -1 && !original?.modalTriggered) {
+      original!.modalTriggered = true;
+      this.handleActivateModal();
+      return;
+    }
+    const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
     if (index !== -1) {
-      this.updatedItems[index] = updatedItem; // Update existing entry
+      this.updatedItems[index] = updatedItem;
     } else {
-      this.updatedItems.push(updatedItem); // Add new entry
+      this.updatedItems.push(updatedItem);
     }
   }
 
@@ -122,6 +144,15 @@ export class InventoriesComponent implements OnInit {
     if (this.updatedItems.length > 0) {
       this.inventoryService.saveChangedItems(this.updatedItems).subscribe({
         next: () => {
+          this.updatedItems.forEach(item => {
+            this.savedNegativeItems.delete(item.itemId);
+
+            const saved = this.items.find(i => i.itemId === item.itemId);
+            if (saved) {
+              saved.modalTriggered = false;
+            }
+          });
+
           this.updatedItems = [];
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
         },

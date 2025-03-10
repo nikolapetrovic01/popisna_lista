@@ -119,7 +119,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
         } else {
           this.updatedItems.push(updatedItem);
         }
-      return
+      return;
     }
 
     if (this.oldItem?.itemInputtedAmount !== -1 && !originalItem?.modalTriggered) {
