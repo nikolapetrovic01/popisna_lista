@@ -5,7 +5,9 @@
     <div *ngIf="isLoadingTasks">Loading tasks...</div>
     <ul *ngIf="!isLoadingTasks && activeItems.length > 0">
       <div class="active-items">
-        <app-dropdown-item *ngFor="let item of filteredActiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
+        <app-dropdown-item *ngFor="let item of filteredActiveItems"
+                           [item]="item"
+                           (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
       </div>
     </ul>
     <div *ngIf="!isLoadingTasks && activeItems.length === 0">Trenutno nema aktivnon popisa.</div>
