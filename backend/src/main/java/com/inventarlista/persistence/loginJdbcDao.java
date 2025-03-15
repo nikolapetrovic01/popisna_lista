@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class loginJdbcDao {
+public class  loginJdbcDao {
     public static final String SQL_SELECT_USER = "SELECT username, password, level, id FROM users WHERE username = ?";
     private final JdbcTemplate jdbcTemplate;
     
@@ -30,7 +30,7 @@ public class loginJdbcDao {
                         rs.getInt("level"),
                         rs.getInt("id")
                 ));
-        }catch (EmptyResultDataAccessException  e){
+        } catch (EmptyResultDataAccessException  e){
             throw new NotFoundException("User not found for username: " + username);
         }
     }

@@ -19,11 +19,10 @@ public class inventoryEndpoint {
      * Retrieves all inventories.
      *
      * @return An inventoriesDto object containing all inventory data.
-     * @throws Exception if an error occurs during the retrieval process.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping("/controller")
-    public inventoriesDto getInventories() throws Exception {
+    public inventoriesDto getInventories() {
         return inventoryService.getAllInventories();
     }
 

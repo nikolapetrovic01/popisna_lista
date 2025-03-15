@@ -14,7 +14,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/users/manage"
+          <a class="nav-link" routerLink="/controller/users/manage"
              *ngIf="loginService.isLoggedIn() && loginService.getUserRole() === 'MANAGER'">
             Upravljanje Korisnicima
           </a>
@@ -46,7 +46,7 @@
           </li>
 
           <li class="d-block d-sm-none">
-            <a class="dropdown-item" routerLink="/users/manage"
+            <a class="dropdown-item" routerLink="users/manage"
                *ngIf="loginService.isLoggedIn() && loginService.getUserRole() === 'MANAGER'">
               Upravljanje Korisnicima
             </a>

@@ -1,121 +1,3 @@
-/*!* Ensure body and html take the full viewport without any scroll *!*/
-/*body, html {*/
-/*  margin: 0;*/
-/*  padding: 0;*/
-/*  height: 100%;*/
-/*  width: 100%;*/
-/*  overflow: hidden; !* Disable scrolling *!*/
-/*  background: #6A0DAD; !* Set the background color to purple *!*/
-/*}*/
-
-/*!* Fix the navbar to the top, ensure it doesn't cause scrolling *!*/
-/*nav {*/
-/*  position: fixed;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*  z-index: 1000;*/
-/*  background-color: #0C3B5D; !* Add a background color to the navbar for contrast *!*/
-/*}*/
-
-/*!* The container should fit within the remaining space after the header *!*/
-/*.main-content {*/
-/*  position: absolute;*/
-/*  top: 70px; !* Adjusted according to the navbar height to add gap *!*/
-/*  bottom: 0;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  align-items: flex-start; !* Align content to the top *!*/
-/*  background: #6A0DAD; !* Keep the main background color purple *!*/
-/*  overflow: hidden;*/
-/*  padding-top: 20px; !* Add padding to add more space from the navbar *!*/
-/*}*/
-
-/*!* Main container for content *!*/
-/*.container {*/
-/*  width: 95vw; !* Make the container wider *!*/
-/*  max-width: 1200px; !* Increase the max width *!*/
-/*  height: 85vh; !* Increase the height *!*/
-/*  max-height: 850px; !* Increase the max height *!*/
-/*  padding: 20px;*/
-/*  background: #aaaaaa;*/
-/*  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);*/
-/*  overflow: hidden; !* Prevent container overflow *!*/
-/*}*/
-
-/*!* Style for buttons *!*/
-/*button {*/
-/*  padding: 10px 20px;*/
-/*  font-size: 16px;*/
-/*  color: white;*/
-/*  border: none;*/
-/*  cursor: pointer;*/
-/*  transition: background-color 0.3s;*/
-/*  border-radius: 20px;*/
-/*}*/
-
-/*button:hover {*/
-/*  opacity: 0.8;*/
-/*}*/
-
-/*!* Specific styles for buttons *!*/
-/*#new-button {*/
-/*  background-color: #000000;*/
-/*  width: auto;*/
-/*  margin-left: auto; !* Align button to the right *!*/
-/*  border-radius: 20px;*/
-/*}*/
-
-/*#inactive-button {*/
-/*  background-color: #f44336;*/
-/*  width: 100%;*/
-/*  margin-top: 20px;*/
-/*  border-radius: 5px; !* Adjust or remove border-radius to make it less rounded *!*/
-/*}*/
-
-
-/*!* List styling *!*/
-/*.active-list, .inactive-list {*/
-/*  width: 100%; !* Take full container width *!*/
-/*  text-align: center;*/
-/*}*/
-
-/*.active-list {*/
-/*  background-color: #4CAF50;*/
-/*  padding: 12px;*/
-/*  text-align: center;*/
-/*  margin-bottom: 1rem;*/
-/*}*/
-
-/*.active-list-header {*/
-/*  display: flex;*/
-/*  justify-content: space-between; !* Align header and button *!*/
-/*  align-items: center;*/
-/*  width: 100%;*/
-/*}*/
-
-/*!* Dropdown item styling *!*/
-/*.active-items {*/
-/*  background-color: white;*/
-/*  padding: 12px;*/
-/*  width: 100%;*/
-/*}*/
-
-/*.app-dropdown-item {*/
-/*  display: block;*/
-/*  padding: 10px 0;*/
-/*  text-decoration: none;*/
-/*  color: black;*/
-/*  background-color: white;*/
-/*}*/
-
-/*.app-dropdown-item:hover {*/
-/*  background-color: #f1f1f1;*/
-/*}*/
-
-/* General body and html styles */
 body, html {
   margin: 0;
   padding: 0;
@@ -124,18 +6,10 @@ body, html {
   overflow: hidden;
 }
 
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
-
 /* Content to fit in remaining space */
 .main-content {
   position: absolute;
-  top: 56px; /* Adjust according to your navbar height */
+  top: 7.5vh; /* Adjust according to your navbar height */
   bottom: 0;
   left: 0;
   right: 0;

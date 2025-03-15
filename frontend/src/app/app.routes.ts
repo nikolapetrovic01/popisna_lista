@@ -7,6 +7,7 @@ import {ShowCsvContentComponent} from "./component/controller/create/show-csv-co
 import {authGuard} from "./guards/auth.guard";
 import {WorkerDashboardComponent} from "./component/worker/dashboard/worker-dashboard.component";
 import {WorkerInventoryViewComponent} from "./component/worker/inventory/worker-inventory-view/worker-inventory-view.component";
+import {UserManagementComponent} from "./component/user-management/user-management.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,6 +18,7 @@ export const routes: Routes = [
       {path: 'inventory/:id', component: InventoriesComponent, data: {requiredLevel: 1}},
       {path: 'create', component: CreateNewInventoryComponent, data: {requiredLevel: 1}},
       {path: 'create/show-csv', component: ShowCsvContentComponent, data: {requiredLevel: 1}},
+      {path: 'users/manage', component: UserManagementComponent, data: {requiredLevel: 1}},
     ]
   },
   {

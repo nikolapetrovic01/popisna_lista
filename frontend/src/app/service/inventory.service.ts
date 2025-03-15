@@ -17,6 +17,7 @@ export class InventoryService{
     const token = (localStorage.getItem('authToken') || '').replace('Bearer ', '').trim();
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
+
   /**
    * Retrieves the inventory list from the backend.
    * @returns - An observable of `inventories`, which is the inventory list data.
