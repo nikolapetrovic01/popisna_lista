@@ -1,0 +1,93 @@
+<app-header></app-header>
+<div class="dashboard-container">
+  <!-- Title -->
+  <div class="text-start text-uppercase fs-2 p-2"> {{ title }}</div>
+
+  <!-- Buttons to switch view -->
+  <div class="mode-toggle m-2 mt-3">
+    <button
+      class="btn"
+      [class.btn-primary]="currentView === 'allUsers'"
+      [class.btn-outline-primary]="currentView !== 'allUsers'"
+      (click)="setView('allUsers')">
+      Svi Korisnici
+    </button>
+    <button
+      class="btn ms-2"
+      [class.btn-primary]="currentView === 'newUser'"
+      [class.btn-outline-primary]="currentView !== 'newUser'"
+      (click)="setView('newUser')">
+      Novi Korisnik
+    </button>
+  </div>
+
+  <!-- List of all Users -->
+  <div class="container-fluid mt-4" *ngIf="currentView === 'allUsers'">
+    <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+    <div *ngIf="!loading">
+      <div class="row">
+        <!-- User List on the Left -->
+        <div class="col-md-6">
+          <ul class="list-group">
+            <app-dropdown-user *ngFor="let user of allUsers"
+                               [user]="user"
+                               (click)="selectUser(user)"></app-dropdown-user>
+          </ul>
+        </div>
+        <!-- User Details on the Right -->
+        <div class="col-md-6" *ngIf="selectedUser">
+          <div class="border rounded p-3 bg-light">
+            <h5 class="text-primary">{{ selectedUser.name }}</h5>
+            <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+            <p><strong>Level:</strong> {{ selectedUser.level }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- New User View -->
+  <div class="container-fluid mt-4" *ngIf="currentView === 'newUser'">
+    <div class="row">
+      <div class="col-md-6 col-lg-4">
+
+        <label for="userName" class="form-label"> Ime </label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" aria-label="Username"
+                 aria-describedby="basic-addon1" id="userName"
+                 placeholder="Unesi korisničko ime"
+                 [(ngModel)]="newUserName"
+                 (ngModelChange)="checkName()">
+        </div>
+        <div *ngIf="nameError" class="text-danger form-text">
+          {{ nameErrorMessage }}
+        </div>
+
+        <label for="userPassword" class="form-label"> Šifra </label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" aria-label="Password"
+                 aria-describedby="basic-addon1" id="userPassword"
+                 placeholder="Unesi šifru"
+                 [(ngModel)]="newUserPassword"
+                 (ngModelChange)="checkPassword()">
+        </div>
+        <div *ngIf="passwordError" class="text-danger form-text">
+          {{ passwordErrorMessage }}
+        </div>
+
+        <label for="userPassword" class="form-label"> Odaberi ulogu </label>
+        <div class="input-group mb-3">
+          <select class="form-select" id="inputGroupSelect01" [(ngModel)]="newUserRole">
+            <option value="" disabled selected>Izaberi ulogu...</option>
+            <option value="1">Controller</option>
+            <option value="2">Admin Worker</option>
+            <option value="3">Worker</option>
+          </select>
+        </div>
+
+        <button class="btn-outline-success" (click)="saveUser()"> Sačuvaj</button>
+      </div>
+    </div>
+  </div>
+</div>
