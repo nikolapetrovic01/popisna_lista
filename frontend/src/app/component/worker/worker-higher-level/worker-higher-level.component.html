@@ -3,14 +3,10 @@
   <app-header id="app-header"></app-header>
   <div class="flex-grow-1 d-flex flex-column align-items-start justify-content-start px-4 mt-4">
     <h1 class="mt-5 mt-md-5 mt-lg-5 mt-4">Inventari gornji nivo</h1>
-
     <!-- Item Container -->
     <div class="section w-100 px-0">
-      <app-loading-spinner *ngIf="isLoadingTasks">Loading tasks...</app-loading-spinner>
-      <!--<ul *ngIf="!isLoadingTasks && activeItems.length > 0" class="list-unstyled w-100 px-0">-->
+      <app-loading-spinner *ngIf="isLoadingTasks"></app-loading-spinner>
       <div *ngIf="!isLoadingTasks && activeItems.length > 0" class="w-100">
-
-
         <!-- Items -->
         <app-dropdown-item *ngFor="let item of filteredActiveItems"
                            [item]="item"

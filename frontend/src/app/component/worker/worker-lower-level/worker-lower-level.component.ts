@@ -5,6 +5,7 @@ import {InventoryService} from "../../../service/inventory.service";
 import {DropdownItemComponent} from "../../controller/dropdown-item/dropdown-item.component";
 import {HeaderComponent} from "../../header/header.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spinner.component";
 
 // noinspection DuplicatedCode
 @Component({
@@ -14,7 +15,8 @@ import {NgForOf, NgIf} from "@angular/common";
     DropdownItemComponent,
     HeaderComponent,
     NgForOf,
-    NgIf
+    NgIf,
+    LoadingSpinnerComponent
   ],
   templateUrl: './worker-lower-level.component.html',
   styleUrl: './worker-lower-level.component.css'

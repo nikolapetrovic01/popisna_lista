@@ -1,17 +1,16 @@
 <app-loading-spinner *ngIf="loading"></app-loading-spinner>
 <div *ngIf="!loading">
   <!-- Title -->
-  <div class="title p-2" id="title">
+  <div class="title p-2">
     <h2>Inventar</h2>
     <br>
-    <p> Ukupno zavrseno {{ changedItems }} / {{ items.length }}</p>
-    <p> Nesacuvane promjene {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
+    <p> Ukupno zavrseno: {{ changedItems }} / {{ items.length }}</p>
+    <p> Nesacuvane promjene: {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
   </div>
 
   <div class="inventories p-2" id="inventories">
     <button (click)="save()">SAČUVAJ</button>
-
-    <!-- Search Fields for PC -->
+    <!-- Search Fields -->
     <div class="search-fields d-flex flex-md-row flex-column justify-content-between mt-2">
 
       <div class="search-field-1 d-flex flex-column mb-3">
@@ -40,8 +39,7 @@
         />
       </div>
     </div>
-
-    <!-- Inventories -->
+    <!-- Inventory Items -->
     <app-worker-inventory-list-item
       *ngFor="let item of filteredItems()"
       [item]="item"
@@ -50,7 +48,6 @@
       (itemChanged)="handleItemChange($event)"
     ></app-worker-inventory-list-item>
   </div>
-
   <!-- Modal -->
   <app-confirm-modal *ngIf="showModal" (confirm)="handleModalConfirm($event)"
                      [message]="modalMessage"></app-confirm-modal>
