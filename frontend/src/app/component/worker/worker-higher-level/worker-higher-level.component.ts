@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {InventoryService} from "../../../service/inventory.service";
 import {inventories, inventoriesPiece} from "../../../dto/inventories";
 import {HeaderComponent} from "../../header/header.component";
+import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-worker-higher-level',
@@ -13,7 +14,8 @@ import {HeaderComponent} from "../../header/header.component";
     NgIf,
     NgForOf,
     DropdownItemComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoadingSpinnerComponent
   ],
   templateUrl: './worker-higher-level.component.html',
   styleUrl: './worker-higher-level.component.scss'

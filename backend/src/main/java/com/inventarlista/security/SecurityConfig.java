@@ -40,10 +40,10 @@ public class SecurityConfig {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                    .allowedOriginPatterns("http://localhost:4200")
-                    .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD");
+                    .allowedOriginPatterns("http://localhost:4200", "http://192.168.173.139:4200") //dodati IP adresu telefona
+                    .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
         }
     }
 }
-//.requestMatchers(HttpMethod.POST, "/api/v1/users/authenticate").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
