@@ -121,6 +121,10 @@ export class ShowCsvContentComponent implements OnInit {
       const nameMatches = this.nameSearchTerm.trim() === '' ||
         item.itemName.toLowerCase().includes(this.nameSearchTerm.toLowerCase());
 
+      if (this.barcodeSearchTerm === null) {
+        this.barcodeSearchTerm = '';
+      }
+
       // Barcode filtering - Ensures clearing search resets list
       const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));

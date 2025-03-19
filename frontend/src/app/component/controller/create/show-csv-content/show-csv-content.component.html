@@ -1,84 +1,86 @@
 <app-loading-spinner *ngIf="loading"></app-loading-spinner>
 <div *ngIf="!loading">
-<div class="container">
-  <h2>CSV Content</h2>
-  <form (ngSubmit)="onSubmit()">
-    <button type="submit" class="btn btn-primary">Save Selected Items</button>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped text-center align-middle">
-        <thead class="table-light">
-        <tr>
-          <td class="col-2">Item Name</td>
-          <td class="col-2">Measurement</td>
-          <td class="col-1">Present Amount</td>
-          <td class="col-2">Barcode</td>
-          <td class="col-1">Inputted Amount</td>
-          <td class="col-1">User</td>
-          <td class="col-2">Select</td>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Input Row for Search Filters -->
-        <tr>
-          <td>
-            <input
-              type="text"
-              placeholder="Traži po Imenu"
-              [(ngModel)]="nameSearchTerm"
-              name="nameSearchTerm"
-              class="form-control form-control-sm"
-            >
-          </td>
-          <td></td> <!-- Empty column for Measurement -->
-          <td></td> <!-- Empty column for Present Amount -->
-          <td>
-            <input
-              id="barcode-search"
-              type="number"
-              placeholder="Traži po Barkodu"
-              [(ngModel)]="barcodeSearchTerm"
-              name="barcodeSearchTerm"
-              class="form-control form-control-sm w-100"
-            >
-          </td>
-          <td></td> <!-- Empty column for Inputted Amount -->
-          <td></td> <!-- Empty column for User -->
-          <td>
-            <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" >
-                {{ selectedItem || 'Select an option' }}
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end show-all-options">
-                <li *ngFor="let item of dropdownItems">
-                  <a class="dropdown-item text-center" (click)="selectItem(item)">{{ item }}</a>
-                </li>
-              </ul>
-            </div>
-          </td>
+  <div class="container-fluid px-2 px-md-3">
+    <h2>CSV Sadržaj</h2>
+    <form (ngSubmit)="onSubmit()">
+      <button type="submit" class="btn btn-primary mb-2">Sačuvaj Selektovane Artikle</button>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+          <thead class="table-light">
 
-        </tr>
-        <tr *ngFor="let item of filteredItems()">
-          <td>{{ item.itemName }}</td>
-          <td>{{ item.itemMeasurement }}</td>
-          <td>{{ item.itemPresentAmount }}</td>
-          <td>{{ item.itemBarcode }}</td>
-          <td>{{ item.itemInputtedAmount }}</td>
-          <td>{{ item.itemUserThatPutTheAmountIn }}</td>
-          <td class="text-center">
-            <div class="d-flex align-items-center justify-content-center h-100">
-            <input
-              type="checkbox"
-              [(ngModel)]="item.selected"
-              (ngModelChange)="updateLocalStorage()"
-              name="selected-{{ item.itemId }}"
-            >
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </form>
-</div>
+          <tr>
+            <th class="col-md-2 col-sm-3 text-wrap">Ime</th>
+            <th class="col-md-1 col-sm-2 text-wrap">Mjera</th>
+            <th class="col-md-1 col-sm-2 text-wrap">Prisutna količina</th>
+            <th class="col-md-2 col-sm-3 text-wrap">Barkod</th>
+            <th class="col-md-1 col-sm-2 text-wrap">Unesena količina</th>
+            <th class="col-md-1 col-sm-2 text-wrap">Korisnik</th>
+            <th class="col-md-2 col-sm-3 text-wrap">Selektuj</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <!-- Input Row for Search Filters -->
+          <tr>
+            <td>
+              <input
+                type="text"
+                placeholder="Traži po Imenu"
+                [(ngModel)]="nameSearchTerm"
+                name="nameSearchTerm"
+                class="form-control form-control-sm"
+              >
+            </td>
+            <td></td> <!-- Empty column for Measurement -->
+            <td></td> <!-- Empty column for Present Amount -->
+            <td>
+              <input
+                id="barcode-search"
+                type="number"
+                placeholder="Traži po Barkodu"
+                [(ngModel)]="barcodeSearchTerm"
+                name="barcodeSearchTerm"
+                class="form-control form-control-sm w-100"
+              >
+            </td>
+            <td></td> <!-- Empty column for Inputted Amount -->
+            <td></td> <!-- Empty column for User -->
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown">
+                  {{ selectedItem || 'Selektuj' }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end show-all-options">
+                  <li *ngFor="let item of dropdownItems">
+                    <a class="dropdown-item text-center" (click)="selectItem(item)">{{ item }}</a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngFor="let item of filteredItems()">
+            <td>{{ item.itemName }}</td>
+            <td>{{ item.itemMeasurement }}</td>
+            <td>{{ item.itemPresentAmount }}</td>
+            <td>{{ item.itemBarcode }}</td>
+            <td>{{ item.itemInputtedAmount }}</td>
+            <td>{{ item.itemUserThatPutTheAmountIn }}</td>
+            <td class="text-center">
+              <div class="d-flex align-items-center justify-content-center h-100">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="item.selected"
+                  (ngModelChange)="updateLocalStorage()"
+                  name="selected-{{ item.itemId }}"
+                >
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
 </div>
