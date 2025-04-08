@@ -1,33 +1,34 @@
 <div class="d-flex flex-column min-vh-100">
   <!-- Header -->
   <app-header></app-header>
-  <div class="container flex-grow-1 d-flex flex-column align-items-start justify-content-start px-4 mt-4">
-    <h2 class="mb-4">Upload CSV File</h2>
-    <form (ngSubmit)="onSubmit()" #csvForm="ngForm">
+
+  <div class="container flex-grow-1 d-flex flex-column align-items-center justify-content-center px-3 text-center">
+    <h2 class="mb-4 display-4">Dodaj CSV Fajl</h2>
+    <form (ngSubmit)="onSubmit()" #csvForm="ngForm" class="w-100" style="max-width: 500px;">
 
       <div class="row mb-3">
-        <div class="col-6">
-          <label for="startDate" class="form-label custom-label">Start Date</label>
+        <div class="col-12 col-md-6">
+          <label for="startDate" class="form-label custom-label">Početni Datum</label>
           <input type="date" id="startDate" [(ngModel)]=startDate (change)="onDateChange()" name="startDate"
                  class="form-control custom-date-input" required>
         </div>
-        <div class="col-6">
-          <label for="endDate" class="form-label custom-label">End Date</label>
+        <div class="col-12 col-md-6 mt-3 mt-md-0">
+          <label for="endDate" class="form-label custom-label">Krajnji Datum</label>
           <input type="date" id="endDate" [(ngModel)]=endDate (change)="onDateChange()" name="endDate" ngModel
                  class="form-control custom-date-input" required>
         </div>
       </div>
 
       <div class="mb-3">
-        <label for="file" class="form-label">Upload CSV</label>
-        <div class="file-drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+        <label for="file" class="form-label">Dodaj CSV</label>
+        <div class="border border-2 border-secondary rounded p-4 text-center position-relative" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
           <button *ngIf="showX" type="button" class="btn-close" (click)="removeFile()" aria-label="Close"></button>
           <span class="choose-file">{{ fileName }}</span>
           <input type="file" id="file" (change)="onFileChange($event)" (click)="preventFileSelection($event)"
                  class="file-input" accept=".csv" [required]="!file">
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">KREIRAJ NOVI POPIS</button>
+      <button type="submit" class="btn btn-primary w-100">KREIRAJ NOVI POPIS</button>
     </form>
   </div>
 </div>

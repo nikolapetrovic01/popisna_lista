@@ -81,3 +81,11 @@ button:hover {
   width: 100%;
   border-radius: 8px;
 }
+
+.dropdown-content {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: white;
+}
