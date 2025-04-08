@@ -38,6 +38,8 @@ export class InventoriesComponent implements OnInit {
   oldItem: item | null = null;
   loading: boolean = true;
   savedNegativeItems: Set<number> = new Set();
+  myCheckboxValue: boolean = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -85,7 +87,7 @@ export class InventoriesComponent implements OnInit {
    * @returns - An array of items that match the search term
    */
   filteredItems(): item[] {
-    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm && !this.myCheckboxValue) {
       return this.items; // Reset to all items when both are cleared
     }
 
@@ -96,7 +98,10 @@ export class InventoriesComponent implements OnInit {
       const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
-      return nameMatches && barcodeMatches;
+      const amountMatches =
+        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+
+      return nameMatches && barcodeMatches && amountMatches;
     });
   }
 

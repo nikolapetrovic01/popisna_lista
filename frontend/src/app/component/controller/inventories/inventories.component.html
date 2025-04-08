@@ -18,7 +18,7 @@
       <input
         id="name-search"
         type="text"
-        placeholder="Search by name"
+        placeholder="Traži po imenu"
         [(ngModel)]="nameSearchTerm"
         class="search-bar"
       />
@@ -26,12 +26,20 @@
     <div class="search-field-1 d-flex flex-column mb-3">
       Pronadjeni artikli: {{filteredItems().length}}
     </div>
+
+    <div class="search-field-2 d-flex flex-column mb-3">
+      <div class="d-flex align-items-center">
+        <span class="me-2">Nisu popunjeni:</span>
+        <input type="checkbox" class="form-check-input" [(ngModel)]="myCheckboxValue">
+      </div>
+    </div>
+
     <div class="search-field-2 d-flex flex-column">
       <label for="barcode-search">Pretraži po barkodu</label>
       <input
         id="barcode-search"
         type="number"
-        placeholder="Search by barcode"
+        placeholder="Traži po barkodu"
         [(ngModel)]="barcodeSearchTerm"
         class="search-bar"
       />
