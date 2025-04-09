@@ -41,6 +41,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   modalMessage: string = '';
   oldItem: item | null = null;
   loading: boolean = true;
+  myCheckboxValue: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService) {
@@ -140,7 +141,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
    * @returns - An array of items that match the search term
    */
   filteredItems(): item[] {
-    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm && !this.myCheckboxValue) {
       return this.items; // Reset to all items when both are cleared
     }
 
@@ -151,7 +152,10 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
       const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
-      return nameMatches && barcodeMatches;
+      const amountMatches =
+        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+
+      return nameMatches && barcodeMatches && amountMatches;
     });
   }
 

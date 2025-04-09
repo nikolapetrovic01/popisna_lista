@@ -21,9 +21,18 @@
           class="search-bar"
         />
       </div>
+
       <div class="search-field-1 d-flex flex-column mb-3">
         Pronadjeni artikli: {{ filteredItems().length }}
       </div>
+
+      <div class="search-field-2 d-flex flex-column mb-3">
+        <div class="d-flex align-items-center">
+          <span class="me-2">Nisu popunjeni:</span>
+          <input type="checkbox" class="form-check-input" [(ngModel)]="myCheckboxValue">
+        </div>
+      </div>
+
       <div class="search-field-2 d-flex flex-column">
         <label for="barcode-search">Pretraži po barkodu</label>
         <input

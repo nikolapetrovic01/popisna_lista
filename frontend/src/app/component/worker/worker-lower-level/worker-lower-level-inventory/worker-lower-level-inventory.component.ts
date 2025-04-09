@@ -38,6 +38,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
   showModal: boolean = false;
   modalMessage: string = '';
   loading: boolean = true;
+  myCheckboxValue: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private inventoryService: InventoryService,) {}
@@ -106,7 +107,10 @@ export class WorkerLowerLevelInventoryComponent implements OnInit{
       const barcodeMatches = typeof this.barcodeSearchTerm === 'string' && this.barcodeSearchTerm.trim() === '' ||
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
-      return nameMatches && barcodeMatches;
+      const amountMatches =
+        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+
+      return nameMatches && barcodeMatches && amountMatches;
     });
   }
 
