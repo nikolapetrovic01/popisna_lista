@@ -24,7 +24,7 @@ import {LoadingSpinnerComponent} from "../../../../shared/loading-spinner/loadin
     ConfirmModalWorkerLockedItemClickedComponent,
     NgIf,
     FormsModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
   ],
   templateUrl: './worker-higher-level-inventory.component.html',
   styleUrl: './worker-higher-level-inventory.component.css'
@@ -49,6 +49,10 @@ export class WorkerHigherLevelInventoryComponent implements OnInit{
   }
 
   ngOnInit() {
+    window.addEventListener('barcodeScanned', (event: any) => {
+      this.barcodeSearchTerm = event.detail;
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     this.loading = true;
     if (id != null) {

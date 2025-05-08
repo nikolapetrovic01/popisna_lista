@@ -23,7 +23,6 @@
           class="search-bar"
         />
       </div>
-
       <div class="search-field-1 d-flex flex-column mb-3">
         Pronadjeni artikli: {{ filteredItems().length }}
       </div>
@@ -46,6 +45,7 @@
         />
       </div>
     </div>
+
     <!-- Inventory Items -->
     <app-worker-inventory-list-item
       *ngFor="let item of filteredItems()"

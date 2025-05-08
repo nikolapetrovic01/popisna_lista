@@ -1,4 +1,4 @@
-export interface item{
+export interface item {
   itemId: number;
   itemName: string;
   itemMeasurement: string;
@@ -9,11 +9,12 @@ export interface item{
   itemInventoryId: number;
   modalTriggered?: boolean;
 }
-export interface items{
+
+export interface items {
   items: item[];
 }
 
-export interface updateItemAmount{
+export interface updateItemAmount {
   itemId: number;
   itemName: string;
   itemMeasurement: string;
@@ -24,7 +25,7 @@ export interface updateItemAmount{
   itemInventoryId: number;
 }
 
-export interface selectItem{
+export interface selectItem {
   itemId: number;
   itemName: string;
   itemMeasurement: string;
@@ -36,7 +37,7 @@ export interface selectItem{
   selected?: boolean;
 }
 
-export interface selectedItems{
+export interface selectedItems {
   selectedItems: selectItem[];
   startDate: Date;
   endDate: Date;

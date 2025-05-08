@@ -1,6 +1,5 @@
 package com.inventarlista.persistence;
 
-import com.inventarlista.dto.inventoriesPieceDto;
 import com.inventarlista.dto.updateItemAmount;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
