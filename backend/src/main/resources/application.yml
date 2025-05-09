@@ -23,11 +23,11 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/my_project_inventar_lista_test?allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: myuser
-    password: password
+    password: P#assword!23
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
-  port: 8080
+  port: 8081
   error:
     include-message: always
 spring.mvc.format.date: iso
