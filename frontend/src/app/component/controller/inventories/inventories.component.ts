@@ -99,7 +99,7 @@ export class InventoriesComponent implements OnInit {
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
       const amountMatches =
-        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+        !this.myCheckboxValue || item.itemInputtedAmount <= -1;
 
       return nameMatches && barcodeMatches && amountMatches;
     });
@@ -171,7 +171,6 @@ export class InventoriesComponent implements OnInit {
   }
 
   handleInputFocus(item: item) {
-    console.log("Old value: " + item.itemInputtedAmount);
     this.oldItem = {...item};
   }
 
