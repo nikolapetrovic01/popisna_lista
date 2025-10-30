@@ -197,4 +197,8 @@ export class InventoriesComponent implements OnInit {
     }
     this.showModal = false;
   }
+
+  goBack() {
+    this.router.navigate(['/controller']);
+  }
 }

@@ -4,6 +4,7 @@
   display: block;  /* Make sure the item takes up the full width */
   background-color: white; /* Optional: Add a background color */
   border-bottom: 1px solid #ccc; /* Optional: Add a border for visual separation */
+  border-radius: 10px;
 }
 
 .dropdown-item:hover {

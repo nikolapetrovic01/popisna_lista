@@ -4,6 +4,7 @@
 <div class="title p-2">
   <h2>Lista Artikala</h2>
   <button *ngIf="isEditable" class="my-button" (click)="closeOpenedInventory()">ZATVORI</button>
+  <button *ngIf="isEditable" class="my-button" (click)="goBack()">NAZAD</button>
 
   <p> Ukupno zavrseno: {{ changedItems }} / {{ items.length }}</p>
   <p> Ne sacuvane promjene: {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
