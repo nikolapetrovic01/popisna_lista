@@ -117,7 +117,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
 
       // For now, we only log the value as requested.
       // Next time, you would uncomment the line below to set the search field:
-      // this.barcodeSearchTerm = scannedCode;
+       this.barcodeSearchTerm = scannedCode;
     });
   }
 
