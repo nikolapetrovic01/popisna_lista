@@ -124,8 +124,14 @@ export class InventoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
+  triggerScan() {
+    if (this.isAndroidApp) {
+      // Call the Java bridge method you defined in MainActivity
+      // The interface object is named 'AndroidInterface' in your Java code
+      (window as any).AndroidInterface.scanBarcode();
+      console.log('Requesting native scan...');
+    }
+  }
 
 
 
