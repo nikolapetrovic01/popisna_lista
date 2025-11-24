@@ -22,7 +22,7 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './user-management.component.css'
 })
 export class UserManagementComponent implements OnInit{
-  currentView: 'allUsers' | 'newUser' = 'newUser';
+  currentView: 'allUsers' | 'newUser' = 'allUsers';
   title: string = 'svi korisnici';
   allUsers: User[] = [];
   selectedUser: User | null = null;

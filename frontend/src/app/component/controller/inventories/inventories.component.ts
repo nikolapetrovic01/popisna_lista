@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
 import {InventoryService} from "../../../service/inventory.service";
 import {item, items, updateItemAmount} from "../../../dto/item";
@@ -11,11 +11,15 @@ import {
 } from "../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spinner.component";
 
+// Define the custom event type for TypeScript
+interface BarcodeCustomEvent extends CustomEvent {
+  detail: string;
+}
+
 @Component({
   selector: 'app-inventories',
   standalone: true,
   imports: [
-    DropdownItemComponent,
     ListInventoryItemComponent,
     CommonModule,
     FormsModule,
@@ -25,7 +29,7 @@ import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spin
   templateUrl: './inventories.component.html',
   styleUrl: './inventories.component.css'
 })
-export class InventoriesComponent implements OnInit {
+export class InventoriesComponent implements OnInit, OnDestroy {
   items: item[] = [];
   itemId: number | null = null;
   isEditable: boolean = false;
@@ -40,11 +44,13 @@ export class InventoriesComponent implements OnInit {
   savedNegativeItems: Set<number> = new Set();
   myCheckboxValue: boolean = false;
 
+  isAndroidApp: boolean = false; // <-- NEW: Flag to show/hide the button
 
   constructor(
     private route: ActivatedRoute,
     private inventoryService: InventoryService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone // <-- NEW: Inject NgZone
   ) {
     this.changedItems = 0;
   }
@@ -80,7 +86,53 @@ export class InventoriesComponent implements OnInit {
       })
       ;
     }
+
+    // 1. Check for the native Android interface object
+    if ((window as any).AndroidInterface && (window as any).AndroidInterface.scanBarcode) {
+      this.isAndroidApp = true;
+      console.log('Scanner enabled: AndroidInterface found.');
+    }
+
   }
+
+
+  // 2. Method called by the button to trigger the native scan
+  triggerScan() {
+    if (this.isAndroidApp) {
+      // Call the Java bridge method you defined in MainActivity
+      (window as any).AndroidInterface.scanBarcode();
+      console.log('Requesting native scan...');
+    }
+  }
+
+  // 3. Listener to receive the event dispatched from Java/Android
+  @HostListener('window:barcodeScanned', ['$event'])
+  onBarcodeScanned(event: BarcodeCustomEvent) {
+    const scannedCode = event.detail;
+
+    // CRITICAL: Use NgZone to run the code inside Angular's context,
+    // ensuring the UI updates and the logs appear correctly.
+    this.ngZone.run(() => {
+      console.log('✅ Android Scan Success! Barcode Received:', scannedCode);
+
+      // For now, we only log the value as requested.
+      // Next time, you would uncomment the line below to set the search field:
+      // this.barcodeSearchTerm = scannedCode;
+    });
+  }
+
+  ngOnDestroy(): void {
+    // HostListener on 'window' generally cleans up automatically,
+    // but we include OnDestroy for completeness.
+  }
+
+
+
+
+
+
+
+
 
   /**
    * Filters the list of items based on the search term entered by the user.
