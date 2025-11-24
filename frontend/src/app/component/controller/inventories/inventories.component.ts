@@ -45,6 +45,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   myCheckboxValue: boolean = false;
 
   isAndroidApp: boolean = false; // <-- NEW: Flag to show/hide the button
+  private barcodeListener: (event: Event) => void= () => {};
 
   constructor(
     private route: ActivatedRoute,
@@ -93,37 +94,34 @@ export class InventoriesComponent implements OnInit, OnDestroy {
       console.log('Scanner enabled: AndroidInterface found.');
     }
 
-  }
+    // --- 🚀 NEW ROBUST LISTENER SETUP ---
+    this.barcodeListener = (event: Event) => {
+      // Cast the event to the custom type for detail access
+      const customEvent = event as BarcodeCustomEvent;
+      const scannedCode = customEvent.detail;
 
+      console.log('--- 1. JS Event Fired! Raw Data Received:', scannedCode);
 
-  // 2. Method called by the button to trigger the native scan
-  triggerScan() {
-    if (this.isAndroidApp) {
-      // Call the Java bridge method you defined in MainActivity
-      (window as any).AndroidInterface.scanBarcode();
-      console.log('Requesting native scan...');
-    }
-  }
+      // CRITICAL: Ensure execution is within Angular's change detection zone.
+      //
+      this.ngZone.run(() => {
+        console.log('--- 2. Entering NgZone. Setting Model...');
 
-  // 3. Listener to receive the event dispatched from Java/Android
-  @HostListener('window:barcodeScanned', ['$event'])
-  onBarcodeScanned(event: BarcodeCustomEvent) {
-    const scannedCode = event.detail;
+        // Set the model and trigger the filter/update
+        this.barcodeSearchTerm = scannedCode;
 
-    // CRITICAL: Use NgZone to run the code inside Angular's context,
-    // ensuring the UI updates and the logs appear correctly.
-    this.ngZone.run(() => {
-      console.log('✅ Android Scan Success! Barcode Received:', scannedCode);
+        console.log('--- 3. Model set to:', this.barcodeSearchTerm);
+      });
+    };
 
-      // For now, we only log the value as requested.
-      // Next time, you would uncomment the line below to set the search field:
-       this.barcodeSearchTerm = scannedCode;
-    });
+    // Attach the listener to the global window object
+    window.addEventListener('barcodeScanned', this.barcodeListener);
   }
 
   ngOnDestroy(): void {
-    // HostListener on 'window' generally cleans up automatically,
-    // but we include OnDestroy for completeness.
+    if (this.barcodeListener) {
+      window.removeEventListener('barcodeScanned', this.barcodeListener);
+    }
   }
 
 
