@@ -23,15 +23,18 @@ public class  loginJdbcDao {
      */
     public User findByUsername(String username) throws NotFoundException {
         try {
-        return jdbcTemplate.queryForObject(SQL_SELECT_USER, new Object[]{username}, (rs, rowNum) ->
-                new User(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getInt("level"),
-                        rs.getInt("id")
-                ));
+            return jdbcTemplate.queryForObject(
+                    SQL_SELECT_USER,
+                    (rs, rowNum) -> new User(
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getInt("level"),
+                            rs.getInt("id")
+                    ),
+                    username
+            );
         } catch (EmptyResultDataAccessException  e){
-            throw new NotFoundException("User not found for username: " + username);
+            throw new NotFoundException("Invalid login");
         }
     }
 }
