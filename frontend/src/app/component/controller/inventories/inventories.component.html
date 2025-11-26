@@ -4,14 +4,14 @@
 <div class="title p-2">
   <h2>Lista Artikala</h2>
   <button *ngIf="isEditable" class="my-button" (click)="closeOpenedInventory()">ZATVORI</button>
-  <button *ngIf="isEditable" class="my-button" (click)="goBack()">NAZAD</button>
+  <button class="my-button" (click)="goBack()">NAZAD</button>
 
-  <p> Ukupno zavrseno: {{ changedItems }} / {{ items.length }}</p>
-  <p> Ne sacuvane promjene: {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
+  <p *ngIf="isEditable"> Ukupno zavrseno: {{ changedItems }} / {{ items.length }}</p>
+  <p *ngIf="isEditable"> Ne sacuvane promjene: {{ updatedItems.length }} / {{ items.length - changedItems }}</p>
 </div>
 
 <div class="inventories p-2">
-  <button (click)="save()">SAČUVAJ</button>
+  <button *ngIf="isEditable" (click)="save()">SAČUVAJ</button>
   <!-- Search Fields -->
   <div class="search-fields d-flex flex-md-row flex-column justify-content-between mt-2">
     <div class="search-field-1 d-flex flex-column mb-3">

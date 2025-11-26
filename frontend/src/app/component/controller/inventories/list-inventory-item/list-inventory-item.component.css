@@ -26,3 +26,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.item-differs {
+  /* Styles to apply when the condition is met */
+  border: 3px solid #dc3545 !important; /* Bold red border (Bootstrap red) */
+  box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Optional: Red shadow for emphasis */
+}

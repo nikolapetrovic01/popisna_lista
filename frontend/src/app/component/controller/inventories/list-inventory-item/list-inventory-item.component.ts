@@ -2,14 +2,15 @@ import {Component, EventEmitter, input, Input, Output} from '@angular/core';
 import {item, updateItemAmount} from "../../../../dto/item";
 import {FormsModule} from "@angular/forms";
 import {InventoryService} from "../../../../service/inventory.service";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-inventory-item',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './list-inventory-item.component.html',
   styleUrl: './list-inventory-item.component.css'

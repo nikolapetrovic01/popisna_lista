@@ -44,7 +44,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   savedNegativeItems: Set<number> = new Set();
   myCheckboxValue: boolean = false;
 
-  isAndroidApp: boolean = true; //Flag to show/hide the button
+  isAndroidApp: boolean = false; //Flag to show/hide the button
   private barcodeListener: (event: Event) => void= () => {};
 
   constructor(
