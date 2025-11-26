@@ -44,9 +44,13 @@
         [(ngModel)]="barcodeSearchTerm"
         class="search-bar"
       />
-      <button *ngIf="isAndroidApp" class="my-button btn-sm" (click)="triggerScan()">
-        📷 SKENIRAJ
+      <button
+        *ngIf="isAndroidApp"
+        class="btn btn-dark w-100 mt-2"
+        (click)="triggerScan()">
+        <i class="bi bi-camera me-2"></i> 📷 SKENIRAJ
       </button>
+
     </div>
   </div>
   <app-inventory-item

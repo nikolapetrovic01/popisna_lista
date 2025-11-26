@@ -11,7 +11,6 @@ import {FormsModule} from "@angular/forms";
   selector: 'app-controller',
   standalone: true,
   imports: [
-    RouterOutlet,
     DropdownItemComponent,
     CommonModule,
     HeaderComponent,

@@ -44,14 +44,14 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   savedNegativeItems: Set<number> = new Set();
   myCheckboxValue: boolean = false;
 
-  isAndroidApp: boolean = false; // <-- NEW: Flag to show/hide the button
+  isAndroidApp: boolean = true; //Flag to show/hide the button
   private barcodeListener: (event: Event) => void= () => {};
 
   constructor(
     private route: ActivatedRoute,
     private inventoryService: InventoryService,
     private router: Router,
-    private ngZone: NgZone // <-- NEW: Inject NgZone
+    private ngZone: NgZone
   ) {
     this.changedItems = 0;
   }
@@ -91,26 +91,17 @@ export class InventoriesComponent implements OnInit, OnDestroy {
     // 1. Check for the native Android interface object
     if ((window as any).AndroidInterface && (window as any).AndroidInterface.scanBarcode) {
       this.isAndroidApp = true;
-      console.log('Scanner enabled: AndroidInterface found.');
     }
 
-    // --- 🚀 NEW ROBUST LISTENER SETUP ---
     this.barcodeListener = (event: Event) => {
       // Cast the event to the custom type for detail access
       const customEvent = event as BarcodeCustomEvent;
       const scannedCode = customEvent.detail;
 
-      console.log('--- 1. JS Event Fired! Raw Data Received:', scannedCode);
-
-      // CRITICAL: Ensure execution is within Angular's change detection zone.
-      //
+      // Ensure execution is within Angular's change detection zone.
       this.ngZone.run(() => {
-        console.log('--- 2. Entering NgZone. Setting Model...');
-
         // Set the model and trigger the filter/update
         this.barcodeSearchTerm = scannedCode;
-
-        console.log('--- 3. Model set to:', this.barcodeSearchTerm);
       });
     };
 
@@ -129,14 +120,8 @@ export class InventoriesComponent implements OnInit, OnDestroy {
       // Call the Java bridge method you defined in MainActivity
       // The interface object is named 'AndroidInterface' in your Java code
       (window as any).AndroidInterface.scanBarcode();
-      console.log('Requesting native scan...');
     }
   }
-
-
-
-
-
 
   /**
    * Filters the list of items based on the search term entered by the user.
