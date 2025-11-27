@@ -69,9 +69,8 @@ public class UsersJdbcDao {
 
             // Optional: Log or check if the user was actually deleted
             if (rowsAffected == 0) {
-                System.out.println("Warning: No user found with ID: " + userId + " to delete.");
+                //TODO: ADD LOGS
             } else {
-                System.out.println("User with ID: " + userId + " successfully deleted. Rows affected: " + rowsAffected);
             }
         } catch (DataAccessException e) {
             throw new NotFoundException("Users couldn't be deleted.");
