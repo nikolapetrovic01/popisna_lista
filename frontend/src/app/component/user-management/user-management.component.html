@@ -39,7 +39,14 @@
           <div class="border rounded p-3 bg-light">
             <h5 class="text-primary">{{ selectedUser.name }}</h5>
             <p><strong>ID:</strong> {{ selectedUser.id }}</p>
-            <p><strong>Level:</strong> {{ selectedUser.level }}</p>
+            <p class="d-flex justify-content-between align-items-center mb-0">
+              <strong>Level:</strong> {{ selectedUser.level }}
+              <button
+                class="btn btn-danger btn-sm ms-3"
+                (click)="initiateDeletion(selectedUser)">
+                Izbriši
+              </button>
+            </p>
           </div>
         </div>
 

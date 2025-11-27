@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../../service/user.service";
-import {CreateUser, User} from "../../dto/user";
+import {CreateUser, User, userToDelete} from "../../dto/user";
 import {DropdownUserComponent} from "./dropdown-user/dropdown-user.component";
 import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
 import {FormsModule} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {ModalComponent} from "../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-user-management',
@@ -35,7 +38,11 @@ export class UserManagementComponent implements OnInit{
   passwordError = false;
   passwordErrorMessage = '';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+    ) {}
 
   ngOnInit(): void {
     this.fetchAllUsers();
@@ -65,7 +72,6 @@ export class UserManagementComponent implements OnInit{
         break;
       case 'newUser':
         this.title = 'novi korisnik';
-        // Load "Create New User" View
         break;
     }
   }
@@ -113,6 +119,43 @@ export class UserManagementComponent implements OnInit{
         this.newUserName = '';
         this.newUserRole = '';
         this.newUserPassword = '';
+      }
+    });
+  }
+
+  public initiateDeletion(userToDelete: User): void {
+    let dialogData = {
+      title: "Potvrda brisanja",
+      message: 'Da li ste sigurni da želite da izbrišete korisnika ' + userToDelete.name + "?"
+    }
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '300px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean | undefined) => {
+      if (result == true) {
+        this.deleteUser(userToDelete);
+      }
+    })
+  }
+
+  deleteUser(userToDelete: User) {
+    const payload: userToDelete = {
+      id: userToDelete.id
+    };
+    this.userService.deleteUser(payload).subscribe({
+      next: () => {
+        this.fetchAllUsers();
+        this.selectedUser = null
+        this.snackBar.open(`Korisnik uspješno obrisan.`, 'Close', {
+          duration: 3000,
+          verticalPosition: "bottom",
+          horizontalPosition: "right"
+        });
+      },
+      error: (err) => {
+        console.error("Error deleting user:", err);
       }
     });
   }

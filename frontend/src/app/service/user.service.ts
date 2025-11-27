@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {CreateUser, User, Users} from "../dto/user";
+import {CreateUser, User, Users, userToDelete} from "../dto/user";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {inventories} from "../dto/inventories";
@@ -65,7 +65,9 @@ export class UserService {
 
   getHeaders(): HttpHeaders {
     const token = (localStorage.getItem('authToken') || '').replace('Bearer ', '').trim();
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json');;
   }
 
   getAllUsers(): Observable<User[]> {
@@ -74,5 +76,15 @@ export class UserService {
 
   createNewUser(newUser: CreateUser): Observable<void> {
     return this.http.post<void>(`${this.managerBaseUrl}/create`, newUser, {headers: this.getHeaders()});
+  }
+
+  deleteUser(user: userToDelete): Observable<void> {
+    console.log(user.id);
+    return this.http.post<void>(`${this.managerBaseUrl}/user-deletion`, user, {headers: this.getHeaders()});
+
+    // return this.http.post<void>(`${this.managerBaseUrl}/deleteUser`,{
+    //   headers: this.getHeaders(),
+    //   body: user
+    // });
   }
 }
