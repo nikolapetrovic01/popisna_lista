@@ -40,40 +40,32 @@ export class LoginComponent {
 
       this.authService.login(loginData).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
           // Navigate based on level
           switch (response.level) {
             case 0:
-              console.log("0");
               break;
             case 1:
               //This is the controller case
-              console.log("Controller");
               this.setUp(1, response.id);
 
               this.router.navigate(['/controller']).catch(err => console.log("The error: ", err));
               break;
             case 2:
-              console.log("Worker Admin");
               this.setUp(2, response.id);
 
               this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
               break;
             case 3:
-              console.log("Worker");
               this.setUp(3, response.id);
 
               this.router.navigate(['/worker/dashboard']).catch(err => console.log("The error: ", err));
               break;
             default:
-              // this.router.navigate(['/home']);
-              console.log("default");
               break;
           }
         },
         error: (error) => {
-          console.error('Login failed', error);
-          this.snackBar.open(`Login Failed: ${error}`, 'Close', {
+          this.snackBar.open(`Login nije uspjeo: ${error}`, 'Close', {
             duration: 3000,
             verticalPosition: "top",
             horizontalPosition: "right"
