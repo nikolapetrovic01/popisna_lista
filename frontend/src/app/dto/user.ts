@@ -13,6 +13,13 @@ export interface CreateUser {
   level: number;
   password?: string;
 }
+
 export interface userToDelete {
   id: number
+}
+
+export interface userToUpdate {
+  id: number,
+  name: string,
+  level: number
 }

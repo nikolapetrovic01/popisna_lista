@@ -2,6 +2,7 @@ package com.inventarlista.service;
 
 import com.inventarlista.dto.createUser;
 import com.inventarlista.dto.user;
+import com.inventarlista.dto.userToUpdate;
 import com.inventarlista.persistence.UsersJdbcDao;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,9 @@ public class userServiceImpl {
      */
     public void deleteUser(int userId) {
         usersJdbcDao.deleteUser(userId);
+    }
+
+    public void updateUser(userToUpdate user) {
+        usersJdbcDao.updateUser(user);
     }
 }

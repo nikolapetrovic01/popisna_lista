@@ -1,9 +1,6 @@
 package com.inventarlista.endpoint;
 
-import com.inventarlista.dto.createUser;
-import com.inventarlista.dto.selectedItems;
-import com.inventarlista.dto.user;
-import com.inventarlista.dto.userToDelete;
+import com.inventarlista.dto.*;
 import com.inventarlista.service.userServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,6 +50,13 @@ public class userEndpoint {
     @PostMapping("/controller/user-deletion")
     public ResponseEntity<Void> deleteUser(@RequestBody userToDelete user) {
         userService.deleteUser(user.id());
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PutMapping("/controller/user-edit")
+    public ResponseEntity<Void> updateUser(@RequestBody userToUpdate user) {
+        userService.updateUser(user);
         return ResponseEntity.ok().build();
     }
 }

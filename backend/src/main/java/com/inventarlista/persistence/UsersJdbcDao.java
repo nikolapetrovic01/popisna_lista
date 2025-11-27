@@ -2,6 +2,7 @@ package com.inventarlista.persistence;
 
 import com.inventarlista.dto.createUser;
 import com.inventarlista.dto.user;
+import com.inventarlista.dto.userToUpdate;
 import com.inventarlista.exceptions.NotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +17,7 @@ public class UsersJdbcDao {
     public static final String SQL_CREATE_USER = "INSERT INTO users (username, password, level)\n" +
             "VALUES (?, ?, ?);";
     public static final String SQL_DELETE_USER = "DELETE FROM users WHERE id = ?;";
+    private static final String SQL_UPDATE_USER = "UPDATE users SET username = ?, level = ? WHERE id = ?";;
     private final JdbcTemplate jdbcTemplate;
 
     public UsersJdbcDao(JdbcTemplate jdbcTemplate) {
@@ -67,13 +69,26 @@ public class UsersJdbcDao {
         try {
             int rowsAffected = jdbcTemplate.update(SQL_DELETE_USER, userId);
 
-            // Optional: Log or check if the user was actually deleted
             if (rowsAffected == 0) {
                 //TODO: ADD LOGS
             } else {
             }
         } catch (DataAccessException e) {
             throw new NotFoundException("Users couldn't be deleted.");
+        }
+    }
+
+    public void updateUser(userToUpdate user) {
+        try {
+            System.out.println("The users name " + user.name() + " the users level: " + user.level() + " the users id: " + user.id());
+            int rowsAffected = jdbcTemplate.update(SQL_UPDATE_USER, user.name(), user.level(), user.id());
+
+            if (rowsAffected == 0) {
+                //TODO: ADD LOGS
+            } else {
+            }
+        } catch (DataAccessException e) {
+            throw new NotFoundException("Users couldn't be updated.");
         }
     }
 }

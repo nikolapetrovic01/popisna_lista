@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Korisnik: {{ editableUser.name }}</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p><strong>ID: </strong> {{ editableUser.id }}</p>
+
+  <div class="form-group mb-3">
+    <label for="userName">Ime Korisnika</label>
+    <input
+      id="userName"
+      type="text"
+      class="form-control"
+      [(ngModel)]="editableUser.name"
+      required>
+  </div>
+
+  <div class="form-group mb-3">
+    <label for="userLevel">Uloga </label>
+    <select
+      id="userLevel"
+      class="form-select"
+      [(ngModel)]="editableUser.level">
+      <option *ngFor="let level of availableLevels" [ngValue]="level">
+        Level {{ level }} ({{ level === 1 ? 'Controller' : level === 2 ? 'Admin Worker' : 'Worker' }})
+      </option>
+    </select>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Odustani</button>
+  <button mat-button color="primary" [disabled]="!editableUser.name" (click)="onSave()">Sačuvaj Promjene</button>
+</mat-dialog-actions>

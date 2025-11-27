@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../../service/user.service";
-import {CreateUser, User, userToDelete} from "../../dto/user";
+import {CreateUser, User, userToDelete, userToUpdate} from "../../dto/user";
 import {DropdownUserComponent} from "./dropdown-user/dropdown-user.component";
 import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
 import {FormsModule} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
+import {EditFloatingWindowComponent} from "../../shared/edit-floating-window/edit-floating-window.component";
 
 @Component({
   selector: 'app-user-management',
@@ -123,6 +124,16 @@ export class UserManagementComponent implements OnInit{
     });
   }
 
+  resetAndNotify(message: string) {
+    this.fetchAllUsers();
+    this.selectedUser = null
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      verticalPosition: "bottom",
+      horizontalPosition: "right"
+    });
+  }
+
   public initiateDeletion(userToDelete: User): void {
     let dialogData = {
       title: "Potvrda brisanja",
@@ -146,17 +157,45 @@ export class UserManagementComponent implements OnInit{
     };
     this.userService.deleteUser(payload).subscribe({
       next: () => {
-        this.fetchAllUsers();
-        this.selectedUser = null
-        this.snackBar.open(`Korisnik uspješno obrisan.`, 'Close', {
-          duration: 3000,
-          verticalPosition: "bottom",
-          horizontalPosition: "right"
-        });
+        let message = `Korisnik uspješno obrisan.`
+        this.resetAndNotify(message)
       },
       error: (err) => {
         console.error("Error deleting user:", err);
       }
     });
+  }
+
+  openEditDialog(selectedUser: User) {
+    let data = {
+      id: selectedUser.id,
+      name: selectedUser.name,
+      level: selectedUser.level
+    }
+    const dialogRef = this.dialog.open(EditFloatingWindowComponent, {
+      width: '300px',
+      data: data
+    });
+    dialogRef.afterClosed().subscribe((result: User | undefined) => {
+      if (result) {
+        this.editUser(result)
+
+      }
+    })
+  }
+
+  editUser(userToEdit: User) {
+    let payload: userToUpdate = {
+      id: userToEdit.id,
+      name: userToEdit.name,
+      level: userToEdit.level
+    }
+
+    this.userService.updateUser(payload).subscribe({
+      next: () => {
+        let message = "Korisnik uspješno uredjen."
+        this.resetAndNotify(message)
+    }
+    })
   }
 }
