@@ -80,7 +80,6 @@ public class UsersJdbcDao {
 
     public void updateUser(userToUpdate user) {
         try {
-            System.out.println("The users name " + user.name() + " the users level: " + user.level() + " the users id: " + user.id());
             int rowsAffected = jdbcTemplate.update(SQL_UPDATE_USER, user.name(), user.level(), user.id());
 
             if (rowsAffected == 0) {
