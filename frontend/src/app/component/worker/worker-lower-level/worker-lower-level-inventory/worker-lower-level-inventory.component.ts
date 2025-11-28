@@ -137,7 +137,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit, OnDestroy {
    * @returns - An array of items that match the search term
    */
   filteredItems(): item[] {
-    if (!this.nameSearchTerm && !this.barcodeSearchTerm) {
+    if (!this.nameSearchTerm && !this.barcodeSearchTerm && !this.myCheckboxValue) {
       return this.items; // Reset to all items when both are cleared
     }
 
@@ -149,7 +149,7 @@ export class WorkerLowerLevelInventoryComponent implements OnInit, OnDestroy {
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
       const amountMatches =
-        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+        !this.myCheckboxValue || item.itemInputtedAmount <= -1;
 
       return nameMatches && barcodeMatches && amountMatches;
     });

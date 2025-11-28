@@ -57,11 +57,16 @@
       *ngFor="let item of filteredItems()"
       [item]="item"
       [isEditable]=true
-      (mousedown)="handleInputFocus(item)"
+      (inputClicked)="handleInputFocus(item)"
       (itemChanged)="handleItemChange($event)"
     ></app-worker-inventory-list-item>
   </div>
   <!-- Modal -->
-  <app-confirm-modal *ngIf="showModal" (confirm)="handleModalConfirm($event)"
-                     [message]="modalMessage"></app-confirm-modal>
+  <app-confirm-modal
+    *ngIf="showModal"
+    (confirm)="handleModalConfirm($event)"
+    [message]="modalMessage"
+    [isAdmin] = true
+  >
+  </app-confirm-modal>
 </div>

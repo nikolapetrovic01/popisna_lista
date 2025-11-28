@@ -11,6 +11,9 @@ import {
 } from "../../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 import {FormsModule} from "@angular/forms";
 import {LoadingSpinnerComponent} from "../../../../shared/loading-spinner/loading-spinner.component";
+import {
+  ConfirmModalWorkerAdminComponent
+} from "../../../../shared/confirm-modal-worker-admin/confirm-modal-worker-admin.component";
 
 // Define the custom event type for TypeScript
 interface BarcodeCustomEvent extends CustomEvent {
@@ -41,6 +44,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
   updatedItems: updateItemAmount[] = [];
   changedItems: number;
   showModal: boolean = false;
+  modalShown: boolean = false;
   modalMessage: string = '';
   oldItem: item | null = null;
   loading: boolean = true;
@@ -123,8 +127,9 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
   }
 
   handleInputFocus(item: item) {
-    console.log("Old value: " + item.itemInputtedAmount);
-    this.oldItem = { ...item };
+    if (item.itemInputtedAmount != null) {
+      this.oldItem = {...item};
+    }
   }
 
   /**
@@ -138,8 +143,10 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
   /**
    * Handles the confirmation result from the modal.
    */
-  handleModalConfirm(answer: boolean) {
+  handleModalConfirm(answer: boolean){
+    // Why is !answer? Because I reset the value
     if (!answer && this.oldItem) {
+      //I find the original item in the main list
       const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
       if (item) {
         item.itemInputtedAmount = this.oldItem!.itemInputtedAmount; // Restore old value
@@ -147,6 +154,11 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
 
       // Remove from updatedItems if present
       this.updatedItems = this.updatedItems.filter(i => i.itemId !== this.oldItem!.itemId);
+      this.modalShown = false;
+    }
+
+    if (answer) {
+      this.modalShown = true;
     }
 
     this.showModal = false;
@@ -167,10 +179,10 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
         }
       return;
     }
-
     if (this.oldItem?.itemInputtedAmount !== -1 && !originalItem?.modalTriggered) {
-      originalItem!.modalTriggered = true;
       this.handleActivateModal();
+
+      originalItem!.modalTriggered = this.modalShown;
       return;
     }
     const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
@@ -198,7 +210,7 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
         (!isNaN(Number(this.barcodeSearchTerm)) && item.itemBarcode.includes(this.barcodeSearchTerm));
 
       const amountMatches =
-        !this.myCheckboxValue || item.itemInputtedAmount > -1;
+        !this.myCheckboxValue || item.itemInputtedAmount <= -1;
 
       return nameMatches && barcodeMatches && amountMatches;
     });

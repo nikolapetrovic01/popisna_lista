@@ -2,6 +2,6 @@
   <div class="modal-content">
     <p>{{ message }}</p>
     <button (click)="closeModal(true)">U redu! Shvatam.</button>
-    <button (click)="closeModal(false)">Ne mjenjaj</button>
+    <button *ngIf="isAdmin" (click)="closeModal(false)">Ne mjenjaj!</button>
   </div>
 </div>

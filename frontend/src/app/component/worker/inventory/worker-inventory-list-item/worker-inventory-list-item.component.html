@@ -10,6 +10,7 @@
       type="number"
       [(ngModel)]="item.itemInputtedAmount"
       (change)="onInputtedAmountChange(item)"
+      (click)="onInputClick()"
       name="input"
     />
     <span *ngIf="!isEditable">{{ item.itemInputtedAmount }}</span>
