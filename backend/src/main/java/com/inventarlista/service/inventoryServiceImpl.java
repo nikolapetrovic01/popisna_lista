@@ -6,8 +6,6 @@ import com.inventarlista.entity.Item;
 import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.persistence.inventoryJdbcDao;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.List;
 
 @Service

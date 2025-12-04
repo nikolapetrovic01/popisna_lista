@@ -4,7 +4,6 @@ import {NgIf} from "@angular/common";
 import {WorkerHigherLevelComponent} from "../worker-higher-level/worker-higher-level.component";
 import {WorkerLowerLevelComponent} from "../worker-lower-level/worker-lower-level.component";
 
-
 @Component({
   selector: 'app-worker-dashboard',
   standalone: true,
@@ -19,8 +18,7 @@ import {WorkerLowerLevelComponent} from "../worker-lower-level/worker-lower-leve
 export class WorkerDashboardComponent implements OnInit {
   level: number | null = null;
 
-  constructor (private userService: UserService) {
-  }
+  constructor (private userService: UserService) {}
 
   ngOnInit() {
     this.level = this.userService.getUserLevel();

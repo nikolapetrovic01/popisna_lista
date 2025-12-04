@@ -11,9 +11,6 @@ import {
 } from "../../../../shared/confirm-modal-worker/confirm-modal-worker-locked-item-clicked.component";
 import {FormsModule} from "@angular/forms";
 import {LoadingSpinnerComponent} from "../../../../shared/loading-spinner/loading-spinner.component";
-import {
-  ConfirmModalWorkerAdminComponent
-} from "../../../../shared/confirm-modal-worker-admin/confirm-modal-worker-admin.component";
 
 // Define the custom event type for TypeScript
 interface BarcodeCustomEvent extends CustomEvent {

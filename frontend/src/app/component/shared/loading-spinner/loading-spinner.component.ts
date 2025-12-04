@@ -1,12 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
-  imports: [
-    NgStyle
-  ],
+  imports: [],
   templateUrl: './loading-spinner.component.html',
   styleUrl: './loading-spinner.component.css'
 })
