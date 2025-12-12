@@ -66,7 +66,9 @@
     *ngIf="showModal"
     (confirm)="handleModalConfirm($event)"
     [message]="modalMessage"
-    [isAdmin] = true
+    [allowNegation] = true
+    [confirmationMessage]="modalConfirmationMessage"
+    [negationMessage]="modalNegationMessage"
   >
   </app-confirm-modal>
 </div>

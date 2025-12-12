@@ -20,6 +20,12 @@ export class ListInventoryItemComponent {
   @Input() isEditable: boolean = true;
   updatedItem!: updateItemAmount | null;
   @Output() itemChanged = new EventEmitter<updateItemAmount>();
+  @Output() inputClicked = new EventEmitter<any>();
+
+  onInputClick(): void {
+    // This emits the event and passes the item object up to the parent.
+    this.inputClicked.emit(this.item);
+  }
 
   /**
    * Called when the item input amount is changed. Constructs an update object

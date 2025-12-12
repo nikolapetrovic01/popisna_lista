@@ -39,6 +39,9 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   changedItems: number;
   showModal: boolean = false;
   modalMessage: string = '';
+  modalConfirmationMessage: string = '';
+  modalNegationMessage: string = '';
+  modalShown: boolean = false;
   oldItem: item | null = null;
   loading: boolean = true;
   savedNegativeItems: Set<number> = new Set();
@@ -125,7 +128,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
 
   /**
    * Filters the list of items based on the search term entered by the user.
-   * @returns - An array of items that match the search term
+   * @returns  An array of items that match the search term
    */
   filteredItems(): item[] {
     if (!this.nameSearchTerm && !this.barcodeSearchTerm && !this.myCheckboxValue) {
@@ -162,6 +165,8 @@ export class InventoriesComponent implements OnInit, OnDestroy {
 
   handleItemChange(updatedItem: updateItemAmount) {
     const original = this.items.find(i => i.itemId === updatedItem.itemId);
+    console.log("handleItemChange original item " + original?.itemId +
+      " and the updateItem " + updatedItem.itemId)
 
     if (original && this.savedNegativeItems.has(updatedItem.itemId)) {
       const  index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
@@ -172,10 +177,10 @@ export class InventoriesComponent implements OnInit, OnDestroy {
       }
       return;
     }
-
+    console.log("HandleItemChange odlItem is: " + this.oldItem?.itemInputtedAmount + " and original modal triggered value is " + !original?.modalTriggered)
     if (this.oldItem?.itemInputtedAmount !== -1 && !original?.modalTriggered) {
-      original!.modalTriggered = true;
       this.handleActivateModal();
+      // original!.modalTriggered = this.modalShown;
       return;
     }
     const index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
@@ -212,7 +217,10 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   }
 
   handleInputFocus(item: item) {
-    this.oldItem = {...item};
+    if (item.itemInputtedAmount != null) {
+      this.oldItem = {...item};
+    }
+    this.modalShown = false;
   }
 
   /**
@@ -221,21 +229,36 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   handleActivateModal() {
     this.showModal = true;
     this.modalMessage = 'Ovaj artikl je već promjenjen!';
+    this.modalConfirmationMessage = 'U redu, promjeni.';
+    this.modalNegationMessage = 'Ne mjenjaj';
   }
 
   /**
    * Handles the confirmation result from the modal.
    */
   handleModalConfirm(answer: boolean) {
+    console.log("handleModalConfirm answer is " + answer + " and old item is " + this.oldItem?.itemInputtedAmount)
     if (!answer && this.oldItem) {
       const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
+      console.log("found item in the items " + item?.itemInputtedAmount)
       if (item) {
-        item.itemInputtedAmount = this.oldItem!.itemInputtedAmount; // Restore old value
+        console.log("Reseting value to " + this.oldItem!.itemInputtedAmount)
+        item.itemInputtedAmount = this.oldItem!.itemInputtedAmount;
       }
 
       // Remove from updatedItems if present
       this.updatedItems = this.updatedItems.filter(i => i.itemId !== this.oldItem!.itemId);
+      this.modalShown = false;
+      }
+
+    if (answer) {
+      this.modalShown = true;
+      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
+      if (item) {
+        item.modalTriggered = true;   // <-- FIX
+      }
     }
+
     this.showModal = false;
   }
 

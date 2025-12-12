@@ -12,7 +12,9 @@ import {NgIf} from "@angular/common";
 })
 export class ConfirmModalWorkerLockedItemClickedComponent {
   @Input() message: string = '';
-  @Input() isAdmin: boolean = false;
+  @Input() allowNegation: boolean = false;
+  @Input() confirmationMessage: string = ''
+  @Input() negationMessage: string = ''
   @Output() confirm = new EventEmitter<boolean>();
 
   closeModal(answer: boolean) {

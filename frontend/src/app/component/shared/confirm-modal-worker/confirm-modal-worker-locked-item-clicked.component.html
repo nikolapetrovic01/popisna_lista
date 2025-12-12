@@ -1,7 +1,7 @@
 <div class="modal-overlay">
   <div class="modal-content">
     <p>{{ message }}</p>
-    <button (click)="closeModal(true)">U redu! Shvatam.</button>
-    <button *ngIf="isAdmin" (click)="closeModal(false)">Ne mjenjaj!</button>
+    <button (click)="closeModal(true)"> {{confirmationMessage}} </button>
+    <button *ngIf="allowNegation" (click)="closeModal(false)"> {{negationMessage}} </button>
   </div>
 </div>

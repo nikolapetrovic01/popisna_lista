@@ -43,6 +43,8 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   modalShown: boolean = false;
   modalMessage: string = '';
+  modalConfirmationMessage: string = '';
+  modalNegationMessage: string = '';
   oldItem: item | null = null;
   loading: boolean = true;
   myCheckboxValue: boolean = false;
@@ -80,7 +82,6 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
           });
 
           this.changedItems = this.items.filter((item) => item.itemInputtedAmount != -1).length;
-
           this.loading = false;
         },
         error: err => {
@@ -135,13 +136,14 @@ export class WorkerHigherLevelInventoryComponent implements OnInit, OnDestroy {
   handleActivateModal() {
     this.showModal = true;
     this.modalMessage = 'Ovaj artikl je već promjenjen!';
+    this.modalConfirmationMessage = 'U redu, promjeni.';
+    this.modalNegationMessage = 'Ne mjenjaj';
   }
 
   /**
    * Handles the confirmation result from the modal.
    */
   handleModalConfirm(answer: boolean){
-    // Why is !answer? Because I reset the value
     if (!answer && this.oldItem) {
       //I find the original item in the main list
       const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
