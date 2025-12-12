@@ -40,8 +40,21 @@ export class ControllerComponent implements OnInit {
     this.inventoryService.getInventory().subscribe(
       {
         next: (data: inventories) => {
-          this.activeItems = data.tables.filter(item => item.status === 1);
-          this.inactiveItems = data.tables.filter(item => item.status === 0);
+          let allActive = data.tables.filter(item => item.status === 1);
+          let allInactive = data.tables.filter(item => item.status === 0);
+
+          // 2. Sort the filtered arrays in DESCENDING order (newest first)
+          // The sort function compares timestamps: b - a results in descending order.
+          const sortByStartDateDescending = (a: inventoriesPiece, b: inventoriesPiece) => {
+            const dateA = new Date(a.startDate).getTime();
+            const dateB = new Date(b.startDate).getTime();
+            // For descending order (newest first): compare B to A
+            return dateB - dateA;
+          };
+
+          this.activeItems = allActive.sort(sortByStartDateDescending);
+          this.inactiveItems = allInactive.sort(sortByStartDateDescending);
+
           this.filteredActiveItems = [...this.activeItems];
           //Status 2 needs to be handled
         },
