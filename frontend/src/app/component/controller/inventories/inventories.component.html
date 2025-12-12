@@ -3,7 +3,7 @@
   <!-- Title -->
 <div class="title p-2">
   <h2>Lista Artikala</h2>
-  <button *ngIf="isEditable" class="my-button" (click)="closeOpenedInventory()">ZATVORI</button>
+  <button *ngIf="isEditable" class="my-button" (click)="handleActivateModalOnCloseInventory()">ZATVORI</button>
   <button class="my-button" (click)="goBack()">NAZAD</button>
 
   <p *ngIf="isEditable"> Ukupno zavrseno: {{ changedItems }} / {{ items.length }}</p>
@@ -61,9 +61,19 @@
     (itemChanged)="handleItemChange($event)"
   ></app-inventory-item>
 </div>
+
 <app-confirm-modal
-  *ngIf="showModal"
-  (confirm)="handleModalConfirm($event)"
+  *ngIf="showModalItemChanged"
+  (confirm)="handleModalConfirmItemChanged($event)"
+  [message]="modalMessage"
+  [allowNegation] = true
+  [confirmationMessage]="modalConfirmationMessage"
+  [negationMessage]="modalNegationMessage"
+></app-confirm-modal>
+
+<app-confirm-modal
+  *ngIf="showModalInventoryClose"
+  (confirm)="handleModalConfirmInventoryClose($event)"
   [message]="modalMessage"
   [allowNegation] = true
   [confirmationMessage]="modalConfirmationMessage"

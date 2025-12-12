@@ -37,7 +37,8 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   barcodeSearchTerm: string = '';
   updatedItems: updateItemAmount[] = [];
   changedItems: number;
-  showModal: boolean = false;
+  showModalItemChanged: boolean = false;
+  showModalInventoryClose: boolean = false;
   modalMessage: string = '';
   modalConfirmationMessage: string = '';
   modalNegationMessage: string = '';
@@ -150,17 +151,67 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Closes the opened inventory.
+   * Handles when "Close Inventory" button is clicked.
    */
-  closeOpenedInventory(): void {
-    const id: number | null = this.route.snapshot.paramMap.get('id') ? +this.route.snapshot.paramMap.get('id')! : null;
-    if (id !== null) {
-      this.inventoryService.closeInventory(id).subscribe({
-        next: () => {
-          this.router.navigate(['/controller']);
-        }
-      });
+  handleActivateModalOnCloseInventory() {
+    this.showModalInventoryClose = true;
+    this.modalMessage = 'Da li želite da zaključite ovaj inventar?';
+    this.modalConfirmationMessage = 'Da želim.';
+    this.modalNegationMessage = 'Ne želim';
+  }
+
+  handleModalConfirmInventoryClose(answer: boolean) {
+    console.log("It was clicked and the answer is " + answer);
+    this.showModalInventoryClose = false;
+    if (  answer) {
+      this.closeOpenedInventory()
     }
+  }
+
+  handleInputFocus(item: item) {
+    if (item.itemInputtedAmount != null) {
+      this.oldItem = {...item};
+    }
+    this.modalShown = false;
+  }
+
+  /**
+   * Handles when a changed item is clicked.
+   */
+  handleActivateModalOnChangeItem() {
+    this.showModalItemChanged = true;
+    this.modalMessage = 'Ovaj artikl je već promjenjen!';
+    this.modalConfirmationMessage = 'U redu, promjeni.';
+    this.modalNegationMessage = 'Ne mjenjaj.';
+  }
+
+  /**
+   * Handles the confirmation result from the modal.
+   */
+  handleModalConfirmItemChanged(answer: boolean) {
+    console.log("handleModalConfirm answer is " + answer + " and old item is " + this.oldItem?.itemInputtedAmount)
+    if (!answer && this.oldItem) {
+      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
+      console.log("found item in the items " + item?.itemInputtedAmount)
+      if (item) {
+        console.log("Reseting value to " + this.oldItem!.itemInputtedAmount)
+        item.itemInputtedAmount = this.oldItem!.itemInputtedAmount;
+      }
+
+      // Remove from updatedItems if present
+      this.updatedItems = this.updatedItems.filter(i => i.itemId !== this.oldItem!.itemId);
+      this.modalShown = false;
+      }
+
+    if (answer) {
+      this.modalShown = true;
+      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
+      if (item) {
+        item.modalTriggered = true;   // <-- FIX
+      }
+    }
+
+    this.showModalItemChanged = false;
   }
 
   handleItemChange(updatedItem: updateItemAmount) {
@@ -179,7 +230,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
     }
     console.log("HandleItemChange odlItem is: " + this.oldItem?.itemInputtedAmount + " and original modal triggered value is " + !original?.modalTriggered)
     if (this.oldItem?.itemInputtedAmount !== -1 && !original?.modalTriggered) {
-      this.handleActivateModal();
+      this.handleActivateModalOnChangeItem();
       // original!.modalTriggered = this.modalShown;
       return;
     }
@@ -216,50 +267,19 @@ export class InventoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleInputFocus(item: item) {
-    if (item.itemInputtedAmount != null) {
-      this.oldItem = {...item};
-    }
-    this.modalShown = false;
-  }
-
   /**
-   * Handles when a changed item is clicked.
+   * Closes the opened inventory.
    */
-  handleActivateModal() {
-    this.showModal = true;
-    this.modalMessage = 'Ovaj artikl je već promjenjen!';
-    this.modalConfirmationMessage = 'U redu, promjeni.';
-    this.modalNegationMessage = 'Ne mjenjaj';
-  }
+  closeOpenedInventory(): void {
 
-  /**
-   * Handles the confirmation result from the modal.
-   */
-  handleModalConfirm(answer: boolean) {
-    console.log("handleModalConfirm answer is " + answer + " and old item is " + this.oldItem?.itemInputtedAmount)
-    if (!answer && this.oldItem) {
-      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
-      console.log("found item in the items " + item?.itemInputtedAmount)
-      if (item) {
-        console.log("Reseting value to " + this.oldItem!.itemInputtedAmount)
-        item.itemInputtedAmount = this.oldItem!.itemInputtedAmount;
-      }
-
-      // Remove from updatedItems if present
-      this.updatedItems = this.updatedItems.filter(i => i.itemId !== this.oldItem!.itemId);
-      this.modalShown = false;
-      }
-
-    if (answer) {
-      this.modalShown = true;
-      const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
-      if (item) {
-        item.modalTriggered = true;   // <-- FIX
-      }
+    const id: number | null = this.route.snapshot.paramMap.get('id') ? +this.route.snapshot.paramMap.get('id')! : null;
+    if (id !== null) {
+      this.inventoryService.closeInventory(id).subscribe({
+        next: () => {
+          this.router.navigate(['/controller']);
+        }
+      });
     }
-
-    this.showModal = false;
   }
 
   goBack() {
