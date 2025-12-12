@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {selectedItems, selectItem} from "../../../../dto/item";
-import {Location, DatePipe, NgIf} from "@angular/common";
+import {Location, NgIf} from "@angular/common";
 import {InventoryService} from "../../../../service/inventory.service";
 import {DateService} from "../../../../service/date.service";
 import { ToastrService } from 'ngx-toastr';
@@ -17,8 +17,6 @@ import {HeaderComponent} from "../../../header/header.component";
   imports: [
     FormsModule,
     NgIf,
-    DatePipe,
-    RouterLink,
     HeaderComponent,
   ],
   templateUrl: './create-new-inventory.component.html',
@@ -32,11 +30,12 @@ export class CreateNewInventoryComponent implements OnInit {
   endDate: string;
   errorMessage: string | null = null;
   showX: boolean = false;
+  submitButtonText: string = MESSAGES.CREATE_NEW_INVENTORY;
+  fileUploaded: boolean = false;
 
   constructor(private router: Router,
               private inventoryService: InventoryService,
               private dateService: DateService,
-              private location: Location,
               private toastr: ToastrService,
               private storageService: StorageService) {
     this.startDate = this.dateService.getStartDate() || new Date().toISOString().substring(0, 10);
@@ -60,7 +59,7 @@ export class CreateNewInventoryComponent implements OnInit {
         fileDropArea.classList.add('disabled');
       }
       this.showX = true;
-
+      this.fileUploaded = true;
     } else {
       this.filteredItems = [];
     }
@@ -85,6 +84,7 @@ export class CreateNewInventoryComponent implements OnInit {
         fileDropArea.classList.add('disabled');
       }
       input.disabled = true;
+      this.fileUploaded = true;
       this.change();
     } else {
       this.toastr.error(MESSAGES.FILE_INPUT_INVALID);
@@ -99,7 +99,6 @@ export class CreateNewInventoryComponent implements OnInit {
     if (this.filteredItems.length > 0) {
       event.preventDefault();
       this.rememberDate();
-      // this.router.navigateByUrl('controller/create/show-csv');
       this.router.navigate(['controller/create/show-csv']);
     }
   }
@@ -121,6 +120,7 @@ export class CreateNewInventoryComponent implements OnInit {
       }
 
       this.showX = true;
+      this.fileUploaded = true;
       this.change();
     } else {
       this.toastr.error(MESSAGES.DRAG_EVENT_INVALID);
@@ -168,6 +168,7 @@ export class CreateNewInventoryComponent implements OnInit {
     this.file = null;
     this.filteredItems = [];  // Clear filteredItems to reset the state
     this.showX = false;
+    this.fileUploaded = false;
     this.fileName = MESSAGES.FILE_UPLOAD_PROMPT;
 
     // Remove stored data from localStorage
@@ -231,23 +232,6 @@ export class CreateNewInventoryComponent implements OnInit {
     };
 
     this.inventoryService.createNewInventory(selectedItems).subscribe(
-    //   response => {
-    //     this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);
-    //
-    //     // Clear dates, CSV content, and file data
-    //     this.startDate = '';
-    //     this.endDate = '';
-    //     this.removeFile(); // Reuse the method to clear file-related data
-    //     this.storageService.removeItem('dateStartKey');
-    //     this.storageService.removeItem('dateEndKey');
-    //
-    //     // this.location.back();
-    //     this.router.navigateByUrl('/controller');
-    //   },
-    //   error => {
-    //     this.toastr.success(MESSAGES.INVENTORY_ERROR_MESSAGE);
-    //   }
-    // );
       {
         next: response => {
           this.toastr.success(MESSAGES.INVENTORY_SUCCESS_MESSAGE);

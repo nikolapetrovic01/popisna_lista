@@ -5,5 +5,6 @@ export const MESSAGES = {
   INVENTORY_ERROR_MESSAGE: 'Greska u kreiranju',
   FILE_UPLOAD_PROMPT: 'Izaberi fajl ili ga prevuci.',
   FILE_INPUT_INVALID: 'Fajl nije pravilan ili niste selektovali fajl.',
-  DRAG_EVENT_INVALID: 'Prenos nije validan ili niste prenjeli fajl.'
+  DRAG_EVENT_INVALID: 'Prenos nije validan ili niste prenjeli fajl.',
+  CREATE_NEW_INVENTORY: 'KREIRAJ NOVI POPIS'
 };

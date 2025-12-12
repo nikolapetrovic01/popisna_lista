@@ -28,7 +28,7 @@
                  class="file-input" accept=".csv" [required]="!file">
         </div>
       </div>
-      <button type="submit" class="btn btn-primary w-100">KREIRAJ NOVI POPIS</button>
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!fileUploaded">{{ submitButtonText }}</button>
     </form>
   </div>
 </div>
