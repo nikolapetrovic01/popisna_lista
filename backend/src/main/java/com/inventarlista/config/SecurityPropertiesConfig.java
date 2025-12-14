@@ -43,12 +43,14 @@ public class SecurityPropertiesConfig {
             this.loginUri = loginUri;
         }
     }
+
     public static class Jwt {
         private String secret;
         private String type;
         private String issuer;
         private String audience;
         private Long expirationTime;
+        private Long rememberMeExpirationTime;
 
         public String getSecret() {
             return secret;
@@ -89,6 +91,13 @@ public class SecurityPropertiesConfig {
         public void setExpirationTime(Long expirationTime) {
             this.expirationTime = expirationTime;
         }
-    }
 
+        public Long getRememberMeExpirationTime() {
+            return rememberMeExpirationTime;
+        }
+
+        public void setRememberMeExpirationTime(Long rememberMeExpirationTime) {
+            this.rememberMeExpirationTime = rememberMeExpirationTime;
+        }
+    }
 }

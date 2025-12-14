@@ -15,8 +15,9 @@ import {UserService} from "../../service/user.service";
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required])
+    name: new FormControl<string>('', { nonNullable: true, validators:[Validators.required]}),
+    password: new FormControl<string>('', { nonNullable: true, validators:[Validators.required]}),
+    rememberMe: new FormControl<boolean>(false, { nonNullable: true })
   });
 
   constructor(
@@ -34,9 +35,12 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const loginData: loginRequest = {
-        name: this.loginForm.value.name || '', // Ensuring a default empty string if null or undefined
-        password: this.loginForm.value.password || '' // Similarly, ensuring password is not null or undefined
+        name: this.loginForm.value.name || '',
+        password: this.loginForm.value.password || '',
+        rememberMe: this.loginForm.value.rememberMe ?? false
       };
+
+      console.log(loginData)
 
       this.authService.login(loginData).subscribe({
         next: (response) => {

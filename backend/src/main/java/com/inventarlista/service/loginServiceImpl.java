@@ -56,7 +56,7 @@ public class loginServiceImpl {
                     .map(GrantedAuthority::getAuthority)
                     .toList();
 
-            String token = jwtTokenizer.generateToken(userDetails.getUsername(), roles);
+            String token = jwtTokenizer.generateToken(userDetails.getUsername(), roles, request.rememberMe());
             User user = findApplicationUserByUsername(request.name());
 
             return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId(), token);

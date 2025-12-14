@@ -17,14 +17,19 @@ public class JwtTokenizer {
         this.securityProperties = securityProperties;
     }
 
-    public String generateToken(String name, List<String> roles) {
+    public String generateToken(String name, List<String> roles, boolean rememberMe) {
         byte[] signingKey = securityProperties.getJwtSecret().getBytes();
         SecretKey key = Keys.hmacShaKeyFor(signingKey);
+
+        long expirationTime = rememberMe
+                ? securityProperties.getJwtRememberMeExpirationTime()
+                : securityProperties.getJwtExpirationTime();
+
 
         String token = Jwts.builder()
                 .issuer(securityProperties.getJwtIssuer())
                 .subject(name)
-                .expiration(new Date(System.currentTimeMillis() + securityProperties.getJwtExpirationTime()))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .claim("roles", roles)
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
