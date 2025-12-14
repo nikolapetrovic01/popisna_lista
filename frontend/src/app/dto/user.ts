@@ -1,14 +1,14 @@
-export interface User {
+export interface user {
   id: number;
   name: string;
   level: number;
 }
 
-export interface Users {
-  users: User[];
+export interface users {
+  users: user[];
 }
 
-export interface CreateUser {
+export interface createUser {
   name: string;
   level: number;
   password?: string;

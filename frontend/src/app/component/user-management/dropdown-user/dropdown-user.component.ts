@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {User} from "../../../dto/user";
+import {user} from "../../../dto/user";
 
 @Component({
   selector: 'app-dropdown-user',
@@ -9,5 +9,5 @@ import {User} from "../../../dto/user";
   styleUrl: './dropdown-user.component.css'
 })
 export class DropdownUserComponent {
-  @Input() user!: User;
+  @Input() user!: user;
 }

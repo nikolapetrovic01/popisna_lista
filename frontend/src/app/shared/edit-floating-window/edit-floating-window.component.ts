@@ -8,7 +8,7 @@ import {
 } from "@angular/material/dialog";
 import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
-import {User} from "../../dto/user";
+import {user} from "../../dto/user";
 import {NgForOf} from "@angular/common";
 
 export interface UserEditData {
@@ -32,7 +32,7 @@ export interface UserEditData {
 })
 export class EditFloatingWindowComponent {
   // We make a copy of the user data so we don't modify the original until confirmed
-  editableUser: User;
+  editableUser: user;
 
   // Available levels for the dropdown
   availableLevels: number[] = [1, 2, 3];

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {CreateUser, User, Users, userToDelete, userToUpdate} from "../dto/user";
+import {createUser, user, users, userToDelete, userToUpdate} from "../dto/user";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {inventories} from "../dto/inventories";
@@ -70,11 +70,11 @@ export class UserService {
       .set('Content-Type', 'application/json');;
   }
 
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.managerBaseUrl}/get-users`, {headers: this.getHeaders()});
+  getAllUsers(): Observable<user[]> {
+    return this.http.get<user[]>(`${this.managerBaseUrl}/get-users`, {headers: this.getHeaders()});
   }
 
-  createNewUser(newUser: CreateUser): Observable<void> {
+  createNewUser(newUser: createUser): Observable<void> {
     return this.http.post<void>(`${this.managerBaseUrl}/create`, newUser, {headers: this.getHeaders()});
   }
 

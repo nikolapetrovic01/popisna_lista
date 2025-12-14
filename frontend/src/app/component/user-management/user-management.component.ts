@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../../service/user.service";
-import {CreateUser, User, userToDelete, userToUpdate} from "../../dto/user";
+import {createUser, user, userToDelete, userToUpdate} from "../../dto/user";
 import {DropdownUserComponent} from "./dropdown-user/dropdown-user.component";
 import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -29,8 +29,8 @@ import {EditFloatingWindowComponent} from "../../shared/edit-floating-window/edi
 export class UserManagementComponent implements OnInit{
   currentView: 'allUsers' | 'newUser' = 'allUsers';
   title: string = 'svi korisnici';
-  allUsers: User[] = [];
-  selectedUser: User | null = null;
+  allUsers: user[] = [];
+  selectedUser: user | null = null;
   loading: boolean = true;
 
   newUserForm = new FormGroup({
@@ -43,9 +43,9 @@ export class UserManagementComponent implements OnInit{
       validators:[
         Validators.required,
         Validators.minLength(8)]}),
-    newUserRole: new FormControl<number | null>(null, {nonNullable: true, validators:[Validators.required]})
+    newUserRole: new FormControl<number | null>(null, {nonNullable: true,
+      validators:[Validators.required]})
   })
-
 
   constructor(
     private userService: UserService,
@@ -61,7 +61,7 @@ export class UserManagementComponent implements OnInit{
   private fetchAllUsers() {
     //Get Users from Backend
     this.userService.getAllUsers().subscribe({
-      next: (data: User[]) => {
+      next: (data: user[]) => {
         this.allUsers = data;
       }
     });
@@ -88,7 +88,7 @@ export class UserManagementComponent implements OnInit{
   /**
    * Selects a user and updates the details on the right.
    */
-  selectUser(user: User): void {
+  selectUser(user: user): void {
     if (this.selectedUser?.id === user.id) {
       this.selectedUser = null;
     } else {
@@ -97,20 +97,19 @@ export class UserManagementComponent implements OnInit{
   }
 
   saveUser() {
-
     if (!this.newUserForm.valid) {
       this.newUserForm.markAllAsTouched();
       return;
     }
 
-    let newUser: CreateUser = {
+    let newUser: createUser = {
       name: this.newUserForm.value.newUserName!,
       level: this.newUserForm.value.newUserRole!,
       password: this.newUserForm.value.newUserPassword!
     }
 
     this.userService.createNewUser(newUser).subscribe({
-      next: value => {
+      next: () => {
         this.newUserForm.reset();
         this.snackBar.open('Korisnik uspješno kreiran.', 'Close', {
           duration: 3000
@@ -129,7 +128,7 @@ export class UserManagementComponent implements OnInit{
     });
   }
 
-  public initiateDeletion(userToDelete: User): void {
+  public initiateDeletion(userToDelete: user): void {
     let dialogData = {
       title: "Potvrda brisanja",
       message: 'Da li ste sigurni da želite da izbrišete korisnika ' + userToDelete.name + "?"
@@ -146,7 +145,7 @@ export class UserManagementComponent implements OnInit{
     })
   }
 
-  deleteUser(userToDelete: User) {
+  deleteUser(userToDelete: user) {
     const payload: userToDelete = {
       id: userToDelete.id
     };
@@ -161,7 +160,7 @@ export class UserManagementComponent implements OnInit{
     });
   }
 
-  openEditDialog(selectedUser: User) {
+  openEditDialog(selectedUser: user) {
     let data = {
       id: selectedUser.id,
       name: selectedUser.name,
@@ -171,7 +170,7 @@ export class UserManagementComponent implements OnInit{
       width: '300px',
       data: data
     });
-    dialogRef.afterClosed().subscribe((result: User | undefined) => {
+    dialogRef.afterClosed().subscribe((result: user | undefined) => {
       if (result) {
         this.editUser(result)
 
@@ -179,7 +178,7 @@ export class UserManagementComponent implements OnInit{
     })
   }
 
-  editUser(userToEdit: User) {
+  editUser(userToEdit: user) {
     let payload: userToUpdate = {
       id: userToEdit.id,
       name: userToEdit.name,
