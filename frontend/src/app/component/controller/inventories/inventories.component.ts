@@ -163,7 +163,7 @@ export class InventoriesComponent implements OnInit, OnDestroy {
   handleModalConfirmInventoryClose(answer: boolean) {
     console.log("It was clicked and the answer is " + answer);
     this.showModalInventoryClose = false;
-    if (  answer) {
+    if (answer) {
       this.closeOpenedInventory()
     }
   }

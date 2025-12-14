@@ -1,6 +1,6 @@
 package com.inventarlista.dto;
 
-public record createUser (
+public record createUserDto(
         String name,
         int level,
         String password

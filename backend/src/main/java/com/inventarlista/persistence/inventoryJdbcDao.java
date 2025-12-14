@@ -1,6 +1,6 @@
 package com.inventarlista.persistence;
 
-import com.inventarlista.dto.updateItemAmount;
+import com.inventarlista.dto.updateItemAmountDto;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
 import com.inventarlista.exceptions.NotFoundException;
@@ -153,7 +153,7 @@ public class inventoryJdbcDao {
      * Batch update item amounts in the inventory.
      * @param updateItems - An array of updateItemAmount objects.
      */
-    public void batchUpdateItemAmounts(updateItemAmount[] updateItems) {
+    public void batchUpdateItemAmounts(updateItemAmountDto[] updateItems) {
         try {
             jdbcTemplate.batchUpdate(
                     SQL_UPDATE_AMOUNT,

@@ -23,20 +23,20 @@ public class userEndpoint {
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping("/controller/get-users")
-    public List<user> getAllUsers() {
+    public List<userDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     /**
      * Creates a new User.
      *
-     * @param createUser The DTO containing the details for the new user.
+     * @param createUserDto The DTO containing the details for the new user.
      * @return A ResponseEntity with status 200 (OK) on successful creation.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/create")
-    public ResponseEntity<Void> createNewInventory(@RequestBody createUser createUser) {
-        userService.createNewUser(createUser);
+    public ResponseEntity<Void> createNewInventory(@RequestBody createUserDto createUserDto) {
+        userService.createNewUser(createUserDto);
         return ResponseEntity.ok().build();
     }
 
@@ -48,14 +48,14 @@ public class userEndpoint {
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/user-deletion")
-    public ResponseEntity<Void> deleteUser(@RequestBody userToDelete user) {
+    public ResponseEntity<Void> deleteUser(@RequestBody userToDeleteDto user) {
         userService.deleteUser(user.id());
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/user-edit")
-    public ResponseEntity<Void> updateUser(@RequestBody userToUpdate user) {
+    public ResponseEntity<Void> updateUser(@RequestBody userToUpdateDto user) {
         userService.updateUser(user);
         return ResponseEntity.ok().build();
     }

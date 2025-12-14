@@ -2932,7 +2932,7 @@
 /backend/target/classes/com/inventarlista/dto/inventoryItemsDto.class
 /backend/target/classes/com/inventarlista/dto/loginRequestDto.class
 /backend/target/classes/com/inventarlista/dto/loginResponseDto.class
-/backend/target/classes/com/inventarlista/dto/selectedItems.class
+/backend/target/classes/com/inventarlista/dto/selectedItemsDto.class
 /backend/target/classes/com/inventarlista/dto/selectItem.class
 /backend/target/classes/com/inventarlista/dto/updateItemAmount.class
 /backend/target/classes/com/inventarlista/endpoint/exceptionhandler/ApplicationExceptionHandler.class

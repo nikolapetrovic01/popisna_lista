@@ -1,6 +1,6 @@
 package com.inventarlista.dto;
 
-public record user (
+public record userDto(
         int id,
         String name,
         int level

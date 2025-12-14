@@ -1,13 +1,14 @@
 package com.inventarlista.persistence;
 
-import com.inventarlista.dto.createUser;
-import com.inventarlista.dto.user;
-import com.inventarlista.dto.userToUpdate;
+import com.inventarlista.dto.createUserDto;
+import com.inventarlista.dto.userDto;
+import com.inventarlista.dto.userToUpdateDto;
 import com.inventarlista.exceptions.NotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -19,19 +20,21 @@ public class UsersJdbcDao {
     public static final String SQL_DELETE_USER = "DELETE FROM users WHERE id = ?;";
     private static final String SQL_UPDATE_USER = "UPDATE users SET username = ?, level = ? WHERE id = ?";;
     private final JdbcTemplate jdbcTemplate;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UsersJdbcDao(JdbcTemplate jdbcTemplate) {
+    public UsersJdbcDao(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
      * Retrieves a list of all users from the database.
      *
-     * @return A list of {@link user} DTOs.
+     * @return A list of {@link userDto} DTOs.
      * @throws NotFoundException if no users are found in the database (or if an unexpected empty result occurs,
      * although usually, an empty list is returned for no results).
      */
-    public List<user> getAllUsers() throws NotFoundException {
+    public List<userDto> getAllUsers() throws NotFoundException {
         try {
             return jdbcTemplate.query(SQL_SELECT_USERS, userRowMapper);
         } catch (EmptyResultDataAccessException e) {
@@ -40,10 +43,10 @@ public class UsersJdbcDao {
     }
 
     /**
-     * Maps a row of the JDBC ResultSet to a {@link user} DTO.
+     * Maps a row of the JDBC ResultSet to a {@link userDto} DTO.
      * It extracts the 'id', 'username', and 'level' columns.
      */
-    private final RowMapper<user> userRowMapper = (rs, rowNum) -> new user(
+    private final RowMapper<userDto> userRowMapper = (rs, rowNum) -> new userDto(
             rs.getInt("id"),
             rs.getString("username"),
             rs.getInt("level")
@@ -52,10 +55,11 @@ public class UsersJdbcDao {
     /**
      * Creates a new user in the database.
      *
-     * @param createUser The DTO containing the name, raw password, and level for the new user.
+     * @param createUserDto The DTO containing the name, raw password, and level for the new user.
      */
-    public void createNewUser(createUser createUser) {
-        jdbcTemplate.update(SQL_CREATE_USER, createUser.name(), createUser.password(), createUser.level());
+    public void createNewUser(createUserDto createUserDto) {
+        String hashedPassword = passwordEncoder.encode(createUserDto.password());
+        jdbcTemplate.update(SQL_CREATE_USER, createUserDto.name(), hashedPassword, createUserDto.level());
     }
 
     /**
@@ -78,7 +82,7 @@ public class UsersJdbcDao {
         }
     }
 
-    public void updateUser(userToUpdate user) {
+    public void updateUser(userToUpdateDto user) {
         try {
             int rowsAffected = jdbcTemplate.update(SQL_UPDATE_USER, user.name(), user.level(), user.id());
 

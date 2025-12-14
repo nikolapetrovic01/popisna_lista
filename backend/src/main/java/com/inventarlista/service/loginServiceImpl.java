@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import com.inventarlista.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,21 +18,38 @@ import java.util.List;
 public class loginServiceImpl {
     private final loginJdbcDao loginJdbcDao;
     private final JwtTokenizer jwtTokenizer;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /**
      * Constructor-based dependency injection for loginJdbcDao.
      *
      * @param loginJdbcDao Data access object for login operations
      */
-    public loginServiceImpl(loginJdbcDao loginJdbcDao, JwtTokenizer jwtTokenizer) {
+    public loginServiceImpl(loginJdbcDao loginJdbcDao, JwtTokenizer jwtTokenizer, BCryptPasswordEncoder passwordEncoder) {
         this.loginJdbcDao = loginJdbcDao;
         this.jwtTokenizer = jwtTokenizer;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public loginResponseDto authenticateAndIssueToken(loginRequestDto request) {
         UserDetails userDetails = loadUserByUsername(request.name());
 
-        if (userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked() && userDetails.isCredentialsNonExpired() && userDetails.getPassword().equals(request.password())) {
+        String storedPassword = userDetails.getPassword();
+
+        if (storedPassword.startsWith("$2")) {
+            if (!userDetails.isAccountNonExpired() && !userDetails.isAccountNonLocked() && !userDetails.isCredentialsNonExpired() && !passwordEncoder.matches(request.password(), userDetails.getPassword())) {
+                throw new UnauthorizedException("Invalid login");
+            }
+        } else {
+            if (!storedPassword.equals(request.password())) {
+                throw new UnauthorizedException("Invalid login");
+            }
+            String newHash = passwordEncoder.encode(request.password());
+            User applicationUser = loginJdbcDao.findByUsername(request.name());
+            loginJdbcDao.updatePassword(applicationUser.getId(), newHash);
+        }
+
+//        if (userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked() && userDetails.isCredentialsNonExpired() && passwordEncoder.matches(request.password(), userDetails.getPassword())) {
 
             List<String> roles = userDetails.getAuthorities()
                     .stream()
@@ -42,9 +60,9 @@ public class loginServiceImpl {
             User user = findApplicationUserByUsername(request.name());
 
             return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId(), token);
-        }
+//        }
 
-        throw new UnauthorizedException("Invalid login");
+//        throw new UnauthorizedException("Invalid login");
     }
 
     private UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

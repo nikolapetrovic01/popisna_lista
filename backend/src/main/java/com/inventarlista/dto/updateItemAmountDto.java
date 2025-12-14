@@ -1,8 +1,8 @@
 package com.inventarlista.dto;
 
 import java.math.BigDecimal;
-
-public record selectItem (
+//TODO: CHANGE TO LONG ID
+public record updateItemAmountDto(
         int itemId,
         String itemName,
         String itemMeasurement,
@@ -10,7 +10,6 @@ public record selectItem (
         String itemBarcode,
         BigDecimal itemInputtedAmount,
         int itemUserThatPutTheAmountIn,
-        int itemInventoryId,
-        boolean selected
+        int itemInventoryId
 ) {
 }

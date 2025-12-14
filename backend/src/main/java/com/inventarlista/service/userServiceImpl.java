@@ -1,8 +1,8 @@
 package com.inventarlista.service;
 
-import com.inventarlista.dto.createUser;
-import com.inventarlista.dto.user;
-import com.inventarlista.dto.userToUpdate;
+import com.inventarlista.dto.createUserDto;
+import com.inventarlista.dto.userDto;
+import com.inventarlista.dto.userToUpdateDto;
 import com.inventarlista.persistence.UsersJdbcDao;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +21,17 @@ public class userServiceImpl {
      *
      * @return A List of user DTOs containing all users.
      */
-    public List<user> getAllUsers() {
+    public List<userDto> getAllUsers() {
         return usersJdbcDao.getAllUsers();
     }
 
     /**
      * Creates a new user in the database.
      *
-     * @param createUser The DTO containing the details for the new user.
+     * @param createUserDto The DTO containing the details for the new user.
      */
-    public void createNewUser(createUser createUser) {
-        usersJdbcDao.createNewUser(createUser);
+    public void createNewUser(createUserDto createUserDto) {
+        usersJdbcDao.createNewUser(createUserDto);
     }
 
     /**
@@ -43,7 +43,7 @@ public class userServiceImpl {
         usersJdbcDao.deleteUser(userId);
     }
 
-    public void updateUser(userToUpdate user) {
+    public void updateUser(userToUpdateDto user) {
         usersJdbcDao.updateUser(user);
     }
 }

@@ -87,7 +87,7 @@ public class inventoryServiceImpl {
         );
     }
 
-    public void managerUpdateItemAmount(updateItemAmount[] updateItems) {
+    public void managerUpdateItemAmount(updateItemAmountDto[] updateItems) {
         if (updateItems == null || updateItems.length == 0) {
             throw new IllegalArgumentException("No items to update.");
         }
@@ -97,21 +97,21 @@ public class inventoryServiceImpl {
 
     /**
      * Creates a new inventory record with selected items and saves it to the database.
-     * @param selectedItems - The selectedItems DTO containing items and inventory details.
+     * @param selectedItemsDto - The selectedItems DTO containing items and inventory details.
      */
-    public void createNewInventory(selectedItems selectedItems) {
+    public void createNewInventory(selectedItemsDto selectedItemsDto) {
         Inventory newInventory = new Inventory(
                 0,
                 1,
-                selectedItems.startDate(),
-                selectedItems.endDate()
+                selectedItemsDto.startDate(),
+                selectedItemsDto.endDate()
         );
 
         inventoryJdbcDao.createNewInventory(newInventory);
         int maxId = inventoryJdbcDao.getMaxInventoryId();
         newInventory.setId(maxId);
 
-        List<Item> itemsToSave = selectedItems.selectedItems().stream().map(
+        List<Item> itemsToSave = selectedItemsDto.selectedItems().stream().map(
                 selectItem -> new Item(
                         selectItem.itemId(),
                         selectItem.itemName(),
@@ -144,7 +144,7 @@ public class inventoryServiceImpl {
         }
     }
 
-    public void workerUpdateItemAmount(updateItemAmount[] updateItems) {
+    public void workerUpdateItemAmount(updateItemAmountDto[] updateItems) {
         if (updateItems == null || updateItems.length == 0) {
             throw new IllegalArgumentException("No items to update.");
         }

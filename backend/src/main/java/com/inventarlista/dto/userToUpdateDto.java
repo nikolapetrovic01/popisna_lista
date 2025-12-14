@@ -1,6 +1,6 @@
 package com.inventarlista.dto;
 
-public record userToUpdate(
+public record userToUpdateDto(
         int id,
         String name,
         int level

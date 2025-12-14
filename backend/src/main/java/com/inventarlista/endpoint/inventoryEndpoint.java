@@ -46,7 +46,7 @@ public class inventoryEndpoint {
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/inventory/saveChanges")
-    public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmount[] selectItems) {
+    public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmountDto[] selectItems) {
         inventoryService.managerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();
     }
@@ -54,13 +54,13 @@ public class inventoryEndpoint {
     /**
      * Creates a new inventory with selected items.
      *
-     * @param selectedItems - A selectedItems object containing the items to be added to the new inventory.
+     * @param selectedItemsDto - A selectedItems object containing the items to be added to the new inventory.
      * @return A ResponseEntity indicating the status of the creation operation.
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/inventory/create")
-    public ResponseEntity<Void> createNewInventory(@RequestBody selectedItems selectedItems) {
-        inventoryService.createNewInventory(selectedItems);
+    public ResponseEntity<Void> createNewInventory(@RequestBody selectedItemsDto selectedItemsDto) {
+        inventoryService.createNewInventory(selectedItemsDto);
         return ResponseEntity.ok().build();
     }
 
@@ -78,7 +78,7 @@ public class inventoryEndpoint {
 
     @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
     @PutMapping("/worker/inventory/saveChanges")
-    public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmount[] selectItems) {
+    public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmountDto[] selectItems) {
         System.out.println("Array of length" + selectItems.length);
         inventoryService.workerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();
