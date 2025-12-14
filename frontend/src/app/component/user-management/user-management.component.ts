@@ -5,7 +5,7 @@ import {UserService} from "../../service/user.service";
 import {CreateUser, User, userToDelete, userToUpdate} from "../../dto/user";
 import {DropdownUserComponent} from "./dropdown-user/dropdown-user.component";
 import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
@@ -20,7 +20,8 @@ import {EditFloatingWindowComponent} from "../../shared/edit-floating-window/edi
     DropdownUserComponent,
     NgForOf,
     LoadingSpinnerComponent,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css'
@@ -31,13 +32,20 @@ export class UserManagementComponent implements OnInit{
   allUsers: User[] = [];
   selectedUser: User | null = null;
   loading: boolean = true;
-  newUserName: string = "";
-  newUserPassword: string = "";
-  newUserRole: string = "";
-  nameError = false;
-  nameErrorMessage = '';
-  passwordError = false;
-  passwordErrorMessage = '';
+
+  newUserForm = new FormGroup({
+    newUserName: new FormControl<string>('', {nonNullable: true,
+      validators:[
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30)]}),
+    newUserPassword: new FormControl<string>('', {nonNullable: true,
+      validators:[
+        Validators.required,
+        Validators.minLength(8)]}),
+    newUserRole: new FormControl<number | null>(null, {nonNullable: true, validators:[Validators.required]})
+  })
+
 
   constructor(
     private userService: UserService,
@@ -88,38 +96,25 @@ export class UserManagementComponent implements OnInit{
     }
   }
 
-  checkName() {
-    if (!this.newUserName || this.newUserName.trim().length < 1) {
-      this.nameError = true;
-      this.nameErrorMessage = 'Unesi ime';
-    } else {
-      this.nameError = false;
-      this.nameErrorMessage = '';
-    }
-  }
-
-  checkPassword() {
-    if (!this.newUserPassword || this.newUserPassword.trim().length < 1) {
-      this.passwordError = true;
-      this.passwordErrorMessage = 'Unesi šifru';
-    } else {
-      this.passwordError = false;
-      this.passwordErrorMessage = '';
-    }
-  }
-
   saveUser() {
-    let numValue: number = Number(this.newUserRole);
-    let newUser: CreateUser = {
-      name: this.newUserName,
-      level: numValue,
-      password: this.newUserPassword
+
+    if (!this.newUserForm.valid) {
+      this.newUserForm.markAllAsTouched();
+      return;
     }
+
+    let newUser: CreateUser = {
+      name: this.newUserForm.value.newUserName!,
+      level: this.newUserForm.value.newUserRole!,
+      password: this.newUserForm.value.newUserPassword!
+    }
+
     this.userService.createNewUser(newUser).subscribe({
       next: value => {
-        this.newUserName = '';
-        this.newUserRole = '';
-        this.newUserPassword = '';
+        this.newUserForm.reset();
+        this.snackBar.open('Korisnik uspješno kreiran.', 'Close', {
+          duration: 3000
+        });
       }
     });
   }

@@ -61,45 +61,78 @@
 
   <!-- New User View -->
   <div class="container-fluid mt-4" *ngIf="currentView === 'newUser'">
-    <div class="row">
-      <div class="col-md-6 col-lg-4">
+    <form [formGroup]="newUserForm" (ngSubmit)="saveUser()">
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
 
-        <label for="userName" class="form-label"> Ime </label>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" aria-label="Username"
-                 aria-describedby="basic-addon1" id="userName"
-                 placeholder="Unesi korisničko ime"
-                 [(ngModel)]="newUserName"
-                 (ngModelChange)="checkName()">
-        </div>
-        <div *ngIf="nameError" class="text-danger form-text">
-          {{ nameErrorMessage }}
-        </div>
+          <label for="userName" class="form-label"> Ime </label>
+          <div class="input-group mb-3">
+            <input type="text"
+                   class="form-control"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1"
+                   id="userName"
+                   formControlName="newUserName"
+                   placeholder="Unesi korisničko ime">
+          </div>
+          <div class="text-danger form-text"
+               *ngIf="newUserForm.controls.newUserName.touched && newUserForm.controls.newUserName.invalid">
+            <div *ngIf="newUserForm.controls.newUserName.errors?.['required']">
+              Unesi korisničko ime
+            </div>
 
-        <label for="userPassword" class="form-label"> Šifra </label>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" aria-label="Password"
-                 aria-describedby="basic-addon1" id="userPassword"
-                 placeholder="Unesi šifru"
-                 [(ngModel)]="newUserPassword"
-                 (ngModelChange)="checkPassword()">
-        </div>
-        <div *ngIf="passwordError" class="text-danger form-text">
-          {{ passwordErrorMessage }}
-        </div>
+            <div *ngIf="newUserForm.controls.newUserName.errors?.['minlength']">
+              Ime mora imati barem 3 znaka
+            </div>
 
-        <label for="userPassword" class="form-label"> Odaberi ulogu </label>
-        <div class="input-group mb-3">
-          <select class="form-select" id="inputGroupSelect01" [(ngModel)]="newUserRole">
-            <option value="" disabled selected>Izaberi ulogu...</option>
-            <option value="1">Controller</option>
-            <option value="2">Admin Worker</option>
-            <option value="3">Worker</option>
-          </select>
-        </div>
+            <div *ngIf="newUserForm.controls.newUserName.errors?.['maxlength']">
+              Ime može imati najviše 30 znakova
+            </div>
+          </div>
 
-        <button class="btn-outline-success" (click)="saveUser()"> Sačuvaj</button>
+          <label for="userPassword" class="form-label"> Šifra </label>
+          <div class="input-group mb-3">
+            <input type="text"
+                   class="form-control"
+                   aria-label="Password"
+                   aria-describedby="basic-addon1"
+                   id="userPassword"
+                   placeholder="Unesi šifru"
+                   formControlName="newUserPassword">
+          </div>
+          <div class="text-danger form-text"
+               *ngIf="newUserForm.controls.newUserPassword.touched && newUserForm.controls.newUserPassword.invalid">
+            <div *ngIf="newUserForm.controls.newUserPassword.errors?.['required']">
+              Unesi šifru
+            </div>
+
+            <div *ngIf="newUserForm.controls.newUserPassword.errors?.['minlength']">
+              Šifra mora imati barem 8 znakova
+            </div>
+          </div>
+
+          <label class="form-label mt-3"> Odaberi ulogu </label>
+          <div class="input-group mb-3">
+            <select class="form-select" formControlName="newUserRole">
+              <option [ngValue]="null" disabled>Odaberi ulogu</option>
+              <option [ngValue]="1">Controller</option>
+              <option [ngValue]="2">Admin Worker</option>
+              <option [ngValue]="3">Worker</option>
+            </select>
+          </div>
+
+          <div class="text-danger form-text"
+               *ngIf="newUserForm.controls.newUserRole.touched && newUserForm.controls.newUserRole.invalid">
+            Odaberi ulogu
+          </div>
+
+          <button class="btn-outline-success"
+                  type="submit"
+                  [disabled]="newUserForm.invalid">
+            Sačuvaj
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

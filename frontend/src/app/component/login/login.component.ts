@@ -14,6 +14,7 @@ import {UserService} from "../../service/user.service";
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
   loginForm = new FormGroup({
     name: new FormControl<string>('', { nonNullable: true, validators:[Validators.required]}),
     password: new FormControl<string>('', { nonNullable: true, validators:[Validators.required]}),
@@ -39,8 +40,6 @@ export class LoginComponent {
         password: this.loginForm.value.password || '',
         rememberMe: this.loginForm.value.rememberMe ?? false
       };
-
-      console.log(loginData)
 
       this.authService.login(loginData).subscribe({
         next: (response) => {
