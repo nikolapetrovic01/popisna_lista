@@ -157,11 +157,10 @@ export class InventoriesComponent implements OnInit, OnDestroy {
     this.showModalInventoryClose = true;
     this.modalMessage = 'Da li želite da zaključite ovaj inventar?';
     this.modalConfirmationMessage = 'Da želim.';
-    this.modalNegationMessage = 'Ne želim';
+    this.modalNegationMessage = 'Ne želim.';
   }
 
   handleModalConfirmInventoryClose(answer: boolean) {
-    console.log("It was clicked and the answer is " + answer);
     this.showModalInventoryClose = false;
     if (answer) {
       this.closeOpenedInventory()
@@ -189,12 +188,9 @@ export class InventoriesComponent implements OnInit, OnDestroy {
    * Handles the confirmation result from the modal.
    */
   handleModalConfirmItemChanged(answer: boolean) {
-    console.log("handleModalConfirm answer is " + answer + " and old item is " + this.oldItem?.itemInputtedAmount)
     if (!answer && this.oldItem) {
       const item = this.items.find(i => i.itemId === this.oldItem!.itemId);
-      console.log("found item in the items " + item?.itemInputtedAmount)
       if (item) {
-        console.log("Reseting value to " + this.oldItem!.itemInputtedAmount)
         item.itemInputtedAmount = this.oldItem!.itemInputtedAmount;
       }
 
@@ -216,8 +212,6 @@ export class InventoriesComponent implements OnInit, OnDestroy {
 
   handleItemChange(updatedItem: updateItemAmount) {
     const original = this.items.find(i => i.itemId === updatedItem.itemId);
-    console.log("handleItemChange original item " + original?.itemId +
-      " and the updateItem " + updatedItem.itemId)
 
     if (original && this.savedNegativeItems.has(updatedItem.itemId)) {
       const  index = this.updatedItems.findIndex(i => i.itemId === updatedItem.itemId);
@@ -228,7 +222,6 @@ export class InventoriesComponent implements OnInit, OnDestroy {
       }
       return;
     }
-    console.log("HandleItemChange odlItem is: " + this.oldItem?.itemInputtedAmount + " and original modal triggered value is " + !original?.modalTriggered)
     if (this.oldItem?.itemInputtedAmount !== -1 && !original?.modalTriggered) {
       this.handleActivateModalOnChangeItem();
       // original!.modalTriggered = this.modalShown;
