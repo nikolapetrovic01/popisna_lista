@@ -1,3 +1,5 @@
 package com.inventarlista.dto;
 
-public record userToDeleteDto(int id) {}
+public record userToDeleteDto(
+        int id
+) {}

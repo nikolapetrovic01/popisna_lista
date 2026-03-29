@@ -35,7 +35,7 @@ public class loginServiceImpl {
         UserDetails userDetails = loadUserByUsername(request.name());
 
         String storedPassword = userDetails.getPassword();
-
+        //TODO: DELETE AFTER MIGRATION
         if (storedPassword.startsWith("$2")) {
             if (!userDetails.isAccountNonExpired() && !userDetails.isAccountNonLocked() && !userDetails.isCredentialsNonExpired() && !passwordEncoder.matches(request.password(), userDetails.getPassword())) {
                 throw new UnauthorizedException("Invalid login");

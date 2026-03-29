@@ -2,6 +2,7 @@ package com.inventarlista.endpoint;
 
 import com.inventarlista.dto.*;
 import com.inventarlista.service.userServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class userEndpoint {
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/create")
-    public ResponseEntity<Void> createNewInventory(@RequestBody createUserDto createUserDto) {
+    public ResponseEntity<Void> createNewInventory(@RequestBody @Valid createUserDto createUserDto) {
         userService.createNewUser(createUserDto);
         return ResponseEntity.ok().build();
     }
@@ -46,13 +47,16 @@ public class userEndpoint {
      * @param user The DTO containing the ID of the user to be deleted.
      * @return A ResponseEntity with status 200 (OK) on successful deletion.
      */
+    //TODO: FIX MAPPING
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @PostMapping("/controller/user-deletion")
+    @DeleteMapping("/controller/user-deletion")
     public ResponseEntity<Void> deleteUser(@RequestBody userToDeleteDto user) {
         userService.deleteUser(user.id());
         return ResponseEntity.ok().build();
     }
 
+    //TODO: FIX DTO VALIDATION
+    //TODO: ADD COMMENT
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/user-edit")
     public ResponseEntity<Void> updateUser(@RequestBody userToUpdateDto user) {

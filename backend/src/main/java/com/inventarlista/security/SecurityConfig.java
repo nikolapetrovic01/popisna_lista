@@ -44,7 +44,6 @@ public class SecurityConfig {
                             "http://localhost:4200",
                             "http://128.140.119.155",       // Public IP (browser access)
                             "http://128.140.119.155:4200")  // If Angular runs separately on port 4200
-                    //TODO: ADDRESSES
                     .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD")
                     .allowedHeaders("*")
                     .allowCredentials(true);

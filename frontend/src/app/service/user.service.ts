@@ -67,7 +67,7 @@ export class UserService {
     const token = (localStorage.getItem('authToken') || '').replace('Bearer ', '').trim();
     return new HttpHeaders()
       .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json');;
+      .set('Content-Type', 'application/json');
   }
 
   getAllUsers(): Observable<user[]> {
@@ -79,7 +79,7 @@ export class UserService {
   }
 
   deleteUser(user: userToDelete): Observable<void> {
-    return this.http.post<void>(`${this.managerBaseUrl}/user-deletion`, user, {headers: this.getHeaders()});
+    return this.http.delete<void>(`${this.managerBaseUrl}/user-deletion`, {headers: this.getHeaders(), body: user});
   }
 
   updateUser(user: userToUpdate): Observable<void> {
