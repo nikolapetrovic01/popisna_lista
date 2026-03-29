@@ -3,6 +3,9 @@ package com.inventarlista.service;
 import com.inventarlista.dto.createUserDto;
 import com.inventarlista.dto.userDto;
 import com.inventarlista.dto.userToUpdateDto;
+import com.inventarlista.dto.userToDeleteDto;
+import com.inventarlista.exceptions.ConflictException;
+import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.persistence.UsersJdbcDao;
 import org.springframework.stereotype.Service;
 
@@ -37,13 +40,26 @@ public class userServiceImpl {
     /**
      * Deletes a user from the database by ID.
      *
-     * @param userId The ID of the user to delete.
+     * @param user The DTO containing the details of the user to delete.
      */
-    public void deleteUser(int userId) {
-        usersJdbcDao.deleteUser(userId);
+    public void deleteUser(userToDeleteDto user ) throws ConflictException {
+        if (user.idToDelete() != user.idLoggedIn()) {
+            if (!usersJdbcDao.deleteUser(user.idToDelete())) {
+                throw new NotFoundException("User wasn't found.");
+            }
+        } else {
+            throw new ConflictException("A user cannot delete themselves.");
+        }
     }
 
+    /**
+     * Updates a User.
+     *
+     * @param user The DTO containing the details of the user to update.
+     */
     public void updateUser(userToUpdateDto user) {
-        usersJdbcDao.updateUser(user);
+        if (!usersJdbcDao.updateUser(user)) {
+            throw new NotFoundException("User wasn't found.");
+        }
     }
 }

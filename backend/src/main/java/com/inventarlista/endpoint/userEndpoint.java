@@ -1,6 +1,7 @@
 package com.inventarlista.endpoint;
 
 import com.inventarlista.dto.*;
+import com.inventarlista.exceptions.ConflictException;
 import com.inventarlista.service.userServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -47,19 +48,17 @@ public class userEndpoint {
      * @param user The DTO containing the ID of the user to be deleted.
      * @return A ResponseEntity with status 200 (OK) on successful deletion.
      */
-    //TODO: FIX MAPPING
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @DeleteMapping("/controller/user-deletion")
-    public ResponseEntity<Void> deleteUser(@RequestBody userToDeleteDto user) {
-        userService.deleteUser(user.id());
+    public ResponseEntity<Void> deleteUser(@Valid @RequestBody userToDeleteDto user) throws ConflictException {
+        userService.deleteUser(user);
         return ResponseEntity.ok().build();
     }
 
-    //TODO: FIX DTO VALIDATION
-    //TODO: ADD COMMENT
+
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/user-edit")
-    public ResponseEntity<Void> updateUser(@RequestBody userToUpdateDto user) {
+    public ResponseEntity<Void> updateUser(@Valid @RequestBody userToUpdateDto user) {
         userService.updateUser(user);
         return ResponseEntity.ok().build();
     }

@@ -15,7 +15,8 @@ export interface createUser {
 }
 
 export interface userToDelete {
-  id: number
+  idToDelete: number,
+  idLoggedIn: number
 }
 
 export interface userToUpdate {

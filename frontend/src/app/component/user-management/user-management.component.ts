@@ -146,18 +146,21 @@ export class UserManagementComponent implements OnInit{
   }
 
   deleteUser(userToDelete: user) {
+    let loggedInUser = this.userService.getUserId()
+    console.log("Logged in user ", loggedInUser)
     const payload: userToDelete = {
-      id: userToDelete.id
+      idToDelete: userToDelete.id,
+      idLoggedIn: loggedInUser
     };
-    this.userService.deleteUser(payload).subscribe({
-      next: () => {
-        let message = `Korisnik uspješno obrisan.`
-        this.resetAndNotify(message)
-      },
-      error: (err) => {
-        console.error("Error deleting user:", err);
-      }
-    });
+    // this.userService.deleteUser(payload).subscribe({
+    //   next: () => {
+    //     let message = `Korisnik uspješno obrisan.`
+    //     this.resetAndNotify(message)
+    //   },
+    //   error: (err) => {
+    //     console.error("Error deleting user:", err);
+    //   }
+    // });
   }
 
   openEditDialog(selectedUser: user) {

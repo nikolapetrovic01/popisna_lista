@@ -1,8 +1,11 @@
 package com.inventarlista.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
-//TODO: CHANGE TO LONG ID
+
 public record updateItemAmountDto(
+        @NotBlank
         int itemId,
         String itemName,
         String itemMeasurement,

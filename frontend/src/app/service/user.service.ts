@@ -49,11 +49,11 @@ export class UserService {
 
   /**
    * Retrieves the user ID from localStorage.
-   * @returns - The user ID as a number, or null if not found.
+   * @returns - The user ID as a number, or -1 if not found.
    */
-  getUserId(): number | null {
-    const level = localStorage.getItem(this.userIdKey);
-    return level ? parseInt(level, 10) : null;
+  getUserId(): number {
+    const userId = localStorage.getItem(this.userIdKey);
+    return userId ? parseInt(userId, 10) : -1;
   }
 
   /**
