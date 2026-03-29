@@ -1,6 +1,7 @@
 package com.inventarlista.endpoint;
 
 import com.inventarlista.dto.*;
+import com.inventarlista.exceptions.ValidationException;
 import com.inventarlista.service.inventoryServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +47,7 @@ public class inventoryEndpoint {
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/inventory/saveChanges")
-    public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmountDto[] selectItems) {
+    public ResponseEntity<Void> updateManagerChangedItems(@RequestBody updateItemAmountDto[] selectItems) throws ValidationException {
         inventoryService.managerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();
     }
@@ -78,7 +79,7 @@ public class inventoryEndpoint {
 
     @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
     @PutMapping("/worker/inventory/saveChanges")
-    public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmountDto[] selectItems) {
+    public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmountDto[] selectItems) throws ValidationException {
         System.out.println("Array of length" + selectItems.length);
         inventoryService.workerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();

@@ -6,16 +6,16 @@ import com.inventarlista.dto.userToUpdateDto;
 import com.inventarlista.dto.userToDeleteDto;
 import com.inventarlista.exceptions.ConflictException;
 import com.inventarlista.exceptions.NotFoundException;
-import com.inventarlista.persistence.UsersJdbcDao;
+import com.inventarlista.persistence.usersJdbcDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class userServiceImpl {
-    private final UsersJdbcDao usersJdbcDao;
+    private final usersJdbcDao usersJdbcDao;
 
-    public userServiceImpl(UsersJdbcDao usersJdbcDao) {
+    public userServiceImpl(usersJdbcDao usersJdbcDao) {
         this.usersJdbcDao = usersJdbcDao;
     }
 

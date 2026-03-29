@@ -1,9 +1,5 @@
 package com.inventarlista.endpoint.exceptionhandler;
-import com.inventarlista.exceptions.ConflictException;
-import com.inventarlista.exceptions.InvalidCredentialsException;
-import com.inventarlista.exceptions.NotFoundException;
-import com.inventarlista.exceptions.ValidationException;
-import com.inventarlista.exceptions.ValidationErrorRestDto;
+import com.inventarlista.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -51,5 +47,13 @@ public class ApplicationExceptionHandler {
   public ValidationErrorRestDto handleInvalidCredentialsException(InvalidCredentialsException e) {
     LOG.warn("Terminating request processing with status 401 due to {}: {}", e.getClass().getSimpleName(), e.getMessage());
     return new ValidationErrorRestDto("Invalid credentials", List.of(e.getMessage()));
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseBody
+  public ValidationErrorRestDto handlePersistenceException(PersistenceException e) {
+    LOG.warn("Terminating request processing with status 500 due to {}: {}", e.getClass().getSimpleName(), e.getMessage());
+    return new ValidationErrorRestDto("Internal error", List.of(e.getMessage()));
   }
 }

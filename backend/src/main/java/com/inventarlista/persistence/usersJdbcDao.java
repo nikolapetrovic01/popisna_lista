@@ -4,7 +4,6 @@ import com.inventarlista.dto.createUserDto;
 import com.inventarlista.dto.userDto;
 import com.inventarlista.dto.userToUpdateDto;
 import com.inventarlista.exceptions.NotFoundException;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class UsersJdbcDao {
+public class usersJdbcDao {
     public static final String SQL_SELECT_USERS = "SELECT username, level, id FROM users";
     public static final String SQL_CREATE_USER = "INSERT INTO users (username, password, level)\n" +
             "VALUES (?, ?, ?);";
@@ -24,7 +23,7 @@ public class UsersJdbcDao {
     private final JdbcTemplate jdbcTemplate;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UsersJdbcDao(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder passwordEncoder) {
+    public usersJdbcDao(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
     }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import java.lang.invoke.MethodHandles;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,7 @@ public class inventoryJdbcDao {
             "popis_id) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_CLOSE_INVENTORY = "UPDATE popisi SET status = 0 WHERE id = ?";
+    private static final String SQL_FIND_INVENTORY = "SELECT COUNT(*) FROM popisi WHERE id = ?";
     private final JdbcTemplate jdbcTemplate;
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -41,19 +43,101 @@ public class inventoryJdbcDao {
 
     /**
      * Retrieves all inventory records from the database.
+     *
      * @return A collection of Inventory objects.
      */
     public Collection<Inventory> getInventory() {
-        try {
-            return jdbcTemplate.query(SQL_SELECT_POPISI, this::mapRowInventory);
-        } catch (DataAccessException e){
-            throw new NotFoundException("No inventories");
+        return jdbcTemplate.query(SQL_SELECT_POPISI, this::mapRowInventory);
+    }
+
+    /**
+     * Retrieves all items associated with a specific inventory by ID.
+     *
+     * @param id - The ID of the inventory.
+     * @return A collection of Item objects associated with the inventory.
+     */
+    public Collection<Item> getItems(int id) {
+        if (checkInventoryExists(id)) {
+            return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
+        } else {
+            throw new NotFoundException("Inventory wasn't found.");
         }
     }
 
     /**
+     * Inserts a new inventory record into the database.
+     *
+     * @param inventory - An Inventory object containing the details of the inventory to create.
+     */
+    public boolean createNewInventory(Inventory inventory) {
+        int rowsAffected = jdbcTemplate.update(SQL_INSERT_INTO_POPISI,
+                inventory.getStatus(),
+                inventory.getStartDate() != null ? java.sql.Date.valueOf(inventory.getStartDate()) : null,
+                inventory.getEndDate() != null ? java.sql.Date.valueOf(inventory.getEndDate()) : null);
+        return rowsAffected != 0;
+    }
+
+    /**
+     * Retrieves the maximum inventory ID from the `popisi` table.
+     *
+     * @return The highest inventory ID as an integer. Returns -1 if no inventories exist.
+     */
+    public int getMaxInventoryId() {
+        Integer highestId = jdbcTemplate.queryForObject(SQL_MAX_INVENTORY_ID, Integer.class);
+        return highestId == null ? -1 : highestId;
+    }
+
+    /**
+     * Saves a list of items in batch mode, inserting them into the `artikli` table.
+     *
+     * @param items - A list of Item objects to be saved.
+     */
+    public int[][] saveItems(List<Item> items) {
+        return jdbcTemplate.batchUpdate(SQL_INSERT_INTO_ARTIKLI, items, items.size(), (ps, item) -> {
+            ps.setInt(1, item.getId());
+            ps.setString(2, item.getName());
+            ps.setString(3, item.getMeasurement());
+            ps.setBigDecimal(4, item.getPresentAmount());
+            ps.setString(5, item.getBarcode());
+            ps.setBigDecimal(6, item.getInputtedAmount());
+            ps.setInt(7, item.getUserThatPutTheAmountIn());
+            ps.setInt(8, item.getInventoryId());
+        });
+    }
+
+    /**
+     * Batch update item amounts in the inventory.
+     *
+     * @param updateItems - An array of updateItemAmount objects.
+     */
+    public int[][] batchUpdateItemAmounts(updateItemAmountDto[] updateItems) {
+        return jdbcTemplate.batchUpdate(
+                SQL_UPDATE_AMOUNT,
+                Arrays.asList(updateItems),  // Convert array to list
+                updateItems.length,
+                (ps, toUpdate) -> {
+                    ps.setBigDecimal(1, toUpdate.itemInputtedAmount());
+                    ps.setLong(2, toUpdate.itemId());
+                    ps.setLong(3, toUpdate.itemInventoryId());
+                }
+        );
+    }
+
+    /**
+     * Closes the given Inventory. It is closed by updating its status in the database.
+     *
+     * @param closeInventory the id of the inventory that should be closed
+     * @return boolean if the action was successful
+     */
+    public boolean closeInventory(int closeInventory) {
+        int rowsAffected = jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
+        return rowsAffected != 0;
+    }
+
+    /**
      * Maps a single row of the `popisi` table to an Inventory object.
-     * @param rs - The ResultSet containing query results.
+     *
+     * @param rs     - The ResultSet containing query results.
      * @param rowNum - The current row number.
      * @return An Inventory object representing a row from the `popisi` table.
      */
@@ -67,22 +151,9 @@ public class inventoryJdbcDao {
     }
 
     /**
-     * Retrieves all items associated with a specific inventory by ID.
-     * @param id - The ID of the inventory.
-     * @return A collection of Item objects associated with the inventory.
-     */
-    public Collection<Item> getItems(int id) {
-        try {
-            return jdbcTemplate.query(SQL_SELECT_ITEMS, this::mapRowItem, id);
-        } catch (DataAccessException e){
-            LOGGER.error("Error retrieving items from inventory: {}", e.getMessage(), e);
-            throw new NotFoundException("Could not find items associated with inventory ID %d".formatted(id));
-        }
-    }
-
-    /**
      * Maps a single row of the `artikli` table to an Item object.
-     * @param rs - The ResultSet containing query results.
+     *
+     * @param rs     - The ResultSet containing query results.
      * @param rowNum - The current row number.
      * @return An Item object representing a row from the `artikli` table.
      */
@@ -100,81 +171,12 @@ public class inventoryJdbcDao {
     }
 
     /**
-     * Inserts a new inventory record into the database.
-     * @param inventory - An Inventory object containing the details of the inventory to create.
+     * Checks if inventory with id exists.
+     * @param id id of the inventory being queried
+     * @return boolean if the inventory was found or not
      */
-    public void createNewInventory(Inventory inventory) {
-        try {
-            jdbcTemplate.update(SQL_INSERT_INTO_POPISI,
-                    inventory.getStatus(),
-                    inventory.getStartDate() != null ? java.sql.Date.valueOf(inventory.getStartDate()) : null,
-                    inventory.getEndDate() != null ? java.sql.Date.valueOf(inventory.getEndDate()) : null);
-        } catch (DataAccessException e) {
-            LOGGER.error("Error inserting new inventory: {}", e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Retrieves the maximum inventory ID from the `popisi` table.
-     * @return The highest inventory ID as an integer. Returns 0 if no inventories exist.
-     */
-    public int getMaxInventoryId(){
-        Integer highestId = null;
-        try {
-            highestId = jdbcTemplate.queryForObject(SQL_MAX_INVENTORY_ID, Integer.class);
-        } catch (DataAccessException e) {
-            LOGGER.error("Error fetching max inventory ID", e);
-        }
-        return highestId != null ? highestId : 0;
-    }
-
-    /**
-     * Saves a list of items in batch mode, inserting them into the `artikli` table.
-     * @param items - A list of Item objects to be saved.
-     */
-    public void saveItems (List<Item> items){
-        try {
-            jdbcTemplate.batchUpdate(SQL_INSERT_INTO_ARTIKLI, items, items.size(), (ps, item) -> {
-                ps.setInt(1, item.getId());
-                ps.setString(2, item.getName());
-                ps.setString(3, item.getMeasurement());
-                ps.setBigDecimal(4, item.getPresentAmount());
-                ps.setString(5, item.getBarcode());
-                ps.setBigDecimal(6, item.getInputtedAmount());
-                ps.setInt(7, item.getUserThatPutTheAmountIn());
-                ps.setInt(8, item.getInventoryId());
-            });
-        } catch (DataAccessException e) {
-            LOGGER.error("Error occurred while saving items", e);
-        }
-    }
-
-    /**
-     * Batch update item amounts in the inventory.
-     * @param updateItems - An array of updateItemAmount objects.
-     */
-    public void batchUpdateItemAmounts(updateItemAmountDto[] updateItems) {
-        try {
-            jdbcTemplate.batchUpdate(
-                    SQL_UPDATE_AMOUNT,
-                    Arrays.asList(updateItems),  // Convert array to list
-                    updateItems.length,
-                    (ps, toUpdate) -> {
-                        ps.setBigDecimal(1, toUpdate.itemInputtedAmount());
-                        ps.setLong(2, toUpdate.itemId());
-                        ps.setLong(3, toUpdate.itemInventoryId());
-                    }
-            );
-        } catch (DataAccessException e) {
-            LOGGER.error("Error occurred while updating item amounts.", e);
-        }
-    }
-
-    public void closeInventory(int closeInventory) {
-        try {
-            jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
-        } catch (DataAccessException e) {
-            LOGGER.error("Error occurred while trying to close inventory.", e);
-        }
+    private boolean checkInventoryExists(int id) {
+        Integer count = jdbcTemplate.queryForObject(SQL_FIND_INVENTORY, Integer.class, id);
+        return count != null && count > 0;
     }
 }
