@@ -40,6 +40,11 @@ public class  loginJdbcDao {
         }
     }
 
+    /**
+     * Updates users password.
+     * @param userId the id of the user, whose password should be updated
+     * @param hashedPassword the new password
+     */
     public void updatePassword(int userId, String hashedPassword) {
         int rowsAffected = jdbcTemplate.update(
                 SQL_UPDATE_PASSWORD,

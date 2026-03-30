@@ -37,7 +37,7 @@ public class userEndpoint {
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/create")
-    public ResponseEntity<Void> createNewInventory(@RequestBody @Valid createUserDto createUserDto) {
+    public ResponseEntity<Void> createNewUser(@RequestBody @Valid createUserDto createUserDto) {
         userService.createNewUser(createUserDto);
         return ResponseEntity.ok().build();
     }
@@ -55,7 +55,12 @@ public class userEndpoint {
         return ResponseEntity.ok().build();
     }
 
-
+    /**
+     * Updates an existing user.
+     *
+     * @param user The DTO containing the updated user data.
+     * @return A ResponseEntity with status 200 (OK) if the update was successful.
+     */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/controller/user-edit")
     public ResponseEntity<Void> updateUser(@Valid @RequestBody userToUpdateDto user) {
