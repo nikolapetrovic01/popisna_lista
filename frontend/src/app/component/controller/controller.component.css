@@ -36,17 +36,18 @@ body {
 
 /* Layout */
 .main-content {
-  min-height: 100vh;               /* full height */
   display: flex;
-  justify-content: center;         /* center horizontally */
-  align-items: center;             /* center vertically */
-  padding: 40px 20px;              /* breathing room */
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 20px;
+  min-height: calc(100vh - 8vh);
+  background: linear-gradient(180deg, #0b1220 0%, #4e3a73 65%, #785E9E 100%) no-repeat;
+  background-size: cover;
 }
 
 .container {
   width: 100%;
   max-width: 800px;
-  margin: 20px auto 0;
 }
 
 /* Sekcije kao kartice */
