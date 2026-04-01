@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {createUser, user, users, userToDelete, userToUpdate} from "../dto/user";
+import {createUser, user, userPasswordToUpdate, users, userToDelete, userToUpdate} from "../dto/user";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {inventories} from "../dto/inventories";
@@ -84,5 +84,9 @@ export class UserService {
 
   updateUser(user: userToUpdate): Observable<void> {
     return this.http.put<void>(`${this.managerBaseUrl}/user-edit`, user, {headers: this.getHeaders()});
+  }
+
+  setUserPassword(user: userPasswordToUpdate): Observable<void> {
+    return this.http.put<void>(`${this.managerBaseUrl}/set-password`, user, {headers: this.getHeaders()});
   }
 }

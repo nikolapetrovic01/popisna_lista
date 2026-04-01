@@ -1,3 +1,7 @@
+/backend/log/
+/backend/target/
+/.idea
+
 /node_modules/@angular/animations/browser/testing/index.d.ts
 /node_modules/@angular/animations/browser/index.d.ts
 /node_modules/@angular/animations/esm2022/browser/src/dsl/style_normalization/animation_style_normalizer.mjs
@@ -2967,6 +2971,4 @@
 /backend/target/test-classes/popisna_lista/JWTTest.class
 /backend/target/backend-1.0-SNAPSHOT.jar
 /backend/target/backend-1.0-SNAPSHOT.jar.original
-/backend/log/
-/backend/target/
-/.idea
+/log/popisna_lista.log

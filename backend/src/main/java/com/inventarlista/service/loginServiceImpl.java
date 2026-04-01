@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class loginServiceImpl {
         String storedPassword = userDetails.getPassword();
         //TODO: DELETE AFTER MIGRATION
         if (storedPassword.startsWith("$2")) {
-            if (!userDetails.isAccountNonExpired() && !userDetails.isAccountNonLocked() && !userDetails.isCredentialsNonExpired() && !passwordEncoder.matches(request.password(), userDetails.getPassword())) {
+            if (!userDetails.isAccountNonExpired() || !userDetails.isAccountNonLocked() || !userDetails.isCredentialsNonExpired() || !passwordEncoder.matches(request.password(), userDetails.getPassword())) {
                 throw new UnauthorizedException("Invalid login");
             }
         } else {
@@ -49,38 +50,35 @@ public class loginServiceImpl {
             loginJdbcDao.updatePassword(applicationUser.getId(), newHash);
         }
 
-//        if (userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked() && userDetails.isCredentialsNonExpired() && passwordEncoder.matches(request.password(), userDetails.getPassword())) {
 
-            List<String> roles = userDetails.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .toList();
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 
-            String token = jwtTokenizer.generateToken(userDetails.getUsername(), roles, request.rememberMe());
-            User user = findApplicationUserByUsername(request.name());
+        String token = jwtTokenizer.generateToken(userDetails.getUsername(), roles, request.rememberMe());
+        User user = findApplicationUserByUsername(request.name());
 
-            return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId(), token);
-//        }
-
-//        throw new UnauthorizedException("Invalid login");
+        return new loginResponseDto(user.getUsername(), user.getLevel(), user.getId(), token);
     }
 
     private UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            User applicationUser = findApplicationUserByUsername(username);
+        User applicationUser = findApplicationUserByUsername(username);
 
-            List<GrantedAuthority> grantedAuthorities = switch (applicationUser.getLevel()) {
-                case 0 -> AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_WORKER_ADMIN", "ROLE_WORKER");
-                case 1 -> AuthorityUtils.createAuthorityList("ROLE_MANAGER", "ROLE_WORKER_ADMIN", "ROLE_WORKER");
-                case 2 -> AuthorityUtils.createAuthorityList( "ROLE_WORKER_ADMIN", "ROLE_WORKER");
-                case 3 -> AuthorityUtils.createAuthorityList(  "ROLE_WORKER");
-                default -> throw new UnauthorizedException("Invalid user role");
-            };
+        List<GrantedAuthority> grantedAuthorities = switch (applicationUser.getLevel()) {
+            case 0 ->
+                    AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_WORKER_ADMIN", "ROLE_WORKER");
+            case 1 -> AuthorityUtils.createAuthorityList("ROLE_MANAGER", "ROLE_WORKER_ADMIN", "ROLE_WORKER");
+            case 2 -> AuthorityUtils.createAuthorityList("ROLE_WORKER_ADMIN", "ROLE_WORKER");
+            case 3 -> AuthorityUtils.createAuthorityList("ROLE_WORKER");
+            default -> throw new UnauthorizedException("Invalid user role");
+        };
 
-            return new org.springframework.security.core.userdetails.User(
-                    applicationUser.getUsername(),
-                    applicationUser.getPassword(),
-                    grantedAuthorities
-            );
+        return new org.springframework.security.core.userdetails.User(
+                applicationUser.getUsername(),
+                applicationUser.getPassword(),
+                grantedAuthorities
+        );
     }
 
     private User findApplicationUserByUsername(String username) {

@@ -30,6 +30,18 @@ public class userEndpoint {
     }
 
     /**
+     * Updates the users password.
+     * @param userPasswordToUpdate the user whose password is supposed to be updated and the new password.
+     * @return A ResponseEntity with status 200 (OK) on successful creation.
+     */
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @PutMapping("/controller/set-password")
+    public ResponseEntity<Void> updateUserPassword(@Valid @RequestBody userPasswordToUpdate userPasswordToUpdate) {
+        userService.getUserPassword(userPasswordToUpdate);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Creates a new User.
      *
      * @param createUserDto The DTO containing the details for the new user.
@@ -37,7 +49,7 @@ public class userEndpoint {
      */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping("/controller/create")
-    public ResponseEntity<Void> createNewUser(@RequestBody @Valid createUserDto createUserDto) {
+    public ResponseEntity<Void> createNewUser(@Valid @RequestBody createUserDto createUserDto) {
         userService.createNewUser(createUserDto);
         return ResponseEntity.ok().build();
     }

@@ -24,3 +24,8 @@ export interface userToUpdate {
   name: string,
   level: number
 }
+
+export interface userPasswordToUpdate {
+  id: number,
+  password: string
+}

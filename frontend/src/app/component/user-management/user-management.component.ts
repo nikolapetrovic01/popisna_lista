@@ -2,14 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../../service/user.service";
-import {createUser, user, userToDelete, userToUpdate} from "../../dto/user";
+import {createUser, user, userPasswordToUpdate, userToDelete, userToUpdate} from "../../dto/user";
 import {DropdownUserComponent} from "./dropdown-user/dropdown-user.component";
 import {LoadingSpinnerComponent} from "../shared/loading-spinner/loading-spinner.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ModalComponent} from "../../shared/modal/modal.component";
-import {EditFloatingWindowComponent} from "../../shared/edit-floating-window/edit-floating-window.component";
+import {EditUserFloatingWindowComponent} from "../../shared/edit-user-floating-window/edit-user-floating-window.component";
+import {
+  EditPasswordFloatingWindowComponent
+} from "../../shared/edit-password-floating-window/edit-password-floating-window.component";
 
 @Component({
   selector: 'app-user-management',
@@ -147,20 +150,19 @@ export class UserManagementComponent implements OnInit{
 
   deleteUser(userToDelete: user) {
     let loggedInUser = this.userService.getUserId()
-    console.log("Logged in user ", loggedInUser)
     const payload: userToDelete = {
       idToDelete: userToDelete.id,
       idLoggedIn: loggedInUser
     };
-    // this.userService.deleteUser(payload).subscribe({
-    //   next: () => {
-    //     let message = `Korisnik uspješno obrisan.`
-    //     this.resetAndNotify(message)
-    //   },
-    //   error: (err) => {
-    //     console.error("Error deleting user:", err);
-    //   }
-    // });
+    this.userService.deleteUser(payload).subscribe({
+      next: () => {
+        let message = `Korisnik uspješno obrisan.`
+        this.resetAndNotify(message)
+      },
+      error: (err) => {
+        console.error("Error deleting user:", err);
+      }
+    });
   }
 
   openEditDialog(selectedUser: user) {
@@ -169,7 +171,7 @@ export class UserManagementComponent implements OnInit{
       name: selectedUser.name,
       level: selectedUser.level
     }
-    const dialogRef = this.dialog.open(EditFloatingWindowComponent, {
+    const dialogRef = this.dialog.open(EditUserFloatingWindowComponent, {
       width: '300px',
       data: data
     });
@@ -181,6 +183,33 @@ export class UserManagementComponent implements OnInit{
     })
   }
 
+  openPasswordDialog(selectedUser: user) {
+
+    const dialogRef = this.dialog.open(EditPasswordFloatingWindowComponent, {
+      width: '300px',
+      data: {
+        id: selectedUser.id,
+        name: selectedUser.name,
+        password: ''
+      }
+    });
+    dialogRef.afterClosed().subscribe((result: userPasswordToUpdate | undefined) => {
+      if (result) {
+        this.editPassword(result)
+
+      }
+    })
+  }
+
+  editPassword(userToUpdate: userPasswordToUpdate) {
+    this.userService.setUserPassword(userToUpdate).subscribe({
+      next: () => {
+        let message = "Šifra uspješno ažurirana."
+        this.resetAndNotify(message)
+      }
+    });
+  }
+
   editUser(userToEdit: user) {
     let payload: userToUpdate = {
       id: userToEdit.id,
@@ -190,9 +219,11 @@ export class UserManagementComponent implements OnInit{
 
     this.userService.updateUser(payload).subscribe({
       next: () => {
-        let message = "Korisnik uspješno uredjen."
+        let message = "Korisnik uspješno ažuriran."
         this.resetAndNotify(message)
     }
     })
   }
+
+
 }

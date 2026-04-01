@@ -27,10 +27,10 @@ export interface UserEditData {
     MatButton,
     NgForOf
   ],
-  templateUrl: './edit-floating-window.component.html',
-  styleUrl: './edit-floating-window.component.css'
+  templateUrl: './edit-user-floating-window.component.html',
+  styleUrl: './edit-user-floating-window.component.css'
 })
-export class EditFloatingWindowComponent {
+export class EditUserFloatingWindowComponent {
   // We make a copy of the user data so we don't modify the original until confirmed
   editableUser: user;
 
@@ -38,7 +38,7 @@ export class EditFloatingWindowComponent {
   availableLevels: number[] = [1, 2, 3];
 
   constructor(
-    public dialogRef: MatDialogRef<EditFloatingWindowComponent>,
+    public dialogRef: MatDialogRef<EditUserFloatingWindowComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserEditData
   ) {
     this.editableUser = { ...data}

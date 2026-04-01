@@ -1,9 +1,6 @@
 package com.inventarlista.service;
 
-import com.inventarlista.dto.createUserDto;
-import com.inventarlista.dto.userDto;
-import com.inventarlista.dto.userToUpdateDto;
-import com.inventarlista.dto.userToDeleteDto;
+import com.inventarlista.dto.*;
 import com.inventarlista.exceptions.ConflictException;
 import com.inventarlista.exceptions.NotFoundException;
 import com.inventarlista.persistence.usersJdbcDao;
@@ -61,5 +58,18 @@ public class userServiceImpl {
         if (!usersJdbcDao.updateUser(user)) {
             throw new NotFoundException("User wasn't found.");
         }
+    }
+
+    /**
+     * Update users password.
+     * @param userToUpdate The user and the new password.
+     */
+    public void getUserPassword(userPasswordToUpdate userToUpdate) {
+        boolean result = usersJdbcDao.updateUserPassword(userToUpdate.id(), userToUpdate.password());
+
+        if (!result) {
+            throw new NotFoundException("User wasn't found.");
+        }
+
     }
 }
