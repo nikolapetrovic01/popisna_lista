@@ -8,6 +8,7 @@ import {authGuard} from "./guards/auth.guard";
 import {WorkerDashboardComponent} from "./component/worker/dashboard/worker-dashboard.component";
 import {WorkerInventoryViewComponent} from "./component/worker/inventory/worker-inventory-view/worker-inventory-view.component";
 import {UserManagementComponent} from "./component/user-management/user-management.component";
+import {StatisticsComponent} from "./component/statistics/statistics.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -19,6 +20,7 @@ export const routes: Routes = [
       {path: 'create', component: CreateNewInventoryComponent, data: {requiredLevel: 1}},
       {path: 'create/show-csv', component: ShowCsvContentComponent, data: {requiredLevel: 1}},
       {path: 'users/manage', component: UserManagementComponent, data: {requiredLevel: 1}},
+      {path: 'statistics', component: StatisticsComponent, data: {requiredLevel: 1}},
     ]
   },
   {

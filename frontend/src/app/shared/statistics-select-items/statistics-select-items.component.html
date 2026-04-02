@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Izaberi artikle</h2>
+
+<mat-dialog-content class="mat-typography">
+  <div class="form-group mb-3">
+    <label for="searchTerm">Pretraga</label>
+    <input
+      id="searchTerm"
+      type="text"
+      class="form-control"
+      [(ngModel)]="searchTerm"
+      required>
+  </div>
+
+  <div class="mb-3" *ngIf="searchTerm.length > 0 && !checkIfDataEmpty()">
+    <label class="form-label">Odabrani artikli</label>
+    <div class="d-flex flex-wrap gap-2">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary"
+        *ngFor="let item of selectedItems"
+        (click)="removeSelected(item)"
+      >
+        {{ item.nameOfItem }} ×
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="searchTerm.trim().length < 2  && !checkIfDataEmpty()" class="text-muted">
+    Upiši barem 2 slova za prikaz rezultata.
+  </div>
+
+  <div *ngIf="searchTerm.trim().length >= 2 && !checkIfDataEmpty()" class="list-group">
+    <button
+      type="button"
+      class="list-group-item list-group-item-action"
+      *ngFor="let item of filteredItems"
+      (click)="toggleItem(item)"
+      [class.active]="isSelected(item)"
+    >
+      {{ item.nameOfItem }}
+    </button>
+  </div>
+
+  <!-- Obavijesti korisnika da nema rezultata sa tim imenom -->
+  <div *ngIf="searchTerm.trim().length >= 2 && filteredItems.length === 0 && !checkIfDataEmpty()"
+       class="text-muted mt-2">
+    Nema takvog artikla.
+  </div>
+
+  <!-- Obavijesti korisnika da nema rezultata, da je skup prazan -->
+  <div *ngIf="checkIfDataEmpty()" class="text-danger fw-bold mt-2">
+    Nema rezultata u ovom vremensok periodu.
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Odustani</button>
+  <button mat-button color="primary" [disabled]="selectedItems.length === 0" (click)="onSave()">Sačuvaj Promjene
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,105 @@
+<div class="vh-100 d-flex flex-column overflow-hidden bg-light">
+  <app-header></app-header>
+
+  <!-- Top band -->
+  <div class="bg-white border-bottom py-3 flex-shrink-0">
+    <div class="container">
+      <div class="row g-3 align-items-end">
+
+        <div class="col-md-4">
+          <label for="dateInput" class="form-label">Početni Datum</label>
+          <input
+            id="dateInputStart"
+            type="date"
+            class="form-control"
+            name="startDate"
+            [(ngModel)]="startDate"
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="dateInput" class="form-label">Krajnji Datum</label>
+          <input
+            id="dateInputEnd"
+            type="date"
+            class="form-control"
+            name="endDate"
+            [(ngModel)]="endDate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label for="filterSelect" class="form-label">Dropdown</label>
+          <select id="filterSelect" class="form-select">
+            <option selected>Choose an option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="searchInput" class="form-label">Input</label>
+          <input
+            id="searchInput"
+            type="text"
+            class="form-control"
+            placeholder="Type something"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <button type="button" class="btn btn-primary" [disabled]="!startDate || !endDate || startDate > endDate" (click)="search()"> Traži </button>
+        </div>
+        <div class="text-danger mt-2" *ngIf="startDate && endDate && startDate > endDate">
+          Početni datum ne može biti poslije krajnjeg datuma.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lower display area -->
+  <div class="flex-grow-1 p-4 overflow-hidden">
+    <div class="w-100 h-100 bg-white border rounded-4 shadow-sm d-flex align-items-center justify-content-center">
+      <div class="flex-grow-1 p-4 overflow-hidden">
+        <div class="w-100 h-100 bg-white border rounded-4 shadow-sm p-4 d-flex flex-column">
+
+          <ng-container *ngIf="selectedItem; else noData">
+            <h3 class="text-center mb-4">{{ selectedItem.nameOfItem }}</h3>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="itemSelector" class="form-label">Artikal</label>
+                <select
+                  id="itemSelector"
+                  class="form-select"
+                  [value]="selectedItemIndex"
+                  (change)="onSelectedItemChange(($any($event.target)).value)"
+                >
+                  <option *ngFor="let item of comparisonResults; let i = index" [value]="i">
+                    {{ item.nameOfItem }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex-grow-1 position-relative">
+              <canvas
+                baseChart
+                [type]="chartType"
+                [data]="chartData"
+                [options]="chartOptions">
+              </canvas>
+            </div>
+          </ng-container>
+
+          <ng-template #noData>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+              <span class="text-secondary fs-4">Nema podataka za prikaz</span>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
