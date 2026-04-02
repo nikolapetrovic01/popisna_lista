@@ -163,6 +163,20 @@ public class inventoryServiceImpl {
         updateItemAmounts(updateItems);
     }
 
+    public inventoryProgressChartResponseDto getInventoryStatus(int inventoryId) throws ValidationException {
+        if (inventoryId <= 0) {
+            throw new ValidationException("Validation failed", List.of("Inventory ID must be greater than 0"));
+        }
+
+        inventoryProgressChartResponseDto result = inventoryJdbcDao.getInventoryStatus(inventoryId);
+
+        if (result == null) {
+            throw new NotFoundException("No inventory status found for inventory id " + inventoryId);
+        }
+
+        return result;
+    }
+
     /**
      * Validates and performs a batch update of item amounts in an inventory.
      *

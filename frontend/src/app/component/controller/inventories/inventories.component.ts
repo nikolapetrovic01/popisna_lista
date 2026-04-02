@@ -1,5 +1,4 @@
-import {Component, HostListener, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {DropdownItemComponent} from "../dropdown-item/dropdown-item.component";
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {InventoryService} from "../../../service/inventory.service";
 import {item, items, updateItemAmount} from "../../../dto/item";
 import {ListInventoryItemComponent} from "./list-inventory-item/list-inventory-item.component";

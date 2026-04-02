@@ -1,5 +1,6 @@
 package com.inventarlista.persistence;
 
+import com.inventarlista.dto.inventoryProgressChartResponseDto;
 import com.inventarlista.dto.updateItemAmountDto;
 import com.inventarlista.entity.Inventory;
 import com.inventarlista.entity.Item;
@@ -34,6 +35,8 @@ public class inventoryJdbcDao {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_CLOSE_INVENTORY = "UPDATE popisi SET status = 0 WHERE id = ?";
     private static final String SQL_FIND_INVENTORY = "SELECT COUNT(*) FROM popisi WHERE id = ?";
+    private static final String SQL_GET_INVENTORY_STATUS = "SELECT SUM(IF(kolicina_proizvoda_unesena = -1, 1, 0)) AS untouched_count, " +
+            "SUM(IF(kolicina_proizvoda_unesena > -1, 1, 0)) AS started_count FROM artikli a JOIN popisi p ON a.popis_id = p.id WHERE p.id = ?";
     private final JdbcTemplate jdbcTemplate;
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -132,6 +135,14 @@ public class inventoryJdbcDao {
     public boolean closeInventory(int closeInventory) {
         int rowsAffected = jdbcTemplate.update(SQL_CLOSE_INVENTORY, closeInventory);
         return rowsAffected != 0;
+    }
+
+    public inventoryProgressChartResponseDto getInventoryStatus (int inventoryId) {
+        return jdbcTemplate.queryForObject(SQL_GET_INVENTORY_STATUS, (rs, rowNum) -> new inventoryProgressChartResponseDto(
+                inventoryId,
+                rs.getInt("started_count"),
+                rs.getInt("untouched_count")
+        ), inventoryId);
     }
 
     /**

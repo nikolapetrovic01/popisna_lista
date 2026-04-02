@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.dao.DataAccessException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -55,5 +56,21 @@ public class ApplicationExceptionHandler {
   public ValidationErrorRestDto handlePersistenceException(PersistenceException e) {
     LOG.warn("Terminating request processing with status 500 due to {}: {}", e.getClass().getSimpleName(), e.getMessage());
     return new ValidationErrorRestDto("Internal error", List.of(e.getMessage()));
+  }
+
+  @ExceptionHandler(DataAccessException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseBody
+  public ValidationErrorRestDto handleDataAccessException(DataAccessException e) {
+    LOG.error("Database error", e);
+    return new ValidationErrorRestDto("Internal error", List.of("A database error occurred."));
+  }
+
+  @ExceptionHandler(Exception.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ResponseBody
+  public ValidationErrorRestDto handleUnexpectedException(Exception e) {
+    LOG.error("Unexpected internal error", e);
+    return new ValidationErrorRestDto("Internal error", List.of("An unexpected error occurred."));
   }
 }

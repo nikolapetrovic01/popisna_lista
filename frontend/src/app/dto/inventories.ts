@@ -4,7 +4,15 @@ export interface inventoriesPiece {
   endDate: Date;
   status: number;
 }
-
 export interface inventories {
   tables: inventoriesPiece[];
+}
+export interface inventoryProgressChartRequestDto {
+  inventoryId: number;
+}
+
+export interface inventoryProgressChartResponseDto {
+  inventoryId: number;
+  startedCount: number;
+  untouchedCount: number;
 }

@@ -111,8 +111,13 @@ public class inventoryEndpoint {
     @PreAuthorize("hasAnyRole('ROLE_WORKER_ADMIN', 'ROLE_WORKER')")
     @PutMapping("/worker/inventory/saveChanges")
     public ResponseEntity<Void> updateWorkerChangedItems(@RequestBody updateItemAmountDto[] selectItems) throws ValidationException {
-        System.out.println("Array of length" + selectItems.length);
         inventoryService.workerUpdateItemAmount(selectItems);
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    @GetMapping("/controller/inventory/statistics/{inventoryId}")
+    public inventoryProgressChartResponseDto getInventoryStatus(@PathVariable int inventoryId) throws ValidationException {
+        return inventoryService.getInventoryStatus(inventoryId);
     }
 }

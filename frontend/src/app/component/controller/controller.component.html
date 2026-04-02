@@ -1,6 +1,8 @@
 <app-header></app-header>
 <div class="main-content">
-  <div class="container">
+  <div class="content-grid">
+    <div class="left-column">
+
     <!-- Always visible list for Aktivni Items -->
     <div class="active-list">
       <div class="active-list-header d-flex align-items-center justify-content-between mb-3">
@@ -36,5 +38,28 @@
         <app-dropdown-item *ngFor="let item of inactiveItems" [item]="item" (click)="navigateToInventoryClicked(item)"></app-dropdown-item>
       </div>
     </div>
+  </div>
+<!-- Pie Chart -->
+    <div class="right-column">
+      <div class="chart-card">
+        <h3 class="chart-title">STATUS POPISA</h3>
+
+        <div class="chart-wrapper" *ngIf="inventoryState; else noChartData">
+          <canvas
+            baseChart
+            [type]="pieChartType"
+            [data]="pieChartData"
+            [options]="pieChartOptions">
+          </canvas>
+        </div>
+
+        <ng-template #noChartData>
+          <div class="chart-placeholder">
+            Odaberite aktivni popis da se prikaže chart.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
   </div>
 </div>

@@ -2,8 +2,8 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../enviroments/enviroment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {inventories} from "../dto/inventories";
-import {item, items, selectedItems, updateItemAmount} from "../dto/item";
+import {inventories, inventoryProgressChartRequestDto, inventoryProgressChartResponseDto} from "../dto/inventories";
+import { items, selectedItems, updateItemAmount} from "../dto/item";
 
 @Injectable({
   providedIn: 'root',
@@ -64,5 +64,10 @@ export class InventoryService{
 
   saveWorkerChangedItems(items: updateItemAmount[]): Observable<void> {
     return this.http.put<void>(`${this.workerBaseUrl}/inventory/saveChanges`, items, {headers: this.getHeaders()});
+  }
+
+  //STATISTICS
+  getInventoryStatus(requestDto:inventoryProgressChartRequestDto): Observable<inventoryProgressChartResponseDto> {
+    return this.http.get<inventoryProgressChartResponseDto>(`${this.managerBaseUrl}/inventory/statistics/${requestDto.inventoryId}`, {headers: this.getHeaders()});
   }
 }
