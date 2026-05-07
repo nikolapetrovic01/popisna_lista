@@ -23,3 +23,8 @@ export interface itemInventoryComparisonEntryDto {
   expectedAmount: number,
   actualAmount: number
 }
+export interface inactiveInventoriesDto {
+  id: number,
+  startDate: string,
+  endDate: string
+}

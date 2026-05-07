@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {FormsModule} from "@angular/forms";
 import {StatisticsService} from "../../service/statistics.service";
@@ -6,7 +6,7 @@ import {
   itemName,
   dateFilterDto,
   itemInventoryComparisonRequestDto,
-  ItemInventoryComparisonDto
+  ItemInventoryComparisonDto, inactiveInventoriesDto
 } from "../../dto/statistics";
 import {
   ItemName,
@@ -32,14 +32,17 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css'
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent {
   startDate: string = ''
   endDate: string = ''
   selectedGroupingMode: ComparisonGroupingMode = 'YEAR';
   comparisonResults: ItemInventoryComparisonDto[] = [];
   selectedItemIndex = 0;
-  chartType: 'bar' = 'bar';
+  chartScope: 'inventory' | 'timeRange' = 'timeRange';
+  inactiveInventoriesNames: inactiveInventoriesDto[] | undefined;
+  inventorySearchTerm: string = "";
 
+  chartType: 'bar' = 'bar';
   chartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: []
@@ -51,9 +54,31 @@ export class StatisticsComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  /**
+   * Sets the current view and triggers the corresponding method.
+   */
+  setView(view: 'inventory' | 'timeRange'): void {
+    this.chartScope = view;
 
+    // Call the appropriate method based on the selected view
+    switch (view) {
+      case 'inventory':
+        this.getInactiveInventories()
+        break;
+      case 'timeRange':
+
+        break;
+    }
   }
+
+  getInactiveInventories() {
+    // this.statisticsService.getInactiveInventories().subscribe({
+    //   next: (value: inactiveInventoriesDto[]) => {
+    //     this.inactiveInventoriesNames = value
+    //   }
+    // });
+  }
+
 
   search() {
     this.getItemsForDropdown();
@@ -98,8 +123,7 @@ export class StatisticsComponent implements OnInit {
     }
   }
 
-  //TODO: ADD BUTTON TO SWITCH BETWEEN "PER INVENTORY" AND "PER YEAR" VIEW
-
+  //CHART
   checkDate(startDate: string, endDate: string): boolean {
     return !!startDate && !!endDate && startDate <= endDate;
   }

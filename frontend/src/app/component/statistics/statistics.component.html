@@ -6,7 +6,8 @@
     <div class="container">
       <div class="row g-3 align-items-end">
 
-        <div class="col-md-4">
+        <!-- Time Chosen -->
+        <div class="col-md-4" *ngIf="chartScope === 'timeRange'">
           <label for="dateInput" class="form-label">Početni Datum</label>
           <input
             id="dateInputStart"
@@ -16,7 +17,7 @@
             [(ngModel)]="startDate"
           />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" *ngIf="chartScope === 'timeRange'">
           <label for="dateInput" class="form-label">Krajnji Datum</label>
           <input
             id="dateInputEnd"
@@ -27,29 +28,33 @@
           />
         </div>
 
-        <div class="col-md-4">
-          <label for="filterSelect" class="form-label">Dropdown</label>
-          <select id="filterSelect" class="form-select">
-            <option selected>Choose an option</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-        </div>
-
-        <div class="col-md-4">
-          <label for="searchInput" class="form-label">Input</label>
+        <!-- Inventory Chosen -->
+        <div class="col-md-4" *ngIf="chartScope === 'inventory'">
+          <label for="inventoryInput" class="form-label">Izaberi inventar</label>
           <input
-            id="searchInput"
+            id="inventoryInput"
             type="text"
             class="form-control"
-            placeholder="Type something"
+            name="inventoryInput"
+            [(ngModel)]="inventorySearchTerm"
           />
         </div>
+
+
 
         <div class="col-md-4">
           <button type="button" class="btn btn-primary" [disabled]="!startDate || !endDate || startDate > endDate" (click)="search()"> Traži </button>
         </div>
+
+        <div class="col-md-4">
+          <label for="filterSelect" class="form-label">Dropdown</label>
+          <select id="filterSelect" class="form-select" [(ngModel)]="chartScope">
+            <option>Choose an option</option>
+            <option value="timeRange" (click)="setView('timeRange')" selected>Vrijeme</option>
+            <option value="inventory" (click)="setView('inventory')">Inventar</option>
+          </select>
+        </div>
+
         <div class="text-danger mt-2" *ngIf="startDate && endDate && startDate > endDate">
           Početni datum ne može biti poslije krajnjeg datuma.
         </div>

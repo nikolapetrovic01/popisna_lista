@@ -6,7 +6,7 @@ import {
   itemName,
   dateFilterDto,
   itemInventoryComparisonRequestDto,
-  ItemInventoryComparisonDto
+  ItemInventoryComparisonDto, inactiveInventoriesDto
 } from "../dto/statistics";
 
 @Injectable({
@@ -34,4 +34,7 @@ export class StatisticsService {
     return this.http.post<ItemInventoryComparisonDto[]>(`${this.managerBaseUrl}/statistics/item-inventory-comparison`, request, {headers: this.getHeaders()});
   }
 
+  getInactiveInventories(): Observable<inactiveInventoriesDto[]> {
+    return this.http.get<inactiveInventoriesDto[]>(`${this.managerBaseUrl}/statistics/inactive-inventories`, {headers: this.getHeaders()});
+  }
 }
