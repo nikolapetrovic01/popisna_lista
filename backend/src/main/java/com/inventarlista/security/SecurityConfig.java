@@ -1,5 +1,6 @@
 package com.inventarlista.security;
 
+import com.inventarlista.security.JWT.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,7 +19,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
+    //TODO: OVDE MJENJANO, TESTIRATI SE MORA!!!
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
+    public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter) {
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -27,11 +34,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Allow anyone to access the login and register endpoints
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers("/controller/**").permitAll()
-                        .requestMatchers("/worker/**").permitAll()
+                        .requestMatchers("/controller/**").authenticated()
+                        .requestMatchers("/worker/**").authenticated()
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
